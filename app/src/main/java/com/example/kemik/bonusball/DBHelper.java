@@ -7,11 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
-import java.util.List;
-
-/**
- * Created by kemik on 26/10/2017.
- */
 
 public class DBHelper extends SQLiteOpenHelper {
 

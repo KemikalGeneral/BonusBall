@@ -2,9 +2,9 @@ package com.example.kemik.bonusball;
 
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -58,14 +58,18 @@ public class MainActivity extends AppCompatActivity {
             System.out.println("z! MainActivity - draw.drawName: " + draw.getDrawName());
             System.out.println("z! MainActivity - draw.drawValue: " + draw.getValue());
             System.out.println("z! MainActivity - draw.StartDate: " + draw.getStartDate());
-            TextView tv = new TextView(this);
-            tv.setText(draw.getDrawName());
-            ll_drawsContainer.addView(tv);
+            TextView tv_draw = new TextView(this);
+            tv_draw.setText(draw.getDrawName());
+            ll_drawsContainer.addView(tv_draw);
 
-            tv.setOnClickListener(new View.OnClickListener() {
+            tv_draw.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(MainActivity.this, "Clicked " + draw.getDrawName(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this,
+                            "" + draw.getDrawName() +
+                                    "\n£" + draw.getValue() +
+                                    "\n" + draw.getStartDate(),
+                            Toast.LENGTH_SHORT).show();
                 }
             });
         }
