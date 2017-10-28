@@ -21,6 +21,8 @@ public class CreateDraw extends AppCompatActivity
     private String drawName;
     private EditText et_drawValue;
     private double drawValue;
+    private EditText et_ticketValue;
+    private double ticketValue;
     private TextView tv_startDate;
     private long startDate;
     private Button btn_createDraw;
@@ -42,7 +44,9 @@ public class CreateDraw extends AppCompatActivity
                 drawName = String.valueOf(et_drawName.getText());
                 System.out.println("z! CreateDraw - btn_createDraw - drawName: " + drawName);
                 drawValue = Double.valueOf(String.valueOf(et_drawValue.getText()));
-                System.out.println("z! CreateDraw - btn_createDraw - drawValue: " + drawName);
+                System.out.println("z! CreateDraw - btn_createDraw - drawValue: " + drawValue);
+                ticketValue = Double.valueOf(String.valueOf(et_ticketValue.getText()));
+                System.out.println("z! CreateDraw - btn_createDraw - ticketValue: " + ticketValue);
                 createDraw();
                 startActivity(new Intent(CreateDraw.this, MainActivity.class));
             }
@@ -65,7 +69,7 @@ public class CreateDraw extends AppCompatActivity
     private void createDraw() {
         System.out.println("z! CreateDraw - createDraw()...");
         DBHelper db = new DBHelper(this);
-        db.createNewDraw(drawName, drawValue, startDate);
+        db.createNewDraw(drawName, drawValue, ticketValue, startDate);
     }
 
     /**
@@ -93,7 +97,8 @@ public class CreateDraw extends AppCompatActivity
      */
     private void findViews() {
         et_drawName = findViewById(R.id.drawName);
-        et_drawValue = findViewById(R.id.value);
+        et_drawValue = findViewById(R.id.drawValue);
+        et_ticketValue = findViewById(R.id.ticketValue);
         tv_startDate = findViewById(R.id.startDate);
         btn_createDraw = findViewById(R.id.createDraw);
     }

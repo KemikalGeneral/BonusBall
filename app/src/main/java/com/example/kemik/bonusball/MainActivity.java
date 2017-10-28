@@ -10,6 +10,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.kemik.bonusball.Entities.Draw;
+
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -51,12 +53,13 @@ public class MainActivity extends AppCompatActivity {
      * adding the new TextView to the ll_drawsContainer
      */
     private void displayDraws() {
-        ArrayList<Draw> draws = db.getDraws();
+        final ArrayList<Draw> draws = db.getDraws();
         System.out.println("z! MainActivity - draws.size: " + draws.size());
 
         for (final Draw draw : draws) {
             System.out.println("z! MainActivity - draw.drawName: " + draw.getDrawName());
-            System.out.println("z! MainActivity - draw.drawValue: " + draw.getValue());
+            System.out.println("z! MainActivity - draw.drawValue: " + draw.getDrawValue());
+            System.out.println("z! MainActivity - draw.ticketValue: " + draw.getTicketValue());
             System.out.println("z! MainActivity - draw.StartDate: " + draw.getStartDate());
             TextView tv_draw = new TextView(this);
             tv_draw.setText(draw.getDrawName());
@@ -66,10 +69,15 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     Toast.makeText(MainActivity.this,
-                            "" + draw.getDrawName() +
-                                    "\n£" + draw.getValue() +
-                                    "\n" + draw.getStartDate(),
+                            "name: " + draw.getDrawName() +
+                                    "\ndrawValue: £" + draw.getDrawValue() +
+                                    "\nticketValue: £" + draw.getTicketValue() +
+                                    "\nstartDate: " + draw.getStartDate(),
                             Toast.LENGTH_SHORT).show();
+
+                    Intent intent = new Intent(MainActivity.this, DrawDetail.class);
+                    intent.putExtra("DrawId", draw.getDrawId());
+                    startActivity(intent);
                 }
             });
         }
