@@ -123,6 +123,35 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     /**
+     * Get a single draw from its ID
+     *
+     * @param drawId
+     * @return
+     */
+    public Draw getDrawById(long drawId) {
+        SQLiteDatabase db = getReadableDatabase();
+        Draw draw = new Draw();
+
+        Cursor cursor = db.rawQuery(
+                "SELECT * FROM " + DRAW_TABLE +
+                        " WHERE " + COLUMN_ID + " = " + drawId,
+                null
+        );
+
+        if (cursor.moveToFirst()) {
+            draw.setDrawId(cursor.getLong(cursor.getColumnIndex(COLUMN_ID)));
+            draw.setDrawName(cursor.getString(cursor.getColumnIndex(COLUMN_DRAW_NAME)));
+            draw.setDrawValue(cursor.getDouble(cursor.getColumnIndex(COLUMN_DRAW_VALUE)));
+            draw.setTicketValue(cursor.getDouble(cursor.getColumnIndex(COLUMN_TICKET_VALUE)));
+            draw.setStartDate(cursor.getLong(cursor.getColumnIndex(COLUMN_START_DATE)));
+        }
+        cursor.close();
+        db.close();
+
+        return draw;
+    }
+
+    /**
      * Drop table
      * @param db
      */

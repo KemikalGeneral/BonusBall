@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
      * adding the new TextView to the ll_drawsContainer
      */
     private void displayDraws() {
-        ArrayList<Draw> draws = db.getDraws();
+        final ArrayList<Draw> draws = db.getDraws();
         System.out.println("z! MainActivity - draws.size: " + draws.size());
 
         for (final Draw draw : draws) {
@@ -74,6 +74,10 @@ public class MainActivity extends AppCompatActivity {
                                     "\nticketValue: £" + draw.getTicketValue() +
                                     "\nstartDate: " + draw.getStartDate(),
                             Toast.LENGTH_SHORT).show();
+
+                    Intent intent = new Intent(MainActivity.this, DrawDetail.class);
+                    intent.putExtra("DrawId", draw.getDrawId());
+                    startActivity(intent);
                 }
             });
         }

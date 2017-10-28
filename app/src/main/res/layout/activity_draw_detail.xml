@@ -3,12 +3,34 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.example.kemik.bonusball.DrawDetail">
 
     <TextView
         android:id="@+id/drawName"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="Draw Name" />
 
+    <TextView
+        android:id="@+id/startDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Start Date"
+        app:layout_constraintTop_toBottomOf="@id/drawName" />
+
+    <TextView
+        android:id="@+id/drawValue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Draw Value"
+        app:layout_constraintTop_toBottomOf="@id/startDate" />
+
+    <TextView
+        android:id="@+id/ticketValue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ticket Value"
+        app:layout_constraintTop_toBottomOf="@id/drawValue" />
 
 </android.support.constraint.ConstraintLayout>
