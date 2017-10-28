@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.example.kemik.bonusball.Entities.Draw;
+
 import java.util.ArrayList;
 
 public class DBHelper extends SQLiteOpenHelper {
@@ -25,7 +27,8 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String COLUMN_DRAW_NAME = "drawName";
     private static final String COLUMN_ENTRANT_NAME = "entrantName";
     private static final String COLUMN_NUMBER = "number";
-    private static final String COLUMN_VALUE = "value";
+    private static final String COLUMN_DRAW_VALUE = "drawValue";
+    private static final String COLUMN_TICKET_VALUE = "ticketValue";
     private static final String COLUMN_START_DATE = "startDate";
     private static final String COLUMN_PAYMENT_STATUS = "paymentStatus";
     private static final String COLUMN_WINNER = "winner";
@@ -39,7 +42,8 @@ public class DBHelper extends SQLiteOpenHelper {
                     COLUMN_DRAW_NAME + " VARCHAR(50), " +
                     COLUMN_ENTRANT_NAME + " VARCHAR(50), " +
                     COLUMN_NUMBER + " INTEGER, " +
-                    COLUMN_VALUE + " REAL, " +
+                    COLUMN_DRAW_VALUE + " REAL, " +
+                    COLUMN_TICKET_VALUE + " REAL, " +
                     COLUMN_START_DATE + " INTEGER, " +
                     COLUMN_WINNER + " INTEGER," +
                     COLUMN_PAYMENT_STATUS + " VARCHAR(50));";
@@ -69,16 +73,18 @@ public class DBHelper extends SQLiteOpenHelper {
     /**
      * Create a new Draw
      */
-    public void createNewDraw(String drawName, double drawValue, long startDate) {
+    public void createNewDraw(String drawName, double drawValue, double ticketValue, long startDate) {
         System.out.println("z! DBHelper - createNewDraw()...");
         System.out.println("z! DBHelper - createNewDraw - drawName: " + drawName);
         System.out.println("z! DBHelper - createNewDraw - drawValue: " + drawValue);
+        System.out.println("z! DBHelper - createNewDraw - ticketValue: " + ticketValue);
         System.out.println("z! DBHelper - createNewDraw - drawStartDate: " + startDate);
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
 
         values.put(COLUMN_DRAW_NAME, drawName);
-        values.put(COLUMN_VALUE, drawValue);
+        values.put(COLUMN_DRAW_VALUE, drawValue);
+        values.put(COLUMN_TICKET_VALUE, ticketValue);
         values.put(COLUMN_START_DATE, startDate);
 
         long id = db.insert(DRAW_TABLE, null, values);
@@ -104,7 +110,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 Draw draw = new Draw();
                 draw.setDrawId(cursor.getLong(cursor.getColumnIndex(COLUMN_ID)));
                 draw.setDrawName(cursor.getString(cursor.getColumnIndex(COLUMN_DRAW_NAME)));
-                draw.setValue(cursor.getDouble(cursor.getColumnIndex(COLUMN_VALUE)));
+                draw.setDrawValue(cursor.getDouble(cursor.getColumnIndex(COLUMN_DRAW_VALUE)));
+                draw.setTicketValue(cursor.getDouble(cursor.getColumnIndex(COLUMN_TICKET_VALUE)));
                 draw.setStartDate(cursor.getLong(cursor.getColumnIndex(COLUMN_START_DATE)));
                 draws.add(draw);
             } while (cursor.moveToNext());

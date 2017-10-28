@@ -1,4 +1,4 @@
-package com.example.kemik.bonusball;
+package com.example.kemik.bonusball.Entities;
 
 /**
  * Created by kemik on 26/10/2017.
@@ -10,20 +10,22 @@ public class Draw {
     private String drawName;
     private String entrantName;
     private int number;
-    private double value;
+    private double drawValue;
+    private double ticketValue;
     private long startDate;
     private int winner;
     private String paymentStatus;
 
     public Draw() {}
 
-    public Draw(long drawId, String drawName, String entrantName, int number, double value,
-                long startDate, int winner, String paymentStatus) {
+    public Draw(long drawId, String drawName, String entrantName, int number, double drawValue,
+                double ticketValue, long startDate, int winner, String paymentStatus) {
         this.drawId = drawId;
         this.drawName = drawName;
         this.entrantName = entrantName;
         this.number = number;
-        this.value = value;
+        this.drawValue = drawValue;
+        this.ticketValue = ticketValue;
         this.startDate = startDate;
         this.winner = winner;
         this.paymentStatus = paymentStatus;
@@ -61,12 +63,20 @@ public class Draw {
         this.number = number;
     }
 
-    public double getValue() {
-        return value;
+    public double getDrawValue() {
+        return drawValue;
     }
 
-    public void setValue(double value) {
-        this.value = value;
+    public void setDrawValue(double drawValue) {
+        this.drawValue = drawValue;
+    }
+
+    public double getTicketValue() {
+        return ticketValue;
+    }
+
+    public void setTicketValue(double ticketValue) {
+        this.ticketValue = ticketValue;
     }
 
     public long getStartDate() {
@@ -100,7 +110,8 @@ public class Draw {
                 ", drawName='" + drawName + '\'' +
                 ", entrantName='" + entrantName + '\'' +
                 ", number=" + number +
-                ", value=" + value +
+                ", drawValue=" + drawValue +
+                ", ticketValue=" + ticketValue +
                 ", startDate=" + startDate +
                 ", winner=" + winner +
                 ", paymentStatus='" + paymentStatus + '\'' +
