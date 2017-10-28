@@ -29,7 +29,9 @@ public class MainActivity extends AppCompatActivity {
         SQLiteDatabase sqLiteDatabase = openOrCreateDatabase(
                 db.getDatabaseName(), MODE_PRIVATE, null, null
         );
-//        db.dropTables(sqLiteDatabase);
+
+//        db.dropTables(sqLiteDatabase); // For testing purposes
+
         db.onCreate(sqLiteDatabase);
 
         // Find all views

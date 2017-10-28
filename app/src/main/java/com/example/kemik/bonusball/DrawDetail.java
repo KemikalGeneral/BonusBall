@@ -3,6 +3,7 @@ package com.example.kemik.bonusball;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.kemik.bonusball.Entities.Draw;
@@ -16,6 +17,7 @@ public class DrawDetail extends AppCompatActivity {
     private TextView tv_startDate;
     private TextView tv_drawValue;
     private TextView tv_ticketValue;
+    private LinearLayout ll_numbersContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,21 @@ public class DrawDetail extends AppCompatActivity {
 
         // Populate TextViews with Draw details
         populateTextViews(draw);
+
+        // Create 1 - 59 numbered TextViews
+        createNumbersTextViews();
+    }
+
+    /**
+     * Create 1 - 59 numbered TextViews which will hold the names and payment status of the entrants
+     */
+    private void createNumbersTextViews() {
+        int numbers = 59;
+        for (int i = 1; i < numbers + 1; i++) {
+            TextView numberSlot = new TextView(this);
+            numberSlot.setText(String.valueOf(i));
+            ll_numbersContainer.addView(numberSlot);
+        }
     }
 
     /**
@@ -65,5 +82,6 @@ public class DrawDetail extends AppCompatActivity {
         tv_startDate = findViewById(R.id.startDate);
         tv_drawValue = findViewById(R.id.drawValue);
         tv_ticketValue = findViewById(R.id.ticketValue);
+        ll_numbersContainer = findViewById(R.id.numbersContainer);
     }
 }

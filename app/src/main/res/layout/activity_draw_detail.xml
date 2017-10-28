@@ -1,36 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.example.kemik.bonusball.DrawDetail">
 
-    <TextView
-        android:id="@+id/drawName"
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Draw Name" />
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/startDate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Start Date"
-        app:layout_constraintTop_toBottomOf="@id/drawName" />
+        <TextView
+            android:id="@+id/drawName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Draw Name" />
 
-    <TextView
-        android:id="@+id/drawValue"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Draw Value"
-        app:layout_constraintTop_toBottomOf="@id/startDate" />
+        <TextView
+            android:id="@+id/startDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Start Date"
+            app:layout_constraintTop_toBottomOf="@id/drawName" />
 
-    <TextView
-        android:id="@+id/ticketValue"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Ticket Value"
-        app:layout_constraintTop_toBottomOf="@id/drawValue" />
+        <TextView
+            android:id="@+id/drawValue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Draw Value"
+            app:layout_constraintTop_toBottomOf="@id/startDate" />
 
-</android.support.constraint.ConstraintLayout>
+        <TextView
+            android:id="@+id/ticketValue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ticket Value"
+            app:layout_constraintTop_toBottomOf="@id/drawValue" />
+
+        <LinearLayout
+            android:id="@+id/numbersContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@id/ticketValue">
+
+        </LinearLayout>
+    </android.support.constraint.ConstraintLayout>
+</ScrollView>
