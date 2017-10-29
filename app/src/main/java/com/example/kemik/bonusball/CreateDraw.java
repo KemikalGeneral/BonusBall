@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -34,6 +35,9 @@ public class CreateDraw extends AppCompatActivity
 
         // Find all views
         findViews();
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("Create Draw...");
 
         // Capture drawName and drawValue, and call to create a new draw.
         // When finished, go to MainActivity on create button click.
