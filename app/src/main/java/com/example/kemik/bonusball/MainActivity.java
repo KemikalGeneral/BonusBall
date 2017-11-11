@@ -3,6 +3,7 @@ package com.example.kemik.bonusball;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -19,6 +20,26 @@ public class MainActivity extends AppCompatActivity {
     private DBHelper db;
     private FloatingActionButton fab;
     private LinearLayout ll_drawsContainer;
+
+    private Boolean exit = false;
+
+    // On back press show a confirmation Toast and wait for a response within three seconds to exit
+    @Override
+    public void onBackPressed() {
+        if (exit) {
+            finish(); // finish activity
+        } else {
+            Toast.makeText(this, "Press Back again to Exit",
+                    Toast.LENGTH_SHORT).show();
+            exit = true;
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    exit = false;
+                }
+            }, 3 * 1000);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,14 +76,9 @@ public class MainActivity extends AppCompatActivity {
      * adding the new TextView to the ll_drawsContainer
      */
     private void displayDraws() {
-        final ArrayList<Draw> draws = db.getDraws();
-        System.out.println("z! MainActivity - draws.size: " + draws.size());
+        ArrayList<Draw> draws = db.getDraws();
 
         for (final Draw draw : draws) {
-            System.out.println("z! MainActivity - draw.drawName: " + draw.getDrawName());
-            System.out.println("z! MainActivity - draw.drawValue: " + draw.getDrawValue());
-            System.out.println("z! MainActivity - draw.ticketValue: " + draw.getTicketValue());
-            System.out.println("z! MainActivity - draw.StartDate: " + draw.getStartDate());
             TextView tv_draw = new TextView(this);
             tv_draw.setText(draw.getDrawName());
             ll_drawsContainer.addView(tv_draw);
@@ -70,13 +86,6 @@ public class MainActivity extends AppCompatActivity {
             tv_draw.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(MainActivity.this,
-                            "name: " + draw.getDrawName() +
-                                    "\ndrawValue: £" + draw.getDrawValue() +
-                                    "\nticketValue: £" + draw.getTicketValue() +
-                                    "\nstartDate: " + draw.getStartDate(),
-                            Toast.LENGTH_SHORT).show();
-
                     Intent intent = new Intent(MainActivity.this, DrawDetail.class);
                     intent.putExtra("DrawId", draw.getDrawId());
                     startActivity(intent);

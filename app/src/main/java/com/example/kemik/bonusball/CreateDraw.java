@@ -29,6 +29,12 @@ public class CreateDraw extends AppCompatActivity
     private Button btn_createDraw;
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(this, MainActivity.class));
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_draw);
@@ -44,15 +50,12 @@ public class CreateDraw extends AppCompatActivity
         btn_createDraw.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("z! CreateDraw - btn_createDraw...");
                 drawName = String.valueOf(et_drawName.getText());
-                System.out.println("z! CreateDraw - btn_createDraw - drawName: " + drawName);
                 drawValue = Double.valueOf(String.valueOf(et_drawValue.getText()));
-                System.out.println("z! CreateDraw - btn_createDraw - drawValue: " + drawValue);
                 ticketValue = Double.valueOf(String.valueOf(et_ticketValue.getText()));
-                System.out.println("z! CreateDraw - btn_createDraw - ticketValue: " + ticketValue);
                 createDraw();
                 startActivity(new Intent(CreateDraw.this, MainActivity.class));
+                finish();
             }
         });
 
@@ -60,7 +63,6 @@ public class CreateDraw extends AppCompatActivity
         tv_startDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("z! CreateDraw - tv_startDate...");
                 DialogFragment dateFragment = new DatePickerFragment();
                 dateFragment.show(getFragmentManager(), "datePicker");
             }
@@ -71,7 +73,6 @@ public class CreateDraw extends AppCompatActivity
      * Use the drawName, drawValue and startDate to create a new Draw
      */
     private void createDraw() {
-        System.out.println("z! CreateDraw - createDraw()...");
         DBHelper db = new DBHelper(this);
         db.createNewDraw(drawName, drawValue, ticketValue, startDate);
     }
@@ -91,7 +92,6 @@ public class CreateDraw extends AppCompatActivity
         calendar.set(Calendar.DAY_OF_MONTH, day);
 
         startDate = calendar.getTimeInMillis();
-
         String dateString = DateFormat.getDateInstance().format(startDate);
         tv_startDate.setText(dateString);
     }

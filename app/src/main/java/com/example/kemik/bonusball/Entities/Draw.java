@@ -8,27 +8,21 @@ public class Draw {
 
     private long drawId;
     private String drawName;
-    private String entrantName;
-    private int number;
     private double drawValue;
     private double ticketValue;
     private long startDate;
     private int winner;
-    private String paymentStatus;
 
     public Draw() {}
 
-    public Draw(long drawId, String drawName, String entrantName, int number, double drawValue,
-                double ticketValue, long startDate, int winner, String paymentStatus) {
+    public Draw(long drawId, String drawName, double drawValue, double ticketValue, long startDate,
+                int winner) {
         this.drawId = drawId;
         this.drawName = drawName;
-        this.entrantName = entrantName;
-        this.number = number;
         this.drawValue = drawValue;
         this.ticketValue = ticketValue;
         this.startDate = startDate;
         this.winner = winner;
-        this.paymentStatus = paymentStatus;
     }
 
     public long getDrawId() {
@@ -45,22 +39,6 @@ public class Draw {
 
     public void setDrawName(String drawName) {
         this.drawName = drawName;
-    }
-
-    public String getEntrantName() {
-        return entrantName;
-    }
-
-    public void setEntrantName(String entrantName) {
-        this.entrantName = entrantName;
-    }
-
-    public int getNumber() {
-        return number;
-    }
-
-    public void setNumber(int number) {
-        this.number = number;
     }
 
     public double getDrawValue() {
@@ -95,26 +73,15 @@ public class Draw {
         this.winner = winner;
     }
 
-    public String getPaymentStatus() {
-        return paymentStatus;
-    }
-
-    public void setPaymentStatus(String paymentStatus) {
-        this.paymentStatus = paymentStatus;
-    }
-
     @Override
     public String toString() {
         return "Draw{" +
                 "drawId=" + drawId +
                 ", drawName='" + drawName + '\'' +
-                ", entrantName='" + entrantName + '\'' +
-                ", number=" + number +
                 ", drawValue=" + drawValue +
                 ", ticketValue=" + ticketValue +
                 ", startDate=" + startDate +
                 ", winner=" + winner +
-                ", paymentStatus='" + paymentStatus + '\'' +
                 '}';
     }
 }

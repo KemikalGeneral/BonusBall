@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.kemik.bonusball.Entities.Draw;
@@ -14,11 +14,12 @@ import java.util.Date;
 
 public class DrawDetail extends AppCompatActivity {
 
+    private DBHelper db;
     private TextView tv_drawName;
     private TextView tv_startDate;
     private TextView tv_drawValue;
     private TextView tv_ticketValue;
-    private LinearLayout ll_numbersContainer;
+    private ListView lv_numberSlotListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +33,7 @@ public class DrawDetail extends AppCompatActivity {
         actionBar.setTitle("Draw Details...");
 
         // Instantiate a new DBHelper class
-        DBHelper db = new DBHelper(this);
+        db = new DBHelper(this);
 
         // Get ID from intent extras
         Intent intent = getIntent();
@@ -42,22 +43,21 @@ public class DrawDetail extends AppCompatActivity {
         Draw draw = db.getDrawById(drawId);
 
         // Populate TextViews with Draw details
-        populateTextViews(draw);
+        populateDrawDetailsTextViews(draw);
 
-        // Create 1 - 59 numbered TextViews
-        createNumbersTextViews();
+        // Set up and display the ListView
+        setupAndDisplayListView(draw);
     }
 
     /**
-     * Create 1 - 59 numbered TextViews which will hold the names and payment status of the entrants
+     * Find all views by their ID's
      */
-    private void createNumbersTextViews() {
-        int numbers = 59;
-        for (int i = 1; i < numbers + 1; i++) {
-            TextView numberSlot = new TextView(this);
-            numberSlot.setText(String.valueOf(i));
-            ll_numbersContainer.addView(numberSlot);
-        }
+    private void findViews() {
+        tv_drawName = findViewById(R.id.drawName);
+        tv_startDate = findViewById(R.id.startDate);
+        tv_drawValue = findViewById(R.id.drawValue);
+        tv_ticketValue = findViewById(R.id.ticketValue);
+        lv_numberSlotListView = findViewById(R.id.numberSlotListView);
     }
 
     /**
@@ -65,7 +65,7 @@ public class DrawDetail extends AppCompatActivity {
      *
      * @param draw
      */
-    private void populateTextViews(Draw draw) {
+    private void populateDrawDetailsTextViews(Draw draw) {
         Date date = new Date();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, MMM d, ''yy");
         String dateString = simpleDateFormat.format(date);
@@ -79,13 +79,14 @@ public class DrawDetail extends AppCompatActivity {
     }
 
     /**
-     * Find all views by their ID's
+     * SetUp and display the ListView
+     * ...Create a new ArrayAdapter
+     * ...AddAll Draws from DB
+     * ...Set adapter
      */
-    private void findViews() {
-        tv_drawName = findViewById(R.id.drawName);
-        tv_startDate = findViewById(R.id.startDate);
-        tv_drawValue = findViewById(R.id.drawValue);
-        tv_ticketValue = findViewById(R.id.ticketValue);
-        ll_numbersContainer = findViewById(R.id.numbersContainer);
+    private void setupAndDisplayListView(Draw draw) {
+        NumberSlotArrayAdapter numberSlotArrayAdapter = new NumberSlotArrayAdapter(this, draw.getDrawId());
+        numberSlotArrayAdapter.addAll(db.getEntrantsByDrawId(draw.getDrawId()));
+        lv_numberSlotListView.setAdapter(numberSlotArrayAdapter);
     }
 }
