@@ -87,14 +87,11 @@ public class DBHelper extends SQLiteOpenHelper {
 
     /**
      * Create a new Draw
+     * Also creates 59 numbered lines in an Entrant Table with the drawId
      */
     public void createNewDraw(String drawName, double drawValue, double ticketValue, long startDate) {
         System.out.println("z! ===== ===== ===== ===== =====");
         System.out.println("z! DBHelper - createNewDraw()...");
-        System.out.println("z! DBHelper - createNewDraw - drawName: " + drawName);
-        System.out.println("z! DBHelper - createNewDraw - drawValue: " + drawValue);
-        System.out.println("z! DBHelper - createNewDraw - ticketValue: " + ticketValue);
-        System.out.println("z! DBHelper - createNewDraw - drawStartDate: " + startDate);
 
         SQLiteDatabase db = getWritableDatabase();
 
@@ -105,25 +102,19 @@ public class DBHelper extends SQLiteOpenHelper {
         drawValues.put(COLUMN_START_DATE, startDate);
         long drawId = db.insert(DRAW_TABLE, null, drawValues);
 
-//        db.execSQL(CREATE_ENTRANT_TABLE);
-        System.out.println("z! DBHelper - createNewDraw() - creating new Entrant Table");
+        // Populate this Entrant Table with 59 numbered lines with the appropriate drawId
         ContentValues entrantValues = new ContentValues();
-
-        for (int i = 1; i < 61; i++) {
+        for (int i = 1; i < 60; i++) {
             entrantValues.put(COLUMN_LINE_NUMBER, i);
             entrantValues.put(COLUMN_DRAW, drawId);
-            long entrantId = db.insert(ENTRANT_TABLE, null, entrantValues);
-
-            System.out.println("z! DBHelper - createNewDraw() - entrantId: " + entrantId);
-            System.out.println("z! DBHelper - createNewDraw() - lineNumber: " + i);
-            System.out.println("z! DBHelper - createNewDraw() - drawId: " + drawId);
+            db.insert(ENTRANT_TABLE, null, entrantValues);
         }
 
         db.close();
     }
 
     /**
-     * Select details of draw
+     * Select all details of all draws, ordered by newest first
      */
     public ArrayList<Draw> getDraws() {
         System.out.println("z! ===== ===== ===== ===== =====");
@@ -132,7 +123,7 @@ public class DBHelper extends SQLiteOpenHelper {
         ArrayList<Draw> draws = new ArrayList<>();
 
         Cursor cursor = db.rawQuery(
-                "SELECT * FROM " + DRAW_TABLE,
+                "SELECT * FROM " + DRAW_TABLE + " ORDER BY " + COLUMN_DRAW_ID + " DESC",
                 null
         );
 
@@ -250,6 +241,29 @@ public class DBHelper extends SQLiteOpenHelper {
                 null);
 
         db.close();
+    }
+
+    /**
+     * Get the amount of available numbers for this draw by returning the
+     *
+     * @param drawId
+     * @return
+     */
+    public int getAvailableAmountOfNumbers(long drawId) {
+        SQLiteDatabase db = getReadableDatabase();
+        int counter = 0;
+        Cursor cursor = db.rawQuery(
+                "SELECT " + COLUMN_ENTRANT_NAME + " FROM " + ENTRANT_TABLE +
+                        " WHERE " + COLUMN_ENTRANT_NAME + " IS NULL " +
+                        "AND " + COLUMN_DRAW + " = " + drawId, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                counter++;
+            } while (cursor.moveToNext());
+        }
+
+        return counter - 1;
     }
 
     /**

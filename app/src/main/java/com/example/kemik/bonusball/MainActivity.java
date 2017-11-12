@@ -5,21 +5,17 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.ListView;
 import android.widget.Toast;
-
-import com.example.kemik.bonusball.Entities.Draw;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
     private DBHelper db;
     private FloatingActionButton fab;
-    private LinearLayout ll_drawsContainer;
+    private ListView lv_draws;
 
     private Boolean exit = false;
 
@@ -50,13 +46,15 @@ public class MainActivity extends AppCompatActivity {
         SQLiteDatabase sqLiteDatabase = openOrCreateDatabase(
                 db.getDatabaseName(), MODE_PRIVATE, null, null
         );
-
 //        db.dropTables(sqLiteDatabase); // For testing purposes
-
         db.onCreate(sqLiteDatabase);
 
         // Find all views
         findViews();
+
+        // Set ActionBar title
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("Big Prize Bonus Ball");
 
         // Got to CreateDraw activity on click
         fab.setOnClickListener(new View.OnClickListener() {
@@ -66,32 +64,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Display draw names by creating a TextView for each record returned from the DB
-        displayDraws();
-    }
-
-    /**
-     * Display draw names by
-     * creating a TextView for each record returned from the DB
-     * adding the new TextView to the ll_drawsContainer
-     */
-    private void displayDraws() {
-        ArrayList<Draw> draws = db.getDraws();
-
-        for (final Draw draw : draws) {
-            TextView tv_draw = new TextView(this);
-            tv_draw.setText(draw.getDrawName());
-            ll_drawsContainer.addView(tv_draw);
-
-            tv_draw.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(MainActivity.this, DrawDetail.class);
-                    intent.putExtra("DrawId", draw.getDrawId());
-                    startActivity(intent);
-                }
-            });
-        }
+        // Setup and display draw names as a ListView
+        DrawArrayAdapter drawArrayAdapter = new DrawArrayAdapter(this);
+        drawArrayAdapter.addAll(db.getDraws());
+        lv_draws.setAdapter(drawArrayAdapter);
     }
 
     /**
@@ -99,6 +75,6 @@ public class MainActivity extends AppCompatActivity {
      */
     private void findViews() {
         fab = findViewById(R.id.fab);
-        ll_drawsContainer = findViewById(R.id.drawsContainer);
+        lv_draws = findViewById(R.id.drawsListView);
     }
 }
