@@ -25,7 +25,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        android:text="First and Last Name"
+        android:hint="Who's this number for...?"
+        android:inputType="textPersonName|textCapWords"
         android:visibility="gone"
         app:layout_constraintLeft_toRightOf="@id/list_view_number"
         app:layout_constraintRight_toLeftOf="@+id/list_view_save" />

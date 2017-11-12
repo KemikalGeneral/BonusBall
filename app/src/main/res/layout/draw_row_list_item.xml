@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/drawListItemName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Yr un gyntaf"
+        android:padding="16dp"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <TextView
+        android:id="@+id/drawListItemRemaining"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="59"
+        android:textAlignment="center"
+        android:padding="16dp"
+        app:layout_constraintLeft_toRightOf="@id/drawListItemName"
+        app:layout_constraintRight_toLeftOf="@id/drawListItemDateSatrted" />
+
+    <TextView
+        android:id="@+id/drawListItemDateSatrted"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="date started"
+        android:padding="16dp"
+        app:layout_constraintRight_toRightOf="parent" />
+
+</android.support.constraint.ConstraintLayout>
