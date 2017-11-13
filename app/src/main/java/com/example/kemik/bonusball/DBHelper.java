@@ -263,7 +263,28 @@ public class DBHelper extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
 
-        return counter - 1;
+        return counter;
+    }
+
+    public ArrayList<Integer> getRemainingNumbers(long drawId) {
+        SQLiteDatabase db = getReadableDatabase();
+        ArrayList<Integer> remainingNumbers = new ArrayList<>();
+
+        Cursor cursor = db.rawQuery(
+                "SELECT " + COLUMN_LINE_NUMBER + " FROM " + ENTRANT_TABLE +
+                        " WHERE " + COLUMN_ENTRANT_NAME + " IS NULL " +
+                        "AND " + COLUMN_DRAW + " = " + drawId, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                remainingNumbers.add(cursor.getInt(cursor.getColumnIndex(COLUMN_LINE_NUMBER)));
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+
+        return remainingNumbers;
     }
 
     /**

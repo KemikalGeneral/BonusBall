@@ -19,6 +19,7 @@ public class DrawDetail extends AppCompatActivity {
     private TextView tv_startDate;
     private TextView tv_drawValue;
     private TextView tv_ticketValue;
+    private TextView tv_profit;
     private ListView lv_numberSlotListView;
 
     @Override
@@ -57,6 +58,7 @@ public class DrawDetail extends AppCompatActivity {
         tv_startDate = findViewById(R.id.startDate);
         tv_drawValue = findViewById(R.id.drawValue);
         tv_ticketValue = findViewById(R.id.ticketValue);
+        tv_profit = findViewById(R.id.profit);
         lv_numberSlotListView = findViewById(R.id.numberSlotListView);
     }
 
@@ -69,6 +71,7 @@ public class DrawDetail extends AppCompatActivity {
         Date date = new Date();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, MMM d, ''yy");
         String dateString = simpleDateFormat.format(date);
+        double profit = (draw.getTicketValue() * 59) - draw.getDrawValue();
 
         tv_drawName.setText(draw.getDrawName());
         tv_startDate.setText(dateString);
@@ -76,6 +79,8 @@ public class DrawDetail extends AppCompatActivity {
         tv_drawValue.append(String.format("%.2f", draw.getDrawValue()));
         tv_ticketValue.setText("£");
         tv_ticketValue.append(String.format("%.2f", draw.getTicketValue()));
+        tv_profit.setText("£");
+        tv_profit.append(String.format("%.2f", profit));
     }
 
     /**
