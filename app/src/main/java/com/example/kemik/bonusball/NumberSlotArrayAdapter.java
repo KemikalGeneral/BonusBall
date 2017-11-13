@@ -36,7 +36,7 @@ class NumberSlotArrayAdapter extends ArrayAdapter<Entrant> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.draw_number_slot, parent, false);
         }
 
-        Entrant entrant = getItem(position);
+        final Entrant entrant = getItem(position);
 
         TextView tv_slotNumber = convertView.findViewById(R.id.list_view_number);
         tv_slotNumber.setText(String.valueOf(entrant.getLineNumber()));
@@ -56,6 +56,7 @@ class NumberSlotArrayAdapter extends ArrayAdapter<Entrant> {
 
                 tv_name.setVisibility(View.GONE);
                 et_name.setVisibility(View.VISIBLE);
+                et_name.setText(entrant.getEntrantName());
                 btn_save.setVisibility(View.VISIBLE);
 
                 btn_save.setOnClickListener(new View.OnClickListener() {

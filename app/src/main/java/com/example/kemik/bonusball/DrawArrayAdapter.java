@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.example.kemik.bonusball.Entities.Draw;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -45,7 +46,7 @@ public class DrawArrayAdapter extends ArrayAdapter<Draw> {
         tv_amountOfRemainingNumbers.setText(String.valueOf(db.getAvailableAmountOfNumbers(draw.getDrawId())));
 
         // Date draw started
-        TextView tv_startDate = convertView.findViewById(R.id.drawListItemDateSatrted);
+        TextView tv_startDate = convertView.findViewById(R.id.drawListItemDateStarted);
         String dateString = new SimpleDateFormat("EEE, dd MMM").format(new Date(draw.getStartDate()));
         tv_startDate.setText(dateString);
 
@@ -56,6 +57,24 @@ public class DrawArrayAdapter extends ArrayAdapter<Draw> {
                 Intent intent = new Intent(getContext(), DrawDetail.class);
                 intent.putExtra("DrawId", draw.getDrawId());
                 getContext().startActivity(intent);
+            }
+        });
+
+        convertView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                ArrayList<Integer> remainingNumbers = new ArrayList<>();
+
+                remainingNumbers.addAll(db.getRemainingNumbers(draw.getDrawId()));
+                for (int i = 0; i < remainingNumbers.size(); i++) {
+                    System.out.print(remainingNumbers.get(i) + " * ");
+                }
+
+                Intent intent = new Intent(getContext(), MainActivity.class);
+                intent.putExtra("remainingNumbers", remainingNumbers);
+                getContext().startActivity(intent);
+
+                return false;
             }
         });
 

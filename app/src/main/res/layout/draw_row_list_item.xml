@@ -19,11 +19,11 @@
         android:text="59"
         android:textAlignment="center"
         android:padding="16dp"
-        app:layout_constraintLeft_toRightOf="@id/drawListItemName"
-        app:layout_constraintRight_toLeftOf="@id/drawListItemDateSatrted" />
+        android:layout_marginRight="150dp"
+        app:layout_constraintRight_toRightOf="parent" />
 
     <TextView
-        android:id="@+id/drawListItemDateSatrted"
+        android:id="@+id/drawListItemDateStarted"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="date started"
