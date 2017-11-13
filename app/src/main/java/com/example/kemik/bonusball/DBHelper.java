@@ -180,6 +180,28 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     /**
+     * Update Draw details using the drawId
+     *
+     * @param drawName
+     * @param drawValue
+     * @param ticketValue
+     * @param startDate
+     * @param drawId
+     */
+    public void updateDraw(String drawName, double drawValue, double ticketValue, long startDate, long drawId) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(COLUMN_DRAW_NAME, drawName);
+        values.put(COLUMN_DRAW_VALUE, drawValue);
+        values.put(COLUMN_TICKET_VALUE, ticketValue);
+        values.put(COLUMN_START_DATE, startDate);
+        db.update(DRAW_TABLE, values, COLUMN_DRAW_ID + " = " + drawId, null);
+
+        db.close();
+    }
+
+    /**
      * Get a single entrants details from their ID
      *
      * @param drawId
@@ -266,6 +288,12 @@ public class DBHelper extends SQLiteOpenHelper {
         return counter;
     }
 
+    /**
+     * Return an array of the remaining numbers for a draw,
+     * checking for null entrantName entries against the drawId
+     * @param drawId
+     * @return
+     */
     public ArrayList<Integer> getRemainingNumbers(long drawId) {
         SQLiteDatabase db = getReadableDatabase();
         ArrayList<Integer> remainingNumbers = new ArrayList<>();

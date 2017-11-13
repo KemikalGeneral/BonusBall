@@ -17,7 +17,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".CreateDraw" />
-        <activity android:name=".DrawDetail"></activity>
+        <activity android:name=".DrawDetail" />
+        <activity android:name=".EditDraw"></activity>
     </application>
 
 </manifest>

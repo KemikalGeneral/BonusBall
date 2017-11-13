@@ -2,7 +2,9 @@ package com.example.kemik.bonusball;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -20,6 +22,10 @@ public class DrawDetail extends AppCompatActivity {
     private TextView tv_ticketValue;
     private TextView tv_profit;
     private ListView lv_numberSlotListView;
+    private FloatingActionButton fab_options;
+    private FloatingActionButton fab_edit;
+    private FloatingActionButton fab_delete;
+    private boolean isOpen = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +40,7 @@ public class DrawDetail extends AppCompatActivity {
 
         // Get ID from intent extras
         Intent intent = getIntent();
-        long drawId = intent.getLongExtra("DrawId", 0);
+        final long drawId = intent.getLongExtra("DrawId", 0);
 
         // Create the Draw from the ID
         Draw draw = db.getDrawById(drawId);
@@ -44,6 +50,32 @@ public class DrawDetail extends AppCompatActivity {
 
         // Set up and display the ListView
         setupAndDisplayListView(draw);
+
+        // Toggle visibility on FAB click for Edit and Delete
+        fab_options.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!isOpen) {
+                    fab_options.setImageResource(R.drawable.ic_close_black_24dp);
+                    isOpen = true;
+                    fab_edit.setVisibility(View.VISIBLE);
+                    fab_delete.setVisibility(View.VISIBLE);
+                    fab_edit.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent editIntent = new Intent(DrawDetail.this, EditDraw.class);
+                            editIntent.putExtra("DrawId", drawId);
+                            startActivity(editIntent);
+                        }
+                    });
+                } else if (isOpen) {
+                    fab_options.setImageResource(R.drawable.ic_more_vert_black_24dp);
+                    isOpen = false;
+                    fab_delete.setVisibility(View.GONE);
+                    fab_edit.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 
     /**
@@ -56,6 +88,9 @@ public class DrawDetail extends AppCompatActivity {
         tv_ticketValue = findViewById(R.id.ticketValue);
         tv_profit = findViewById(R.id.profit);
         lv_numberSlotListView = findViewById(R.id.numberSlotListView);
+        fab_options = findViewById(R.id.drawDetailFab);
+        fab_edit = findViewById(R.id.drawDetailEditFab);
+        fab_delete = findViewById(R.id.drawDetailDeleteFab);
     }
 
     /**
