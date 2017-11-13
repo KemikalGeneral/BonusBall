@@ -14,7 +14,8 @@
         android:text="Create a Draw"
         android:textAlignment="center"
         android:textSize="36sp"
-        android:padding="16dp" />
+        android:paddingTop="32dp"
+        android:paddingBottom="32dp" />
 
     <!--Draw Name-->
     <android.support.design.widget.TextInputLayout

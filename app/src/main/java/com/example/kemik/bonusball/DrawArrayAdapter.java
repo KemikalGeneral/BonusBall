@@ -46,7 +46,7 @@ public class DrawArrayAdapter extends ArrayAdapter<Draw> {
         tv_amountOfRemainingNumbers.setText(String.valueOf(db.getAvailableAmountOfNumbers(draw.getDrawId())));
 
         // Date draw started
-        TextView tv_startDate = convertView.findViewById(R.id.drawListItemDateSatrted);
+        TextView tv_startDate = convertView.findViewById(R.id.drawListItemDateStarted);
         String dateString = new SimpleDateFormat("EEE, dd MMM").format(new Date(draw.getStartDate()));
         tv_startDate.setText(dateString);
 
