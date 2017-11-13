@@ -316,7 +316,21 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * Drop table
+     * Delete Draw and its associated Entrants by drawId
+     * @param drawId
+     */
+    public void deleteDraw(long drawId) {
+        System.out.println("z! ===== ===== ===== ===== =====");
+        System.out.println("z! DBHelper - deleteDraw()...");
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete(ENTRANT_TABLE, COLUMN_DRAW + " = " + drawId, null);
+        db.delete(DRAW_TABLE, COLUMN_DRAW_ID + " = " + drawId, null);
+
+        db.close();
+    }
+
+    /**
+     * Drop all tables
      * @param db
      */
     public void dropTables(SQLiteDatabase db) {

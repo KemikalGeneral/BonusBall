@@ -59,13 +59,17 @@ public class DrawDetail extends AppCompatActivity {
                     fab_options.setImageResource(R.drawable.ic_close_black_24dp);
                     isOpen = true;
                     fab_edit.setVisibility(View.VISIBLE);
-                    fab_delete.setVisibility(View.VISIBLE);
                     fab_edit.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Intent editIntent = new Intent(DrawDetail.this, EditDraw.class);
-                            editIntent.putExtra("DrawId", drawId);
-                            startActivity(editIntent);
+                            editDraw(drawId);
+                        }
+                    });
+                    fab_delete.setVisibility(View.VISIBLE);
+                    fab_delete.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            deleteDraw(drawId);
                         }
                     });
                 } else if (isOpen) {
@@ -124,5 +128,25 @@ public class DrawDetail extends AppCompatActivity {
         NumberSlotArrayAdapter numberSlotArrayAdapter = new NumberSlotArrayAdapter(this, draw.getDrawId());
         numberSlotArrayAdapter.addAll(db.getEntrantsByDrawId(draw.getDrawId()));
         lv_numberSlotListView.setAdapter(numberSlotArrayAdapter);
+    }
+
+    /**
+     * On edit click, update the draw details using the drawId
+     *
+     * @param drawId
+     */
+    private void editDraw(long drawId) {
+        Intent editIntent = new Intent(DrawDetail.this, EditDraw.class);
+        editIntent.putExtra("DrawId", drawId);
+        startActivity(editIntent);
+    }
+
+    /**
+     * Delete Draw by drawId, which also removes its associated Entrants
+     *
+     * @param drawId
+     */
+    private void deleteDraw(long drawId) {
+        db.deleteDraw(drawId);
     }
 }
