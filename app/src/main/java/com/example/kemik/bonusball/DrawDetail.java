@@ -2,7 +2,6 @@ package com.example.kemik.bonusball;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -29,9 +28,6 @@ public class DrawDetail extends AppCompatActivity {
 
         // Find all views
         findViews();
-
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("Draw Details...");
 
         // Instantiate a new DBHelper class
         db = new DBHelper(this);

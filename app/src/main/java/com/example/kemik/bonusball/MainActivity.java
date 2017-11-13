@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
@@ -59,10 +58,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Find all views
         findViews();
-
-        // Set ActionBar title
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("Big Prize Bonus Ball");
 
         // Got to CreateDraw activity on click
         fab.setOnClickListener(new View.OnClickListener() {
