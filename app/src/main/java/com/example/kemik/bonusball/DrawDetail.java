@@ -3,9 +3,12 @@ package com.example.kemik.bonusball;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,11 +16,13 @@ import android.widget.Toast;
 import com.example.kemik.bonusball.Entities.Draw;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class DrawDetail extends AppCompatActivity implements ConfirmationDialog.ConfirmationDialogListener {
 
     private DBHelper db;
+    private ConstraintLayout cl_drawDetailsContainer;
     private TextView tv_drawName;
     private TextView tv_startDate;
     private TextView tv_drawValue;
@@ -25,10 +30,16 @@ public class DrawDetail extends AppCompatActivity implements ConfirmationDialog.
     private TextView tv_profit;
     private ListView lv_numberSlotListView;
     private FloatingActionButton fab_options;
+    private FloatingActionButton fab_randoms;
+    private FloatingActionButton fab_numbers;
+    private FloatingActionButton fab_names;
     private FloatingActionButton fab_edit;
     private FloatingActionButton fab_delete;
     private boolean isOpen = false;
     private long drawId;
+
+    private EditText et_copyableTextWindow;
+    private ImageView iv_copyableTextWindowCloseIcon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,28 +70,17 @@ public class DrawDetail extends AppCompatActivity implements ConfirmationDialog.
             @Override
             public void onClick(View v) {
                 if (!isOpen) {
-                    fab_options.setImageResource(R.drawable.ic_close_black_24dp);
-                    isOpen = true;
-                    fab_edit.setVisibility(View.VISIBLE);
-                    fab_edit.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            editDraw(drawId);
-                        }
-                    });
-                    fab_delete.setVisibility(View.VISIBLE);
-                    fab_delete.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            deleteDraw(drawId);
-                        }
-                    });
+                    openFabs();
                 } else if (isOpen) {
-                    fab_options.setImageResource(R.drawable.ic_more_vert_black_24dp);
-                    isOpen = false;
-                    fab_delete.setVisibility(View.GONE);
-                    fab_edit.setVisibility(View.GONE);
+                    closeFabs();
                 }
+            }
+        });
+
+        iv_copyableTextWindowCloseIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                closeCopyableWindow();
             }
         });
     }
@@ -89,6 +89,7 @@ public class DrawDetail extends AppCompatActivity implements ConfirmationDialog.
      * Find all views by their ID's
      */
     private void findViews() {
+        cl_drawDetailsContainer = findViewById(R.id.drawDetailsContainer);
         tv_drawName = findViewById(R.id.drawName);
         tv_startDate = findViewById(R.id.startDate);
         tv_drawValue = findViewById(R.id.drawValue);
@@ -96,8 +97,14 @@ public class DrawDetail extends AppCompatActivity implements ConfirmationDialog.
         tv_profit = findViewById(R.id.profit);
         lv_numberSlotListView = findViewById(R.id.numberSlotListView);
         fab_options = findViewById(R.id.drawDetailFab);
+        fab_randoms = findViewById(R.id.drawDetailRandomsFab);
+        fab_numbers = findViewById(R.id.drawDetailNumbersFab);
+        fab_names = findViewById(R.id.drawDetailNamesFab);
         fab_edit = findViewById(R.id.drawDetailEditFab);
         fab_delete = findViewById(R.id.drawDetailDeleteFab);
+
+        et_copyableTextWindow = findViewById(R.id.copyableTextWindow);
+        iv_copyableTextWindowCloseIcon = findViewById(R.id.copyableTextWindowCloseButton);
     }
 
     /**
@@ -177,5 +184,82 @@ public class DrawDetail extends AppCompatActivity implements ConfirmationDialog.
     public void onDialogNegativeClick(DialogFragment dialogFragment) {
         Toast.makeText(this, "no", Toast.LENGTH_SHORT).show();
         // Do nothing
+    }
+
+    private void openFabs() {
+        isOpen = true;
+        fab_options.setImageResource(R.drawable.ic_close_black_24dp);
+        fab_randoms.setVisibility(View.VISIBLE);
+        fab_randoms.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                            generateRandomNumber();
+            }
+        });
+        fab_numbers.setVisibility(View.VISIBLE);
+        fab_numbers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showRemainingNumbers();
+            }
+        });
+        fab_names.setVisibility(View.VISIBLE);
+        fab_names.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                            showNamesAndNumbers();
+            }
+        });
+        fab_edit.setVisibility(View.VISIBLE);
+        fab_edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editDraw(drawId);
+            }
+        });
+        fab_delete.setVisibility(View.VISIBLE);
+        fab_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteDraw(drawId);
+            }
+        });
+    }
+
+    private void openCopyableWindow() {
+        et_copyableTextWindow.setVisibility(View.VISIBLE);
+        iv_copyableTextWindowCloseIcon.setVisibility(View.VISIBLE);
+    }
+
+    private void closeFabs() {
+        isOpen = false;
+        fab_options.setImageResource(R.drawable.ic_more_vert_black_24dp);
+        fab_randoms.setVisibility(View.GONE);
+        fab_numbers.setVisibility(View.GONE);
+        fab_names.setVisibility(View.GONE);
+        fab_delete.setVisibility(View.GONE);
+        fab_edit.setVisibility(View.GONE);
+    }
+
+    private void closeCopyableWindow() {
+        et_copyableTextWindow.setVisibility(View.GONE);
+        iv_copyableTextWindowCloseIcon.setVisibility(View.GONE);
+    }
+
+    /**
+     * Populate and make visible a hidden EditText field with the remaining numbers,
+     * so that they can be copied and pasted elsewhere
+     */
+    private void showRemainingNumbers() {
+        ArrayList<Integer> remainingNumbers = db.getRemainingNumbers(drawId);
+
+        closeFabs();
+        openCopyableWindow();
+
+        et_copyableTextWindow.setText("* ");
+        for (int i = 0; i < remainingNumbers.size(); i++) {
+            et_copyableTextWindow.append(String.valueOf(remainingNumbers.get(i)));
+            et_copyableTextWindow.append(" * ");
+        }
     }
 }
