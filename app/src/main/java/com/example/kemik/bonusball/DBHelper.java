@@ -59,7 +59,6 @@ public class DBHelper extends SQLiteOpenHelper {
                     COLUMN_PAYMENT_STATUS + " VARCHAR(50), " +
                     COLUMN_DRAW + " INTEGER, " +
                     " FOREIGN KEY (" + COLUMN_DRAW + ") REFERENCES " + DRAW_TABLE + "(" + COLUMN_DRAW_ID + "));";
-
     /**
      * Constructor
      *
@@ -247,9 +246,9 @@ public class DBHelper extends SQLiteOpenHelper {
     public void addNameToChosenNumber(String name, int lineNumber, long drawId) {
         System.out.println("z! ===== ===== ===== ===== =====");
         System.out.println("z! DBHelper - addNameToChosenNumber()...");
-        System.out.println("z! DBHelper - addNameToChosenNumber() - name");
-        System.out.println("z! DBHelper - addNameToChosenNumber() - lineNumber");
-        System.out.println("z! DBHelper - addNameToChosenNumber() - drawId");
+        System.out.println("z! DBHelper - addNameToChosenNumber() - name: " + name);
+        System.out.println("z! DBHelper - addNameToChosenNumber() - lineNumber: " + lineNumber);
+        System.out.println("z! DBHelper - addNameToChosenNumber() - drawId: " + drawId);
 
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -338,5 +337,16 @@ public class DBHelper extends SQLiteOpenHelper {
         System.out.println("z! DBHelper - dropTables()...");
         db.execSQL("DROP TABLE IF EXISTS " + DRAW_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + ENTRANT_TABLE);
+    }
+
+    public void changePaymentStatus(int lineNumber, long drawId, String status) {
+
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(COLUMN_PAYMENT_STATUS, status);
+        db.update(ENTRANT_TABLE, values, COLUMN_LINE_NUMBER + " = " + lineNumber + " AND " + COLUMN_DRAW + " = " + drawId, null);
+
+        db.close();
     }
 }

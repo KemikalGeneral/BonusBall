@@ -76,13 +76,12 @@ public class MainActivity extends AppCompatActivity {
         // show window with copyable remaining numbers for the respective draw
         Intent intent = getIntent();
         if (intent.hasExtra("remainingNumbers")) {
-            ArrayList<Integer> remainingNumbers = new ArrayList<>();
-            remainingNumbers = intent.getIntegerArrayListExtra("remainingNumbers");
+            ArrayList<Integer> remainingNumbers = intent.getIntegerArrayListExtra("remainingNumbers");
             System.out.println("remainingNumbers: " + remainingNumbers.size());
 
             et_remainingNumbers.setVisibility(View.VISIBLE);
             iv_remainingNumbersClose.setVisibility(View.VISIBLE);
-            et_remainingNumbers.setText("* ");
+            et_remainingNumbers.setText("Available...\n\n* ");
             for (int i = 0; i < remainingNumbers.size(); i++) {
                 et_remainingNumbers.append(String.valueOf(remainingNumbers.get(i)));
                 et_remainingNumbers.append(" * ");

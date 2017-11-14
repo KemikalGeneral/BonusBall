@@ -2,8 +2,8 @@ package com.example.kemik.bonusball;
 
 import android.app.DialogFragment;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -11,7 +11,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.kemik.bonusball.Entities.Draw;
 import com.example.kemik.bonusball.Entities.Entrant;
@@ -23,7 +22,6 @@ import java.util.Date;
 public class DrawDetail extends AppCompatActivity implements ConfirmationDialog.ConfirmationDialogListener {
 
     private DBHelper db;
-    private ConstraintLayout cl_drawDetailsContainer;
     private TextView tv_drawName;
     private TextView tv_startDate;
     private TextView tv_drawValue;
@@ -90,7 +88,6 @@ public class DrawDetail extends AppCompatActivity implements ConfirmationDialog.
      * Find all views by their ID's
      */
     private void findViews() {
-        cl_drawDetailsContainer = findViewById(R.id.drawDetailsContainer);
         tv_drawName = findViewById(R.id.drawName);
         tv_startDate = findViewById(R.id.startDate);
         tv_drawValue = findViewById(R.id.drawValue);
@@ -136,14 +133,19 @@ public class DrawDetail extends AppCompatActivity implements ConfirmationDialog.
      * ...Set adapter
      */
     private void setupAndDisplayListView(Draw draw) {
-        NumberSlotArrayAdapter numberSlotArrayAdapter = new NumberSlotArrayAdapter(this, draw.getDrawId());
-        numberSlotArrayAdapter.addAll(db.getEntrantsByDrawId(draw.getDrawId()));
-        lv_numberSlotListView.setAdapter(numberSlotArrayAdapter);
+        EntrantArrayAdapter entrantArrayAdapter = new EntrantArrayAdapter(this, draw.getDrawId());
+        entrantArrayAdapter.addAll(db.getEntrantsByDrawId(draw.getDrawId()));
+        lv_numberSlotListView.setAdapter(entrantArrayAdapter);
     }
 
+    /**
+     * Make the required views visible and set some onClick listeners, when the FAB is opened
+     */
     private void openFabs() {
         isOpen = true;
-        fab_options.setImageResource(R.drawable.ic_close_black_24dp);
+        fab_options.setImageResource(R.drawable.close);
+        fab_options.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.grey)));
+
         fab_randoms.setVisibility(View.VISIBLE);
         fab_randoms.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -151,6 +153,7 @@ public class DrawDetail extends AppCompatActivity implements ConfirmationDialog.
 //                            generateRandomNumber();
             }
         });
+
         fab_numbers.setVisibility(View.VISIBLE);
         fab_numbers.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -158,6 +161,7 @@ public class DrawDetail extends AppCompatActivity implements ConfirmationDialog.
                 showRemainingNumbers();
             }
         });
+
         fab_names.setVisibility(View.VISIBLE);
         fab_names.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -165,6 +169,7 @@ public class DrawDetail extends AppCompatActivity implements ConfirmationDialog.
                 showNamesAndNumbers();
             }
         });
+
         fab_edit.setVisibility(View.VISIBLE);
         fab_edit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -172,6 +177,7 @@ public class DrawDetail extends AppCompatActivity implements ConfirmationDialog.
                 editDraw(drawId);
             }
         });
+
         fab_delete.setVisibility(View.VISIBLE);
         fab_delete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -181,14 +187,21 @@ public class DrawDetail extends AppCompatActivity implements ConfirmationDialog.
         });
     }
 
+    /**
+     * When required, an EditText fields shows containing copyable data
+     */
     private void openCopyableWindow() {
         et_copyableTextWindow.setVisibility(View.VISIBLE);
         iv_copyableTextWindowCloseIcon.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * Make the required views gone, when the FAB is closed
+     */
     private void closeFabs() {
         isOpen = false;
-        fab_options.setImageResource(R.drawable.ic_more_vert_black_24dp);
+        fab_options.setImageResource(R.drawable.more_menu);
+        fab_options.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
         fab_randoms.setVisibility(View.GONE);
         fab_numbers.setVisibility(View.GONE);
         fab_names.setVisibility(View.GONE);
@@ -196,6 +209,9 @@ public class DrawDetail extends AppCompatActivity implements ConfirmationDialog.
         fab_edit.setVisibility(View.GONE);
     }
 
+    /**
+     * When not longer required, close the EditText (and subsequent close icon)
+     */
     private void closeCopyableWindow() {
         et_copyableTextWindow.setVisibility(View.GONE);
         iv_copyableTextWindowCloseIcon.setVisibility(View.GONE);
@@ -212,7 +228,7 @@ public class DrawDetail extends AppCompatActivity implements ConfirmationDialog.
         closeFabs();
         openCopyableWindow();
 
-        et_copyableTextWindow.setText("* ");
+        et_copyableTextWindow.setText("Available...\n\n* ");
         for (int i = 0; i < size; i++) {
             et_copyableTextWindow.append(String.valueOf(remainingNumbers.get(i)));
             et_copyableTextWindow.append(" * ");
@@ -278,7 +294,6 @@ public class DrawDetail extends AppCompatActivity implements ConfirmationDialog.
      */
     @Override
     public void onDialogPositiveClick(DialogFragment dialogFragment) {
-        Toast.makeText(this, "yes", Toast.LENGTH_SHORT).show();
         db.deleteDraw(drawId);
 
         startActivity(new Intent(DrawDetail.this, MainActivity.class));
@@ -292,7 +307,6 @@ public class DrawDetail extends AppCompatActivity implements ConfirmationDialog.
      */
     @Override
     public void onDialogNegativeClick(DialogFragment dialogFragment) {
-        Toast.makeText(this, "no", Toast.LENGTH_SHORT).show();
         // Do nothing
     }
 }
