@@ -1,5 +1,6 @@
 package com.example.kemik.bonusball;
 
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -7,13 +8,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.kemik.bonusball.Entities.Draw;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class DrawDetail extends AppCompatActivity {
+public class DrawDetail extends AppCompatActivity implements ConfirmationDialog.ConfirmationDialogListener {
 
     private DBHelper db;
     private TextView tv_drawName;
@@ -26,6 +28,7 @@ public class DrawDetail extends AppCompatActivity {
     private FloatingActionButton fab_edit;
     private FloatingActionButton fab_delete;
     private boolean isOpen = false;
+    private long drawId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +43,7 @@ public class DrawDetail extends AppCompatActivity {
 
         // Get ID from intent extras
         Intent intent = getIntent();
-        final long drawId = intent.getLongExtra("DrawId", 0);
+        drawId = intent.getLongExtra("DrawId", 0);
 
         // Create the Draw from the ID
         Draw draw = db.getDrawById(drawId);
@@ -142,11 +145,37 @@ public class DrawDetail extends AppCompatActivity {
     }
 
     /**
-     * Delete Draw by drawId, which also removes its associated Entrants
+     * Show ConfirmationDialog box to delete a Draw
      *
      * @param drawId
      */
     private void deleteDraw(long drawId) {
+        DialogFragment dialogFragment = new ConfirmationDialog();
+        dialogFragment.show(getFragmentManager(), "ConfirmationDialog");
+    }
+
+    /**
+     * On positive click, delete Draw by drawId, which also removes its associated Entrants
+     *
+     * @param dialogFragment
+     */
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialogFragment) {
+        Toast.makeText(this, "yes", Toast.LENGTH_SHORT).show();
         db.deleteDraw(drawId);
+
+        startActivity(new Intent(DrawDetail.this, MainActivity.class));
+        finish();
+    }
+
+    /**
+     * On negative click, do nothing
+     *
+     * @param dialogFragment
+     */
+    @Override
+    public void onDialogNegativeClick(DialogFragment dialogFragment) {
+        Toast.makeText(this, "no", Toast.LENGTH_SHORT).show();
+        // Do nothing
     }
 }
