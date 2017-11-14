@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.kemik.bonusball.CreateDraw">
+    tools:context="com.example.kemik.bonusball.EditDraw">
 
     <!--Page title-->
     <TextView
         android:id="@+id/editDrawTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Create a Draw"
+        android:text="Edit this Draw"
         android:textAlignment="center"
         android:textSize="36sp"
         android:paddingTop="32dp"
@@ -93,13 +93,13 @@
         app:layout_constraintRight_toRightOf="parent" />
 
 
-    <!--Create Draw Button-->
+    <!--Edit Draw Button-->
     <Button
         android:id="@+id/editDraw"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#8BC34A"
-        android:text="Create Draw"
+        android:background="@color/green"
+        android:text="Update Draw"
         android:textAllCaps="false"
         android:textColor="#fff"
         android:textSize="18sp"
@@ -107,3 +107,4 @@
         app:layout_constraintBottom_toBottomOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
+

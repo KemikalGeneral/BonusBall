@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     tools:context="com.example.kemik.bonusball.MainActivity">
 
+    <!--Page title-->
     <TextView
         android:id="@+id/mainTitle"
         android:layout_width="match_parent"
@@ -17,6 +18,7 @@
         android:paddingTop="32dp"
         android:paddingBottom="32dp" />
 
+    <!--Draws ListView-->
     <ListView
         android:id="@+id/drawsListView"
         android:layout_width="match_parent"
@@ -25,10 +27,11 @@
         app:layout_constraintTop_toBottomOf="@id/mainTitle"
         app:layout_constraintBottom_toBottomOf="parent" />
 
+    <!--Remaining Number window-->
     <EditText
         android:id="@+id/remainingNumbers"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:padding="32dp"
         android:background="#fff"
         app:layout_constraintTop_toTopOf="parent"
@@ -37,6 +40,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         android:visibility="gone" />
 
+    <!--Remaining Number window - Close icon-->
     <ImageView
         android:id="@+id/remainingNumbersCloseButton"
         android:layout_width="wrap_content"
@@ -47,6 +51,7 @@
         app:layout_constraintRight_toRightOf="@id/remainingNumbers"
         android:visibility="gone" />
 
+    <!--FAB-->
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
