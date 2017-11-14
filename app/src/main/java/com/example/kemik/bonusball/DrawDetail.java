@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.kemik.bonusball.Entities.Draw;
+import com.example.kemik.bonusball.Entities.Entrant;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -140,52 +141,6 @@ public class DrawDetail extends AppCompatActivity implements ConfirmationDialog.
         lv_numberSlotListView.setAdapter(numberSlotArrayAdapter);
     }
 
-    /**
-     * On edit click, update the draw details using the drawId
-     *
-     * @param drawId
-     */
-    private void editDraw(long drawId) {
-        Intent editIntent = new Intent(DrawDetail.this, EditDraw.class);
-        editIntent.putExtra("DrawId", drawId);
-        startActivity(editIntent);
-    }
-
-    /**
-     * Show ConfirmationDialog box to delete a Draw
-     *
-     * @param drawId
-     */
-    private void deleteDraw(long drawId) {
-        DialogFragment dialogFragment = new ConfirmationDialog();
-        dialogFragment.show(getFragmentManager(), "ConfirmationDialog");
-    }
-
-    /**
-     * On positive click, delete Draw by drawId, which also removes its associated Entrants
-     *
-     * @param dialogFragment
-     */
-    @Override
-    public void onDialogPositiveClick(DialogFragment dialogFragment) {
-        Toast.makeText(this, "yes", Toast.LENGTH_SHORT).show();
-        db.deleteDraw(drawId);
-
-        startActivity(new Intent(DrawDetail.this, MainActivity.class));
-        finish();
-    }
-
-    /**
-     * On negative click, do nothing
-     *
-     * @param dialogFragment
-     */
-    @Override
-    public void onDialogNegativeClick(DialogFragment dialogFragment) {
-        Toast.makeText(this, "no", Toast.LENGTH_SHORT).show();
-        // Do nothing
-    }
-
     private void openFabs() {
         isOpen = true;
         fab_options.setImageResource(R.drawable.ic_close_black_24dp);
@@ -207,7 +162,7 @@ public class DrawDetail extends AppCompatActivity implements ConfirmationDialog.
         fab_names.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                            showNamesAndNumbers();
+                showNamesAndNumbers();
             }
         });
         fab_edit.setVisibility(View.VISIBLE);
@@ -252,14 +207,92 @@ public class DrawDetail extends AppCompatActivity implements ConfirmationDialog.
      */
     private void showRemainingNumbers() {
         ArrayList<Integer> remainingNumbers = db.getRemainingNumbers(drawId);
+        int size = remainingNumbers.size();
 
         closeFabs();
         openCopyableWindow();
 
         et_copyableTextWindow.setText("* ");
-        for (int i = 0; i < remainingNumbers.size(); i++) {
+        for (int i = 0; i < size; i++) {
             et_copyableTextWindow.append(String.valueOf(remainingNumbers.get(i)));
             et_copyableTextWindow.append(" * ");
         }
+    }
+
+    /**
+     * Populate and make visible a hidden EditText field with the list of names and numbers,
+     * so that they can be copied and pasted elsewhere
+     */
+    private void showNamesAndNumbers() {
+        ArrayList<Entrant> finalNamesAndNumbers = db.getEntrantsByDrawId(drawId);
+        System.out.println("finalNamesAndNumbers : " + finalNamesAndNumbers.toString());
+        int size = finalNamesAndNumbers.size();
+        System.out.println("size: " + size);
+
+        closeFabs();
+        openCopyableWindow();
+
+        et_copyableTextWindow.setText("");
+        for (int i = 0; i < size; i++) {
+            // If the lineNumber is a single digit, add a little spacing before for uniformity
+            if (String.valueOf(finalNamesAndNumbers.get(i).getLineNumber()).length() == 1) {
+                et_copyableTextWindow.append("  ");
+            }
+            et_copyableTextWindow.append(String.valueOf(finalNamesAndNumbers.get(i).getLineNumber()));
+            et_copyableTextWindow.append(" - ");
+
+            // Append name if one exists
+            if (finalNamesAndNumbers.get(i).getEntrantName() != null) {
+                et_copyableTextWindow.append(finalNamesAndNumbers.get(i).getEntrantName());
+            }
+
+            et_copyableTextWindow.append("\n");
+        }
+    }
+
+    /**
+     * On edit click, update the draw details using the drawId
+     *
+     * @param drawId
+     */
+    private void editDraw(long drawId) {
+        Intent editIntent = new Intent(DrawDetail.this, EditDraw.class);
+        editIntent.putExtra("DrawId", drawId);
+        startActivity(editIntent);
+    }
+
+    /**
+     * Show ConfirmationDialog box to delete a Draw
+     *
+     * @param drawId
+     */
+    private void deleteDraw(long drawId) {
+        DialogFragment dialogFragment = new ConfirmationDialog();
+        dialogFragment.show(getFragmentManager(), "ConfirmationDialog");
+    }
+
+    /**
+     * On positive click, delete Draw by drawId, which also removes its associated Entrants
+     *
+     * @param dialogFragment
+     */
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialogFragment) {
+        Toast.makeText(this, "yes", Toast.LENGTH_SHORT).show();
+        db.deleteDraw(drawId);
+
+        startActivity(new Intent(DrawDetail.this, MainActivity.class));
+        finish();
+    }
+
+    /**
+     * On negative click, do nothing
+     *
+     * @param dialogFragment
+     */
+    @Override
+    public void onDialogNegativeClick(DialogFragment dialogFragment) {
+        Toast.makeText(this, "no", Toast.LENGTH_SHORT).show();
+        // Do nothing
     }
 }

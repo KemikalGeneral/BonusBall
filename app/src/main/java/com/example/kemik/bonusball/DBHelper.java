@@ -221,12 +221,12 @@ public class DBHelper extends SQLiteOpenHelper {
 
         if (cursor.moveToFirst()) {
             do {
-
                 Entrant entrant = new Entrant();
                 entrant.setEntrantId(cursor.getLong(cursor.getColumnIndex(COLUMN_ENTRANT_ID)));
-                entrant.setLineNumber(cursor.getInt(cursor.getColumnIndex(COLUMN_LINE_NUMBER)));
                 entrant.setEntrantName(cursor.getString(cursor.getColumnIndex(COLUMN_ENTRANT_NAME)));
+                entrant.setLineNumber(cursor.getInt(cursor.getColumnIndex(COLUMN_LINE_NUMBER)));
                 entrant.setPaymentStatus(cursor.getString(cursor.getColumnIndex(COLUMN_PAYMENT_STATUS)));
+                entrant.setDrawId(cursor.getLong(cursor.getColumnIndex(COLUMN_DRAW)));
                 entrants.add(entrant);
             } while (cursor.moveToNext());
         }
