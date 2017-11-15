@@ -4,18 +4,25 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
     private DBHelper db;
-    private FloatingActionButton fab;
+    private ConstraintLayout cl_mainActivityContainer;
     private ListView lv_draws;
+    private EditText et_remainingNumbers;
+    private ImageView iv_remainingNumbersClose;
+    private FloatingActionButton fab;
 
     private Boolean exit = false;
 
@@ -52,10 +59,6 @@ public class MainActivity extends AppCompatActivity {
         // Find all views
         findViews();
 
-        // Set ActionBar title
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("Big Prize Bonus Ball");
-
         // Got to CreateDraw activity on click
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,13 +71,41 @@ public class MainActivity extends AppCompatActivity {
         DrawArrayAdapter drawArrayAdapter = new DrawArrayAdapter(this);
         drawArrayAdapter.addAll(db.getDraws());
         lv_draws.setAdapter(drawArrayAdapter);
+
+        // On longClick of draw list item,
+        // show window with copyable remaining numbers for the respective draw
+        Intent intent = getIntent();
+        if (intent.hasExtra("remainingNumbers")) {
+            ArrayList<Integer> remainingNumbers = intent.getIntegerArrayListExtra("remainingNumbers");
+            System.out.println("remainingNumbers: " + remainingNumbers.size());
+
+            et_remainingNumbers.setVisibility(View.VISIBLE);
+            iv_remainingNumbersClose.setVisibility(View.VISIBLE);
+            et_remainingNumbers.setText("Available...\n\n* ");
+            for (int i = 0; i < remainingNumbers.size(); i++) {
+                et_remainingNumbers.append(String.valueOf(remainingNumbers.get(i)));
+                et_remainingNumbers.append(" * ");
+            }
+        }
+
+        // On close button click, hide the remaining numbers window
+        iv_remainingNumbersClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                et_remainingNumbers.setVisibility(View.GONE);
+                iv_remainingNumbersClose.setVisibility(View.GONE);
+            }
+        });
     }
 
     /**
      * Find all views bu their ID's
      */
     private void findViews() {
-        fab = findViewById(R.id.fab);
+        cl_mainActivityContainer = findViewById(R.id.mainActivityContainer);
         lv_draws = findViewById(R.id.drawsListView);
+        et_remainingNumbers = findViewById(R.id.remainingNumbers);
+        iv_remainingNumbersClose = findViewById(R.id.remainingNumbersCloseButton);
+        fab = findViewById(R.id.fab);
     }
 }

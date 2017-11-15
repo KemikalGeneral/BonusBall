@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!--Line number-->
     <TextView
         android:id="@+id/list_view_number"
         android:layout_width="0dp"
@@ -11,19 +12,23 @@
         android:padding="16dp"
         android:text="1" />
 
+    <!--Entrant name TEXT-->
     <TextView
         android:id="@+id/list_view_name_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
         android:padding="16dp"
         android:text="First and Last Name"
         app:layout_constraintLeft_toRightOf="@id/list_view_number"
         app:layout_constraintRight_toLeftOf="@+id/list_view_save" />
 
+    <!--Entrant name EDIT-->
     <EditText
         android:id="@+id/list_view_name_edit"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
         android:padding="16dp"
         android:hint="Who's this number for...?"
         android:inputType="textPersonName|textCapWords"
@@ -31,13 +36,46 @@
         app:layout_constraintLeft_toRightOf="@id/list_view_number"
         app:layout_constraintRight_toLeftOf="@+id/list_view_save" />
 
-    <Button
+    <!--Save button-->
+    <ImageView
         android:id="@+id/list_view_save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Save"
+        android:layout_marginRight="16dp"
+        android:src="@drawable/tick"
         android:visibility="gone"
         android:textAllCaps="false"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintTop_toTopOf="@id/list_view_number"
+        app:layout_constraintBottom_toBottomOf="@id/list_view_number"
+        app:layout_constraintRight_toLeftOf="@id/list_view_paid"
+        android:contentDescription="Save icon" />
+
+    <!--Payment status PAID-->
+    <ImageView
+        android:id="@+id/list_view_paid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:src="@drawable/pound"
+        android:contentDescription="Paid icon"
+        android:tint="@color/green"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/list_view_number"
+        app:layout_constraintBottom_toBottomOf="@id/list_view_number"
+        android:visibility="gone" />
+
+    <!--Payment status UNPAID-->
+    <ImageView
+        android:id="@+id/list_view_unpaid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:src="@drawable/pound"
+        android:contentDescription="Unpaid icon"
+        android:tint="@color/red"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/list_view_number"
+        app:layout_constraintBottom_toBottomOf="@id/list_view_number"
+        android:visibility="gone" />
 
 </android.support.constraint.ConstraintLayout>

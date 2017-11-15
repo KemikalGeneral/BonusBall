@@ -59,7 +59,6 @@ public class DBHelper extends SQLiteOpenHelper {
                     COLUMN_PAYMENT_STATUS + " VARCHAR(50), " +
                     COLUMN_DRAW + " INTEGER, " +
                     " FOREIGN KEY (" + COLUMN_DRAW + ") REFERENCES " + DRAW_TABLE + "(" + COLUMN_DRAW_ID + "));";
-
     /**
      * Constructor
      *
@@ -180,6 +179,28 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     /**
+     * Update Draw details using the drawId
+     *
+     * @param drawName
+     * @param drawValue
+     * @param ticketValue
+     * @param startDate
+     * @param drawId
+     */
+    public void updateDraw(String drawName, double drawValue, double ticketValue, long startDate, long drawId) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(COLUMN_DRAW_NAME, drawName);
+        values.put(COLUMN_DRAW_VALUE, drawValue);
+        values.put(COLUMN_TICKET_VALUE, ticketValue);
+        values.put(COLUMN_START_DATE, startDate);
+        db.update(DRAW_TABLE, values, COLUMN_DRAW_ID + " = " + drawId, null);
+
+        db.close();
+    }
+
+    /**
      * Get a single entrants details from their ID
      *
      * @param drawId
@@ -199,12 +220,12 @@ public class DBHelper extends SQLiteOpenHelper {
 
         if (cursor.moveToFirst()) {
             do {
-
                 Entrant entrant = new Entrant();
                 entrant.setEntrantId(cursor.getLong(cursor.getColumnIndex(COLUMN_ENTRANT_ID)));
-                entrant.setLineNumber(cursor.getInt(cursor.getColumnIndex(COLUMN_LINE_NUMBER)));
                 entrant.setEntrantName(cursor.getString(cursor.getColumnIndex(COLUMN_ENTRANT_NAME)));
+                entrant.setLineNumber(cursor.getInt(cursor.getColumnIndex(COLUMN_LINE_NUMBER)));
                 entrant.setPaymentStatus(cursor.getString(cursor.getColumnIndex(COLUMN_PAYMENT_STATUS)));
+                entrant.setDrawId(cursor.getLong(cursor.getColumnIndex(COLUMN_DRAW)));
                 entrants.add(entrant);
             } while (cursor.moveToNext());
         }
@@ -225,9 +246,9 @@ public class DBHelper extends SQLiteOpenHelper {
     public void addNameToChosenNumber(String name, int lineNumber, long drawId) {
         System.out.println("z! ===== ===== ===== ===== =====");
         System.out.println("z! DBHelper - addNameToChosenNumber()...");
-        System.out.println("z! DBHelper - addNameToChosenNumber() - name");
-        System.out.println("z! DBHelper - addNameToChosenNumber() - lineNumber");
-        System.out.println("z! DBHelper - addNameToChosenNumber() - drawId");
+        System.out.println("z! DBHelper - addNameToChosenNumber() - name: " + name);
+        System.out.println("z! DBHelper - addNameToChosenNumber() - lineNumber: " + lineNumber);
+        System.out.println("z! DBHelper - addNameToChosenNumber() - drawId: " + drawId);
 
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -263,11 +284,52 @@ public class DBHelper extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
 
-        return counter - 1;
+        return counter;
     }
 
     /**
-     * Drop table
+     * Return an array of the remaining numbers for a draw,
+     * checking for null entrantName entries against the drawId
+     * @param drawId
+     * @return
+     */
+    public ArrayList<Integer> getRemainingNumbers(long drawId) {
+        SQLiteDatabase db = getReadableDatabase();
+        ArrayList<Integer> remainingNumbers = new ArrayList<>();
+
+        Cursor cursor = db.rawQuery(
+                "SELECT " + COLUMN_LINE_NUMBER + " FROM " + ENTRANT_TABLE +
+                        " WHERE " + COLUMN_ENTRANT_NAME + " IS NULL " +
+                        "AND " + COLUMN_DRAW + " = " + drawId, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                remainingNumbers.add(cursor.getInt(cursor.getColumnIndex(COLUMN_LINE_NUMBER)));
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+
+        return remainingNumbers;
+    }
+
+    /**
+     * Delete Draw and its associated Entrants by drawId
+     * @param drawId
+     */
+    public void deleteDraw(long drawId) {
+        System.out.println("z! ===== ===== ===== ===== =====");
+        System.out.println("z! DBHelper - deleteDraw()...");
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete(ENTRANT_TABLE, COLUMN_DRAW + " = " + drawId, null);
+        db.delete(DRAW_TABLE, COLUMN_DRAW_ID + " = " + drawId, null);
+
+        db.close();
+    }
+
+    /**
+     * Drop all tables
      * @param db
      */
     public void dropTables(SQLiteDatabase db) {
@@ -275,5 +337,16 @@ public class DBHelper extends SQLiteOpenHelper {
         System.out.println("z! DBHelper - dropTables()...");
         db.execSQL("DROP TABLE IF EXISTS " + DRAW_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + ENTRANT_TABLE);
+    }
+
+    public void changePaymentStatus(int lineNumber, long drawId, String status) {
+
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(COLUMN_PAYMENT_STATUS, status);
+        db.update(ENTRANT_TABLE, values, COLUMN_LINE_NUMBER + " = " + lineNumber + " AND " + COLUMN_DRAW + " = " + drawId, null);
+
+        db.close();
     }
 }
