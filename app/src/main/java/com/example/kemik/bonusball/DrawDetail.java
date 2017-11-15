@@ -4,6 +4,7 @@ import android.app.DialogFragment;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -19,7 +20,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class DrawDetail extends AppCompatActivity implements ConfirmationDialog.ConfirmationDialogListener {
+public class DrawDetail extends AppCompatActivity
+        implements ConfirmationDialog.ConfirmationDialogListener {
 
     private DBHelper db;
     private TextView tv_drawName;
@@ -39,6 +41,9 @@ public class DrawDetail extends AppCompatActivity implements ConfirmationDialog.
 
     private EditText et_copyableTextWindow;
     private ImageView iv_copyableTextWindowCloseIcon;
+
+    // Randomiser
+    private ConstraintLayout cl_randomiserLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +108,8 @@ public class DrawDetail extends AppCompatActivity implements ConfirmationDialog.
 
         et_copyableTextWindow = findViewById(R.id.copyableTextWindow);
         iv_copyableTextWindowCloseIcon = findViewById(R.id.copyableTextWindowCloseButton);
+
+        cl_randomiserLayout = findViewById(R.id.randomiserLayout);
     }
 
     /**
@@ -150,7 +157,7 @@ public class DrawDetail extends AppCompatActivity implements ConfirmationDialog.
         fab_randoms.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                            generateRandomNumber();
+                generateRandomNumber();
             }
         });
 
@@ -234,6 +241,15 @@ public class DrawDetail extends AppCompatActivity implements ConfirmationDialog.
             et_copyableTextWindow.append(" * ");
         }
     }
+
+
+    public void generateRandomNumber() {
+        cl_randomiserLayout.setVisibility(View.VISIBLE);
+    }
+
+
+
+
 
     /**
      * Populate and make visible a hidden EditText field with the list of names and numbers,

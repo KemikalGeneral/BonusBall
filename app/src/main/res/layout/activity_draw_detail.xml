@@ -246,4 +246,92 @@
         android:visibility="gone"
         android:contentDescription="close icon" />
 
+    <!--Random number generator section-->
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/randomiserLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#fff"
+        android:visibility="visible">
+
+        <EditText
+            android:id="@+id/randomiserName"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:hint="Who's this for...?"
+            android:textSize="18sp"
+            android:textAlignment="center"
+            android:inputType="textPersonName|textCapWords"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/randomiserAmountOfNumbers"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <EditText
+            android:id="@+id/randomiserAmountOfNumbers"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:hint="How many numbers...?"
+            android:textSize="18sp"
+            android:textAlignment="center"
+            android:inputType="number"
+            app:layout_constraintTop_toBottomOf="@id/randomiserName"
+            app:layout_constraintBottom_toTopOf="@id/randomiserGenerateButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <Button
+            android:id="@+id/randomiserGenerateButton"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:text="Generate !"
+            android:textAllCaps="false"
+            android:textSize="18sp"
+            android:textAlignment="center"
+            app:layout_constraintTop_toBottomOf="@id/randomiserAmountOfNumbers"
+            app:layout_constraintBottom_toTopOf="@id/randomiserRandomNumbers"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <EditText
+            android:id="@+id/randomiserRandomNumbers"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:textSize="18sp"
+            android:textAlignment="center"
+            app:layout_constraintTop_toBottomOf="@id/randomiserGenerateButton"
+            app:layout_constraintBottom_toTopOf="@id/randomiserCancelButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:hint=". . . . . . . . ." />
+
+        <Button
+            android:id="@+id/randomiserCancelButton"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/red"
+            android:text="Cancel"
+            android:textAllCaps="false"
+            android:textSize="18sp"
+            android:textAlignment="center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/randomiserAcceptButton"
+            app:layout_constraintTop_toBottomOf="@id/randomiserRandomNumbers"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <Button
+            android:id="@+id/randomiserAcceptButton"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/green"
+            android:text="Accept"
+            android:textAllCaps="false"
+            android:textSize="18sp"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/randomiserCancelButton"
+            app:layout_constraintTop_toBottomOf="@id/randomiserRandomNumbers"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>
