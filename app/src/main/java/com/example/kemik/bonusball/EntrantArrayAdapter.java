@@ -55,15 +55,13 @@ class EntrantArrayAdapter extends ArrayAdapter<Entrant> {
             @Override
             public boolean onLongClick(View view) {
                 final int chosenNumber = position + 1;
-                Toast.makeText(getContext(), "Clicked: " + String.valueOf(chosenNumber), Toast.LENGTH_SHORT).show();
 
                 tv_name.setVisibility(View.GONE);
                 et_name.setVisibility(View.VISIBLE);
                 et_name.setText(entrant.getEntrantName());
-                System.out.println("entrant name: " + entrant.getEntrantName());
                 iv_save.setVisibility(View.VISIBLE);
 
-                showCorrectPaymentIcon(entrant, iv_paid, iv_unPaid);
+                showCorrectPaymentIcon(entrant, et_name, iv_paid, iv_unPaid);
 
                 iv_save.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -106,28 +104,34 @@ class EntrantArrayAdapter extends ArrayAdapter<Entrant> {
      * @param iv_paid
      * @param iv_unPaid
      */
-    private void showCorrectPaymentIcon(Entrant entrant, ImageView iv_paid, ImageView iv_unPaid) {
-        System.out.println("payment status: " + entrant.getPaymentStatus());
-        if (entrant.getPaymentStatus() == null || entrant.getPaymentStatus().equals("unpaid")) {
-            iv_paid.setVisibility(View.VISIBLE);
-        } else {
-            iv_unPaid.setVisibility(View.VISIBLE);
+    private void showCorrectPaymentIcon(Entrant entrant, EditText et_name, ImageView iv_paid, ImageView iv_unPaid) {
+        if (et_name.getText().toString().trim().length() > 0) {
+            if (entrant.getPaymentStatus() == null || entrant.getPaymentStatus().equals("unpaid")) {
+                iv_paid.setVisibility(View.VISIBLE);
+            } else {
+                iv_unPaid.setVisibility(View.VISIBLE);
+            }
         }
     }
 
     /**
-     * Save the Entrant name to the chosen LineNumber using the drawId
+     * Save the Entrant name to the chosen LineNumber using the drawId,
+     * only if a name is present
      *
      * @param et_name
      * @param chosenNumber
      */
     private void saveEntrantToLineNumber(EditText et_name, int chosenNumber) {
-        String entrantName = et_name.getText().toString();
+        String entrantName = et_name.getText().toString().trim();
 
-        // Save entrant to chosen number
-        db.addNameToChosenNumber(entrantName, chosenNumber, drawId);
+        if (entrantName.equals("")) {
+            Toast.makeText(getContext(), "You must enter a name!", Toast.LENGTH_SHORT).show();
+        } else {
+            // Save entrant to chosen number
+            db.addNameToChosenNumber(entrantName, chosenNumber, drawId);
 
-        refreshThisActivity();
+            refreshThisActivity();
+        }
     }
 
     /**

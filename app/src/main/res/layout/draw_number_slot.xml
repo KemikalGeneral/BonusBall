@@ -62,7 +62,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@id/list_view_number"
         app:layout_constraintBottom_toBottomOf="@id/list_view_number"
-        android:visibility="invisible" />
+        android:visibility="gone" />
 
     <!--Payment status UNPAID-->
     <ImageView
@@ -76,6 +76,6 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@id/list_view_number"
         app:layout_constraintBottom_toBottomOf="@id/list_view_number"
-        android:visibility="invisible" />
+        android:visibility="gone" />
 
 </android.support.constraint.ConstraintLayout>
