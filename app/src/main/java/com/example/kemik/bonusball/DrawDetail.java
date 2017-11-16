@@ -4,22 +4,27 @@ import android.app.DialogFragment;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.kemik.bonusball.Entities.Draw;
 import com.example.kemik.bonusball.Entities.Entrant;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 
-public class DrawDetail extends AppCompatActivity implements ConfirmationDialog.ConfirmationDialogListener {
+public class DrawDetail extends AppCompatActivity
+        implements ConfirmationDialog.ConfirmationDialogListener {
 
     private DBHelper db;
     private TextView tv_drawName;
@@ -39,6 +44,17 @@ public class DrawDetail extends AppCompatActivity implements ConfirmationDialog.
 
     private EditText et_copyableTextWindow;
     private ImageView iv_copyableTextWindowCloseIcon;
+
+    // Randomiser
+    private ConstraintLayout cl_randomiserLayout;
+    private EditText et_randomiserName;
+    private EditText et_amountOfNumbers;
+    private Button btn_generateRandoms;
+    private EditText et_returnedRandoms;
+    private Button btn_randomiserCancel;
+    private Button btn_randomiserAccept;
+    private boolean isReady = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +119,15 @@ public class DrawDetail extends AppCompatActivity implements ConfirmationDialog.
 
         et_copyableTextWindow = findViewById(R.id.copyableTextWindow);
         iv_copyableTextWindowCloseIcon = findViewById(R.id.copyableTextWindowCloseButton);
+
+        // Randomiser
+        cl_randomiserLayout = findViewById(R.id.randomiserLayout);
+        et_randomiserName = findViewById(R.id.randomiserName);
+        et_amountOfNumbers = findViewById(R.id.randomiserAmountOfNumbers);
+        btn_generateRandoms = findViewById(R.id.randomiserGenerateButton);
+        et_returnedRandoms = findViewById(R.id.randomiserRandomNumbers);
+        btn_randomiserCancel = findViewById(R.id.randomiserCancelButton);
+        btn_randomiserAccept = findViewById(R.id.randomiserAcceptButton);
     }
 
     /**
@@ -150,7 +175,7 @@ public class DrawDetail extends AppCompatActivity implements ConfirmationDialog.
         fab_randoms.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                            generateRandomNumber();
+                generateRandomNumber();
             }
         });
 
@@ -233,6 +258,135 @@ public class DrawDetail extends AppCompatActivity implements ConfirmationDialog.
             et_copyableTextWindow.append(String.valueOf(remainingNumbers.get(i)));
             et_copyableTextWindow.append(" * ");
         }
+    }
+
+    /**
+     * On FAB randomiser click, close FABs and clear the randomiser fields.
+     * Set up Cancel Button.
+     * Generate random numbers to an array.
+     * Setup Accept Button to save to db.
+     */
+    public void generateRandomNumber() {
+        fab_options.setVisibility(View.GONE);
+        closeFabs();
+        cl_randomiserLayout.setVisibility(View.VISIBLE);
+        et_randomiserName.setText(null);
+        et_amountOfNumbers.setText(null);
+        et_returnedRandoms.setText(null);
+        isReady = false;
+
+        // Close window on Cancel Button click
+        randomiserCancelButton();
+
+        // Generate required amount of random numbers
+        ArrayList<Entrant> entrants = randomiserGenerateButton();
+
+        // Save name and numbers to db
+        randomiserAcceptButton(entrants);
+    }
+
+    /**
+     * Close the randomiser window on Cancel Button click
+     */
+    private void randomiserCancelButton() {
+        btn_randomiserCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cl_randomiserLayout.setVisibility(View.GONE);
+                fab_options.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
+    /**
+     * Gets the name and amount of requested numbers.
+     * Gets the [user requested] amount of random numbers from the remainingNumbers.
+     * Displays them to the EditText returned randoms field.
+     */
+    private ArrayList<Entrant> randomiserGenerateButton() {
+        final ArrayList<Entrant> entrants = new ArrayList<>();
+
+        btn_generateRandoms.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Get name
+                String randomiserName = et_randomiserName.getText().toString().trim();
+                System.out.println("Accept - randomiserName: " + randomiserName);
+
+                // Get amount of numbers required
+                int randomiserAmountOfNumbers = Integer.parseInt(et_amountOfNumbers.getText().toString().trim());
+                System.out.println("Accept - amount: " + randomiserAmountOfNumbers);
+
+                // Get a list of the remaining numbers for this draw
+                ArrayList<Integer> remainingNumbers = db.getRemainingNumbers(drawId);
+                System.out.println("remainingNumbers.size: " + remainingNumbers.size());
+
+                // Check that there are enough numbers
+                if (randomiserAmountOfNumbers > remainingNumbers.size()) {
+                    Toast.makeText(DrawDetail.this, "There are only " + remainingNumbers.size() + " numbers left!", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Randomise the remaining numbers
+                    Collections.shuffle(remainingNumbers);
+
+                    // Create a new array and add the amount if random numbers requested
+                    ArrayList<Integer> randomNumbersArray = new ArrayList<>();
+                    for (int i = 0; i < randomiserAmountOfNumbers; i++) {
+                        System.out.println("remaining numbers " + i + ": " + remainingNumbers.get(i) + "\n");
+                        randomNumbersArray.add(remainingNumbers.get(i));
+                    }
+
+                    // Sort the array (low-hi)
+                    Collections.sort(randomNumbersArray);
+                    // Iterate through the array, displaying the numbers to the EditText field ready for copying.
+                    // Create and Entrant from the name and number and add it to the list of entrants,
+                    // to be passed for saving.
+                    et_returnedRandoms.setText("* ");
+                    for (int i = 0; i < randomNumbersArray.size(); i++) {
+                        et_returnedRandoms.append(String.valueOf(randomNumbersArray.get(i)));
+                        et_returnedRandoms.append(" * ");
+
+                        Entrant entrant = new Entrant();
+                        entrant.setEntrantName(randomiserName);
+                        entrant.setLineNumber(randomNumbersArray.get(i));
+                        entrants.add(entrant);
+                    }
+                    // Set isReady to true, so that the Accept Button saves name and numbers to db
+                    isReady = true;
+                }
+            }
+        });
+        return entrants;
+    }
+
+    /**
+     * Take a list of Entrants (names are all the same name but with the generated random numbers),
+     * loop through it and save them to the db using the drawId.
+     *
+     * @param entrants
+     */
+    private void randomiserAcceptButton(final ArrayList<Entrant> entrants) {
+        btn_randomiserAccept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isReady) {
+                    String name;
+                    int number;
+
+                    // Save names and numbers against drawId
+                    for (int i = 0; i < entrants.size(); i++) {
+                        name = entrants.get(i).getEntrantName();
+                        number = entrants.get(i).getLineNumber();
+                        db.addNameToChosenNumber(name, number, drawId);
+                    }
+
+                    // Close randomiser and recreate activity
+                    cl_randomiserLayout.setVisibility(View.GONE);
+                    recreate();
+                } else {
+                    Toast.makeText(DrawDetail.this, "You haven't generated any numbers!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     /**
