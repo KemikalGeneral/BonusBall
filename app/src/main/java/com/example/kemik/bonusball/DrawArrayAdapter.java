@@ -32,7 +32,7 @@ public class DrawArrayAdapter extends ArrayAdapter<Draw> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.draw_row_list_item, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.draw_list_item, parent, false);
         }
 
         final Draw draw = getItem(position);
