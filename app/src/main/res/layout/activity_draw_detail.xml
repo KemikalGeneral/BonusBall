@@ -246,14 +246,15 @@
         android:visibility="gone"
         android:contentDescription="close icon" />
 
-    <!--Random number generator section-->
+    <!--Random number generator section (Randomiser) -->
     <android.support.constraint.ConstraintLayout
         android:id="@+id/randomiserLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#fff"
-        android:visibility="visible">
+        android:visibility="gone">
 
+        <!--Entrant name-->
         <EditText
             android:id="@+id/randomiserName"
             android:layout_width="0dp"
@@ -267,6 +268,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
+        <!--Amount of number to return-->
         <EditText
             android:id="@+id/randomiserAmountOfNumbers"
             android:layout_width="0dp"
@@ -280,6 +282,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
+        <!--Generate Button-->
         <Button
             android:id="@+id/randomiserGenerateButton"
             android:layout_width="0dp"
@@ -293,6 +296,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
+        <!--Returned random numbers-->
         <EditText
             android:id="@+id/randomiserRandomNumbers"
             android:layout_width="0dp"
@@ -305,6 +309,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:hint=". . . . . . . . ." />
 
+        <!--Cancel Button-->
         <Button
             android:id="@+id/randomiserCancelButton"
             android:layout_width="0dp"
@@ -319,6 +324,7 @@
             app:layout_constraintTop_toBottomOf="@id/randomiserRandomNumbers"
             app:layout_constraintBottom_toBottomOf="parent" />
 
+        <!--Accept Button-->
         <Button
             android:id="@+id/randomiserAcceptButton"
             android:layout_width="0dp"
