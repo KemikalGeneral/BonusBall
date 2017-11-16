@@ -14,75 +14,54 @@
         android:gravity="center"
         android:text="Create a Draw"
         android:textSize="36sp"
-        app:layout_constraintBottom_toTopOf="@id/drawNameWrapper"
+        app:layout_constraintBottom_toTopOf="@id/drawName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <!--Draw Name-->
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/drawNameWrapper"
+    <EditText
+        android:id="@+id/drawName"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:padding="16dp"
-        app:layout_constraintBottom_toTopOf="@id/drawValueWrapper"
+        android:hint="Draw Name"
+        android:inputType="textPersonName|textCapWords"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@id/drawValue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/DrawTitle">
-
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/drawName"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="Draw Name"
-            android:inputType="textPersonName|textCapWords"
-            android:textAlignment="center"
-            android:textSize="18sp" />
-    </android.support.design.widget.TextInputLayout>
+        app:layout_constraintTop_toBottomOf="@id/DrawTitle" />
 
 
     <!--Draw Value-->
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/drawValueWrapper"
+    <EditText
+        android:id="@+id/drawValue"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:padding="16dp"
-        app:layout_constraintBottom_toTopOf="@id/ticketValueWrapper"
+        android:hint="Draw Value"
+        android:inputType="numberDecimal"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@id/ticketValue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/drawNameWrapper">
-
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/drawValue"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="Draw Value"
-            android:inputType="numberDecimal"
-            android:textAlignment="center"
-            android:textSize="18sp" />
-    </android.support.design.widget.TextInputLayout>
+        app:layout_constraintTop_toBottomOf="@id/drawName" />
 
 
     <!--Ticket Value-->
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/ticketValueWrapper"
+    <EditText
+        android:id="@+id/ticketValue"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:padding="16dp"
+        android:hint="Ticket Value"
+        android:inputType="numberDecimal"
+        android:textAlignment="center"
+        android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@id/startDate"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/drawValueWrapper">
-
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/ticketValue"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="Ticket Value"
-            android:inputType="numberDecimal"
-            android:textAlignment="center"
-            android:textSize="18sp" />
-    </android.support.design.widget.TextInputLayout>
+        app:layout_constraintTop_toBottomOf="@id/drawValue" />
 
     <!--Draw Start Date-->
     <TextView
@@ -96,7 +75,7 @@
         app:layout_constraintBottom_toTopOf="@id/createDraw"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ticketValueWrapper" />
+        app:layout_constraintTop_toBottomOf="@id/ticketValue" />
 
 
     <!--Create Draw Button-->

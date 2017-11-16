@@ -40,7 +40,7 @@ public class EditDraw extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_draw);
+        setContentView(R.layout.activity_create_draw);
 
         // Find all views
         findViews();
@@ -82,7 +82,7 @@ public class EditDraw extends AppCompatActivity
         et_drawValue = findViewById(R.id.drawValue);
         et_ticketValue = findViewById(R.id.ticketValue);
         tv_startDate = findViewById(R.id.startDate);
-        btn_editDraw = findViewById(R.id.editDraw);
+        btn_editDraw = findViewById(R.id.createDraw);
     }
 
     /**
