@@ -8,7 +8,7 @@
 
     <!--Page title-->
     <TextView
-        android:id="@+id/editDrawTitle"
+        android:id="@+id/DrawTitle"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:gravity="center"
@@ -28,7 +28,7 @@
         app:layout_constraintBottom_toTopOf="@id/drawValueWrapper"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editDrawTitle">
+        app:layout_constraintTop_toBottomOf="@id/DrawTitle">
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/drawName"
@@ -58,6 +58,7 @@
             android:layout_height="match_parent"
             android:hint="Draw Value"
             android:inputType="numberDecimal"
+            android:textAlignment="center"
             android:textSize="18sp" />
     </android.support.design.widget.TextInputLayout>
 
@@ -76,45 +77,34 @@
         <android.support.design.widget.TextInputEditText
             android:id="@+id/ticketValue"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:hint="Ticket Value"
             android:inputType="numberDecimal"
+            android:textAlignment="center"
             android:textSize="18sp" />
     </android.support.design.widget.TextInputLayout>
-
-    <ImageView
-        android:id="@+id/addStartDateImg"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:paddingLeft="16dp"
-        android:src="@drawable/add"
-        android:tint="@color/green"
-        app:layout_constraintBottom_toBottomOf="@id/startDate"
-        app:layout_constraintEnd_toStartOf="@id/startDate"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/startDate" />
 
     <!--Draw Start Date-->
     <TextView
         android:id="@+id/startDate"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:gravity="center_vertical"
+        android:gravity="center"
         android:padding="16dp"
         android:text="Add a Start Date..."
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@id/editDraw"
+        app:layout_constraintBottom_toTopOf="@id/createDraw"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/addStartDateImg"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ticketValueWrapper" />
 
 
     <!--Create Draw Button-->
     <Button
-        android:id="@+id/editDraw"
+        android:id="@+id/createDraw"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="#8BC34A"
+        android:background="@color/green"
         android:padding="16dp"
         android:text="Create Draw"
         android:textAllCaps="false"
@@ -124,4 +114,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/startDate" />
+
 </android.support.constraint.ConstraintLayout>

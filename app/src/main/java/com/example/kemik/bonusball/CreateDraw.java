@@ -71,40 +71,7 @@ public class CreateDraw extends AppCompatActivity
         et_drawValue = findViewById(R.id.drawValue);
         et_ticketValue = findViewById(R.id.ticketValue);
         tv_startDate = findViewById(R.id.startDate);
-        btn_createDraw = findViewById(R.id.editDraw);
-    }
-
-    /**
-     * Validate inputs against null entries
-     *
-     * @return
-     */
-    private boolean isValidated() {
-        if (et_drawName.getText().toString().trim().equals("")) {
-            Toast.makeText(this, "You must enter a Draw Name", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-
-        if (et_drawValue.getText().toString().trim().equals("")) {
-            Toast.makeText(this, "You must enter a Draw Value", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-
-        if (et_ticketValue.getText().toString().trim().equals("")) {
-            Toast.makeText(this, "You must enter a Ticket Value", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Capture and assign input details for drawName, drawValue and ticketValue
-     */
-    private void captureDrawDetails() {
-        drawName = et_drawName.getText().toString().trim();
-        drawValue = Double.valueOf(et_drawValue.getText().toString().trim());
-        ticketValue = Double.valueOf(et_ticketValue.getText().toString().trim());
+        btn_createDraw = findViewById(R.id.createDraw);
     }
 
     /**
@@ -138,6 +105,39 @@ public class CreateDraw extends AppCompatActivity
         startDate = calendar.getTimeInMillis();
         String dateString = DateFormat.getDateInstance().format(startDate);
         tv_startDate.setText(dateString);
+    }
+
+    /**
+     * Validate inputs against null entries
+     *
+     * @return
+     */
+    private boolean isValidated() {
+        if (et_drawName.getText().toString().trim().equals("")) {
+            Toast.makeText(this, "You must enter a Draw Name", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (et_drawValue.getText().toString().trim().equals("")) {
+            Toast.makeText(this, "You must enter a Draw Value", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (et_ticketValue.getText().toString().trim().equals("")) {
+            Toast.makeText(this, "You must enter a Ticket Value", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Capture and assign input details for drawName, drawValue and ticketValue
+     */
+    private void captureDrawDetails() {
+        drawName = et_drawName.getText().toString().trim();
+        drawValue = Double.valueOf(et_drawValue.getText().toString().trim());
+        ticketValue = Double.valueOf(et_ticketValue.getText().toString().trim());
     }
 
     /**

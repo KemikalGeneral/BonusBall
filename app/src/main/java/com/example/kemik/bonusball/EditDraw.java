@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.kemik.bonusball.Entities.Draw;
 
@@ -54,25 +55,21 @@ public class EditDraw extends AppCompatActivity
         populateDetails();
 
         // Show DatePicker dialog fragment
-        tv_startDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DialogFragment dateFragment = new DatePickerFragment();
-                dateFragment.show(getFragmentManager(), "datePicker");
-            }
-        });
+        showDatePicker();
+
 
         // Capture drawName and drawValue, and call to create a new draw.
         // When finished, go to MainActivity on create button click.
         btn_editDraw.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                drawName = String.valueOf(et_drawName.getText());
-                drawValue = Double.valueOf(String.valueOf(et_drawValue.getText()));
-                ticketValue = Double.valueOf(String.valueOf(et_ticketValue.getText()));
-                updateDraw();
-                startActivity(new Intent(EditDraw.this, MainActivity.class));
-                finish();
+                if (isValidated()) {
+                    captureDrawDetails();
+                    updateDraw();
+
+                    startActivity(new Intent(EditDraw.this, MainActivity.class));
+                    finish();
+                }
             }
         });
     }
@@ -104,6 +101,19 @@ public class EditDraw extends AppCompatActivity
     }
 
     /**
+     * Return a dialog fragment containing a datePicker for the Draw startDate
+     */
+    private void showDatePicker() {
+        tv_startDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DialogFragment dateFragment = new DatePickerFragment();
+                dateFragment.show(getFragmentManager(), "datePicker");
+            }
+        });
+    }
+
+    /**
      * Receive a DatePicker and use the date selected to populate the tv_startDate TextView
      *
      * @param datePicker
@@ -121,6 +131,39 @@ public class EditDraw extends AppCompatActivity
         startDate = calendar.getTimeInMillis();
         String dateString = DateFormat.getDateInstance().format(startDate);
         tv_startDate.setText(dateString);
+    }
+
+    /**
+     * Validate inputs against null entries
+     *
+     * @return
+     */
+    private boolean isValidated() {
+        if (et_drawName.getText().toString().trim().equals("")) {
+            Toast.makeText(this, "You must enter a Draw Name", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (et_drawValue.getText().toString().trim().equals("")) {
+            Toast.makeText(this, "You must enter a Draw Value", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (et_ticketValue.getText().toString().trim().equals("")) {
+            Toast.makeText(this, "You must enter a Ticket Value", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Capture and assign input details for drawName, drawValue and ticketValue
+     */
+    private void captureDrawDetails() {
+        drawName = String.valueOf(et_drawName.getText());
+        drawValue = Double.valueOf(String.valueOf(et_drawValue.getText()));
+        ticketValue = Double.valueOf(String.valueOf(et_ticketValue.getText()));
     }
 
     /**
