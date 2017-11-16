@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.util.Calendar;
@@ -41,21 +42,42 @@ public class CreateDraw extends AppCompatActivity
         // Find all views
         findViews();
 
-        // Capture drawName and drawValue, and call to create a new draw.
+        // Show DatePicker dialog fragment
+        showDatePicker();
+
+        // Validate inputs for null entries,
+        // capture input details,
+        // call to create a new draw.
         // When finished, go to MainActivity on create button click.
         btn_createDraw.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                drawName = String.valueOf(et_drawName.getText());
-                drawValue = Double.valueOf(String.valueOf(et_drawValue.getText()));
-                ticketValue = Double.valueOf(String.valueOf(et_ticketValue.getText()));
-                createDraw();
-                startActivity(new Intent(CreateDraw.this, MainActivity.class));
-                finish();
+                if (isValidated()) {
+                    captureDrawDetails();
+                    createDraw();
+
+                    startActivity(new Intent(CreateDraw.this, MainActivity.class));
+                    finish();
+                }
             }
         });
+    }
 
-        // Show DatePicker dialog fragment
+    /**
+     * Find all views by their ID's
+     */
+    private void findViews() {
+        et_drawName = findViewById(R.id.drawName);
+        et_drawValue = findViewById(R.id.drawValue);
+        et_ticketValue = findViewById(R.id.ticketValue);
+        tv_startDate = findViewById(R.id.startDate);
+        btn_createDraw = findViewById(R.id.createDraw);
+    }
+
+    /**
+     * Return a dialog fragment containing a datePicker for the Draw startDate
+     */
+    private void showDatePicker() {
         tv_startDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -66,15 +88,8 @@ public class CreateDraw extends AppCompatActivity
     }
 
     /**
-     * Use the drawName, drawValue and startDate to create a new Draw
-     */
-    private void createDraw() {
-        DBHelper db = new DBHelper(this);
-        db.createNewDraw(drawName, drawValue, ticketValue, startDate);
-    }
-
-    /**
      * Receive a DatePicker and use the date selected to populate the tv_startDate TextView
+     *
      * @param datePicker
      * @param year
      * @param month
@@ -93,13 +108,43 @@ public class CreateDraw extends AppCompatActivity
     }
 
     /**
-     * Find all views by their ID's
+     * Validate inputs against null entries
+     *
+     * @return
      */
-    private void findViews() {
-        et_drawName = findViewById(R.id.drawName);
-        et_drawValue = findViewById(R.id.drawValue);
-        et_ticketValue = findViewById(R.id.ticketValue);
-        tv_startDate = findViewById(R.id.startDate);
-        btn_createDraw = findViewById(R.id.editDraw);
+    private boolean isValidated() {
+        if (et_drawName.getText().toString().trim().equals("")) {
+            Toast.makeText(this, "You must enter a Draw Name", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (et_drawValue.getText().toString().trim().equals("")) {
+            Toast.makeText(this, "You must enter a Draw Value", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (et_ticketValue.getText().toString().trim().equals("")) {
+            Toast.makeText(this, "You must enter a Ticket Value", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Capture and assign input details for drawName, drawValue and ticketValue
+     */
+    private void captureDrawDetails() {
+        drawName = et_drawName.getText().toString().trim();
+        drawValue = Double.valueOf(et_drawValue.getText().toString().trim());
+        ticketValue = Double.valueOf(et_ticketValue.getText().toString().trim());
+    }
+
+    /**
+     * Use the drawName, drawValue and startDate to create a new Draw
+     */
+    private void createDraw() {
+        DBHelper db = new DBHelper(this);
+        db.createNewDraw(drawName, drawValue, ticketValue, startDate);
     }
 }
