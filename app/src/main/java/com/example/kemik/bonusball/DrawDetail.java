@@ -376,7 +376,7 @@ public class DrawDetail extends AppCompatActivity
                     for (int i = 0; i < entrants.size(); i++) {
                         name = entrants.get(i).getEntrantName();
                         number = entrants.get(i).getLineNumber();
-                        db.addNameToChosenNumber(name, number, drawId);
+                        db.updateNameToChosenNumber(name, number, drawId);
                     }
 
                     // Close randomiser and recreate activity

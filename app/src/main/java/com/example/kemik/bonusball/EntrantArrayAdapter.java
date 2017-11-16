@@ -48,6 +48,7 @@ class EntrantArrayAdapter extends ArrayAdapter<Entrant> {
 
         final EditText et_name = convertView.findViewById(R.id.list_view_name_edit);
         final ImageView iv_save = convertView.findViewById(R.id.list_view_save);
+        final ImageView iv_delete = convertView.findViewById(R.id.list_view_delete);
         final ImageView iv_paid = convertView.findViewById(R.id.list_view_paid);
         final ImageView iv_unPaid = convertView.findViewById(R.id.list_view_unpaid);
 
@@ -59,14 +60,22 @@ class EntrantArrayAdapter extends ArrayAdapter<Entrant> {
                 tv_name.setVisibility(View.GONE);
                 et_name.setVisibility(View.VISIBLE);
                 et_name.setText(entrant.getEntrantName());
-                iv_save.setVisibility(View.VISIBLE);
 
+
+                showCorrectSaveDeleteIcon(et_name, iv_save, iv_delete);
                 showCorrectPaymentIcon(entrant, et_name, iv_paid, iv_unPaid);
 
                 iv_save.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         saveEntrantToLineNumber(et_name, chosenNumber);
+                    }
+                });
+
+                iv_delete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        deleteEntrant(chosenNumber, drawId);
                     }
                 });
 
@@ -86,7 +95,7 @@ class EntrantArrayAdapter extends ArrayAdapter<Entrant> {
                     }
                 });
 
-                return false;
+                return true;
             }
         });
 
@@ -94,6 +103,21 @@ class EntrantArrayAdapter extends ArrayAdapter<Entrant> {
         setNumberColourOnPaymentChange(entrant, tv_slotNumber);
 
         return convertView;
+    }
+
+    /**
+     * If there is no name present, show the tick icon to save, if not, show the bin to delete.
+     *
+     * @param et_name
+     * @param iv_save
+     * @param iv_delete
+     */
+    private void showCorrectSaveDeleteIcon(EditText et_name, ImageView iv_save, ImageView iv_delete) {
+        if (et_name.getText().toString().trim().length() < 1) {
+            iv_save.setVisibility(View.VISIBLE);
+        } else {
+            iv_delete.setVisibility(View.VISIBLE);
+        }
     }
 
     /**
@@ -128,10 +152,23 @@ class EntrantArrayAdapter extends ArrayAdapter<Entrant> {
             Toast.makeText(getContext(), "You must enter a name!", Toast.LENGTH_SHORT).show();
         } else {
             // Save entrant to chosen number
-            db.addNameToChosenNumber(entrantName, chosenNumber, drawId);
+            db.updateNameToChosenNumber(entrantName, chosenNumber, drawId);
 
             refreshThisActivity();
         }
+    }
+
+    /**
+     * Upon deleting an Entrant, the name will be updated to 'null' and the paymentStatus will be set to unpaid.
+     *
+     * @param lineNumber
+     * @param drawId
+     */
+    private void deleteEntrant(int lineNumber, long drawId) {
+        db.updateNameToChosenNumber(null, lineNumber, drawId);
+        db.changePaymentStatus(lineNumber, drawId, "unpaid");
+
+        refreshThisActivity();
     }
 
     /**

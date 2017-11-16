@@ -41,10 +41,22 @@
         android:id="@+id/list_view_save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"
         android:contentDescription="Save icon"
         android:src="@drawable/tick"
-        android:textAllCaps="false"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/list_view_number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/list_view_number" />
+
+    <!--Delete button-->
+    <ImageView
+        android:id="@+id/list_view_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:contentDescription="Delete icon"
+        android:src="@drawable/delete"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/list_view_number"
         app:layout_constraintEnd_toEndOf="parent"
@@ -55,13 +67,12 @@
         android:id="@+id/list_view_paid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
         android:contentDescription="Paid icon"
         android:src="@drawable/pound"
         android:tint="@color/green"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/list_view_number"
-        app:layout_constraintEnd_toStartOf="@id/list_view_save"
+        app:layout_constraintEnd_toStartOf="@id/entrantListItemGuideline"
         app:layout_constraintTop_toTopOf="@id/list_view_number" />
 
     <!--Payment status UNPAID-->
@@ -69,13 +80,19 @@
         android:id="@+id/list_view_unpaid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
         android:contentDescription="Unpaid icon"
         android:src="@drawable/pound"
         android:tint="@color/red"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/list_view_number"
-        app:layout_constraintEnd_toStartOf="@id/list_view_save"
+        app:layout_constraintEnd_toStartOf="@id/entrantListItemGuideline"
         app:layout_constraintTop_toTopOf="@id/list_view_number" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/entrantListItemGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintGuide_end="56dp"
+        android:orientation="vertical" />
 
 </android.support.constraint.ConstraintLayout>

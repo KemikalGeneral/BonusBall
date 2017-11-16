@@ -243,12 +243,12 @@ public class DBHelper extends SQLiteOpenHelper {
      * @param name
      * @param lineNumber
      */
-    public void addNameToChosenNumber(String name, int lineNumber, long drawId) {
+    public void updateNameToChosenNumber(String name, int lineNumber, long drawId) {
         System.out.println("z! ===== ===== ===== ===== =====");
-        System.out.println("z! DBHelper - addNameToChosenNumber()...");
-        System.out.println("z! DBHelper - addNameToChosenNumber() - name: " + name);
-        System.out.println("z! DBHelper - addNameToChosenNumber() - lineNumber: " + lineNumber);
-        System.out.println("z! DBHelper - addNameToChosenNumber() - drawId: " + drawId);
+        System.out.println("z! DBHelper - updateNameToChosenNumber()...");
+        System.out.println("z! DBHelper - updateNameToChosenNumber() - name: " + name);
+        System.out.println("z! DBHelper - updateNameToChosenNumber() - lineNumber: " + lineNumber);
+        System.out.println("z! DBHelper - updateNameToChosenNumber() - drawId: " + drawId);
 
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
