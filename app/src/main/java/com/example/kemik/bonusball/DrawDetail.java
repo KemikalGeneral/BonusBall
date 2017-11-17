@@ -309,17 +309,23 @@ public class DrawDetail extends AppCompatActivity
         btn_generateRandoms.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                System.out.println("=============================================================");
+                System.out.println("DrawDetail - randomiserGenerateButton()...");
+
+                // Clear the Entrants array to avoid duplicate entries on multiple generations
+                entrants.clear();
+
                 // Get name
                 String randomiserName = et_randomiserName.getText().toString().trim();
-                System.out.println("Accept - randomiserName: " + randomiserName);
+                System.out.println("DrawDetail - randomiserGenerateButton - randomiserName: " + randomiserName);
 
                 // Get amount of numbers required
                 int randomiserAmountOfNumbers = Integer.parseInt(et_amountOfNumbers.getText().toString().trim());
-                System.out.println("Accept - amount: " + randomiserAmountOfNumbers);
+                System.out.println("DrawDetail - randomiserGenerateButton - randomiserAmountOfNumbers: " + randomiserAmountOfNumbers);
 
                 // Get a list of the remaining numbers for this draw
                 ArrayList<Integer> remainingNumbers = db.getRemainingNumbers(drawId);
-                System.out.println("remainingNumbers.size: " + remainingNumbers.size());
+                System.out.println("DrawDetail - randomiserGenerateButton - remainingNumbers.size: " + remainingNumbers.size());
 
                 // Check that there are enough numbers
                 if (randomiserAmountOfNumbers > remainingNumbers.size()) {
@@ -330,9 +336,11 @@ public class DrawDetail extends AppCompatActivity
 
                     // Create a new array and add the amount if random numbers requested
                     ArrayList<Integer> randomNumbersArray = new ArrayList<>();
+                    System.out.println("DrawDetail - randomiserGenerateButton - randomNumbersArray.size: " + randomNumbersArray.size());
                     for (int i = 0; i < randomiserAmountOfNumbers; i++) {
-                        System.out.println("remaining numbers " + i + ": " + remainingNumbers.get(i) + "\n");
+                        System.out.println("DrawDetail - randomiserGenerateButton - remaining numbers.get(i): " + i + ": " + remainingNumbers.get(i) + "\n");
                         randomNumbersArray.add(remainingNumbers.get(i));
+                        System.out.println("DrawDetail - randomiserGenerateButton - randomNumbersArray.size: " + remainingNumbers.size());
                     }
 
                     // Sort the array (low-hi)
