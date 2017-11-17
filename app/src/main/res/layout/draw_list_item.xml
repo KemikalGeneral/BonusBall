@@ -9,25 +9,20 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Yr un gyntaf"
+        android:textSize="18sp"
         android:padding="16dp"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/drawListItemRemaining" />
 
     <TextView
         android:id="@+id/drawListItemRemaining"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="59"
         android:textAlignment="center"
+        android:textSize="18sp"
         android:padding="16dp"
-        android:layout_marginRight="150dp"
-        app:layout_constraintRight_toRightOf="parent" />
-
-    <TextView
-        android:id="@+id/drawListItemDateStarted"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="date started"
-        android:padding="16dp"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintStart_toEndOf="@id/drawListItemName"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

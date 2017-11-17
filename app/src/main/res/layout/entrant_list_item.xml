@@ -7,21 +7,24 @@
     <!--Line number-->
     <TextView
         android:id="@+id/list_view_number"
-        android:layout_width="0dp"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        android:text="1" />
+        android:text="1"
+        android:textAlignment="viewEnd"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <!--Entrant name TEXT-->
     <TextView
         android:id="@+id/list_view_name_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
         android:padding="16dp"
         android:text="First and Last Name"
-        app:layout_constraintLeft_toRightOf="@id/list_view_number"
-        app:layout_constraintRight_toLeftOf="@+id/list_view_save" />
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@id/list_view_number"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!--Entrant name EDIT-->
     <EditText
@@ -30,11 +33,12 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:hint="Who's this number for...?"
+        android:textSize="18sp"
         android:inputType="textPersonName|textCapWords"
         android:padding="16dp"
         android:visibility="gone"
-        app:layout_constraintLeft_toRightOf="@id/list_view_number"
-        app:layout_constraintRight_toLeftOf="@+id/list_view_save" />
+        app:layout_constraintStart_toEndOf="@id/list_view_number"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!--Save button-->
     <ImageView

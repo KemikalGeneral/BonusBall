@@ -12,9 +12,7 @@ import android.widget.TextView;
 
 import com.example.kemik.bonusball.Entities.Draw;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * Created by kemik on 12/11/2017.
@@ -44,11 +42,7 @@ public class DrawArrayAdapter extends ArrayAdapter<Draw> {
         // Amount of remaining numbers
         TextView tv_amountOfRemainingNumbers = convertView.findViewById(R.id.drawListItemRemaining);
         tv_amountOfRemainingNumbers.setText(String.valueOf(db.getAvailableAmountOfNumbers(draw.getDrawId())));
-
-        // Date draw started
-        TextView tv_startDate = convertView.findViewById(R.id.drawListItemDateStarted);
-        String dateString = new SimpleDateFormat("EEE, dd MMM").format(new Date(draw.getStartDate()));
-        tv_startDate.setText(dateString);
+        tv_amountOfRemainingNumbers.append(" (left)");
 
         // Go to DrawDetail on ListItem click
         convertView.setOnClickListener(new View.OnClickListener() {
