@@ -35,7 +35,7 @@ class EntrantArrayAdapter extends ArrayAdapter<Entrant> {
     @Override
     public View getView(final int position, @Nullable View convertView, @NonNull final ViewGroup parent) {
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.entrant_list_item, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item_entrant, parent, false);
         }
 
         final Entrant entrant = getItem(position);

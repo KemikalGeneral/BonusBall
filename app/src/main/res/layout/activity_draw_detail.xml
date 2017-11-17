@@ -208,6 +208,18 @@
         app:layout_constraintBottom_toTopOf="@id/drawDetailNamesFab"
         app:layout_constraintRight_toRightOf="parent" />
 
+    <EditText
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="#fff"
+        android:hint="Search for which name...?"
+        android:textSize="18sp"
+        android:padding="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/drawDetailFab"
+        app:layout_constraintTop_toTopOf="@id/drawDetailFab"
+        app:layout_constraintBottom_toBottomOf="@id/drawDetailFab" />
+
     <!--Numbers FAB-->
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/drawDetailNumbersFab"
@@ -245,6 +257,7 @@
         app:layout_constraintRight_toRightOf="@id/copyableTextWindow"
         android:visibility="gone"
         android:contentDescription="close icon" />
+
 
     <!--Random number generator section (Randomiser) -->
     <android.support.constraint.ConstraintLayout
