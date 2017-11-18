@@ -55,6 +55,13 @@ public class DrawDetail extends AppCompatActivity
     private Button btn_randomiserAccept;
     private boolean isReady = false;
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
+        finish();
+        overridePendingTransition(0, 0);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -437,6 +444,7 @@ public class DrawDetail extends AppCompatActivity
         Intent editIntent = new Intent(DrawDetail.this, EditDraw.class);
         editIntent.putExtra("DrawId", drawId);
         startActivity(editIntent);
+        finish();
     }
 
     /**
