@@ -39,6 +39,7 @@ public class DrawDetail extends AppCompatActivity
     private FloatingActionButton fab_names;
     private FloatingActionButton fab_edit;
     private FloatingActionButton fab_delete;
+    private EditText et_drawDetailSearch;
     private boolean isOpen = false;
     private long drawId;
 
@@ -116,6 +117,7 @@ public class DrawDetail extends AppCompatActivity
         fab_names = findViewById(R.id.drawDetailNamesFab);
         fab_edit = findViewById(R.id.drawDetailEditFab);
         fab_delete = findViewById(R.id.drawDetailDeleteFab);
+        et_drawDetailSearch = findViewById(R.id.drawDetailSearch);
 
         et_copyableTextWindow = findViewById(R.id.copyableTextWindow);
         iv_copyableTextWindowCloseIcon = findViewById(R.id.copyableTextWindowCloseButton);
@@ -210,6 +212,8 @@ public class DrawDetail extends AppCompatActivity
                 deleteDraw(drawId);
             }
         });
+
+        et_drawDetailSearch.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -232,6 +236,7 @@ public class DrawDetail extends AppCompatActivity
         fab_names.setVisibility(View.GONE);
         fab_delete.setVisibility(View.GONE);
         fab_edit.setVisibility(View.GONE);
+        et_drawDetailSearch.setVisibility(View.GONE);
     }
 
     /**
@@ -311,17 +316,29 @@ public class DrawDetail extends AppCompatActivity
             public void onClick(View v) {
                 System.out.println("=============================================================");
                 System.out.println("DrawDetail - randomiserGenerateButton()...");
+                String randomiserName = null;
+                int randomiserAmountOfNumbers = 0;
 
                 // Clear the Entrants array to avoid duplicate entries on multiple generations
                 entrants.clear();
 
-                // Get name
-                String randomiserName = et_randomiserName.getText().toString().trim();
-                System.out.println("DrawDetail - randomiserGenerateButton - randomiserName: " + randomiserName);
+                // Validate and get name
+                if (et_randomiserName.getText().toString().trim().equals("")) {
+                    Toast.makeText(DrawDetail.this, "Who are these for...?", Toast.LENGTH_SHORT).show();
+                    return;
+                } else {
+                    randomiserName = et_randomiserName.getText().toString().trim();
+                    System.out.println("DrawDetail - randomiserGenerateButton - randomiserName: " + randomiserName);
+                }
 
-                // Get amount of numbers required
-                int randomiserAmountOfNumbers = Integer.parseInt(et_amountOfNumbers.getText().toString().trim());
-                System.out.println("DrawDetail - randomiserGenerateButton - randomiserAmountOfNumbers: " + randomiserAmountOfNumbers);
+                // Validate and get amount of numbers required
+                if (et_amountOfNumbers.getText().toString().trim().equals("")) {
+                    Toast.makeText(DrawDetail.this, "How many numbers...?", Toast.LENGTH_SHORT).show();
+                    return;
+                } else {
+                    randomiserAmountOfNumbers = Integer.parseInt(et_amountOfNumbers.getText().toString().trim());
+                    System.out.println("DrawDetail - randomiserGenerateButton - randomiserAmountOfNumbers: " + randomiserAmountOfNumbers);
+                }
 
                 // Get a list of the remaining numbers for this draw
                 ArrayList<Integer> remainingNumbers = db.getRemainingNumbers(drawId);

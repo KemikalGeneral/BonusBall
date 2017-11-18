@@ -209,12 +209,15 @@
         app:layout_constraintRight_toRightOf="parent" />
 
     <EditText
+        android:id="@+id/drawDetailSearch"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="#fff"
+        android:background="@drawable/search_bar"
         android:hint="Search for which name...?"
         android:textSize="18sp"
         android:padding="16dp"
+        android:layout_marginHorizontal="16dp"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/drawDetailFab"
         app:layout_constraintTop_toTopOf="@id/drawDetailFab"
