@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -18,11 +17,10 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     private DBHelper db;
-    private ConstraintLayout cl_mainActivityContainer;
     private ListView lv_draws;
     private EditText et_remainingNumbers;
     private ImageView iv_remainingNumbersClose;
-    private FloatingActionButton fab;
+    private FloatingActionButton fab_createDraw;
 
     private Boolean exit = false;
 
@@ -60,10 +58,11 @@ public class MainActivity extends AppCompatActivity {
         findViews();
 
         // Got to CreateDraw activity on click
-        fab.setOnClickListener(new View.OnClickListener() {
+        fab_createDraw.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MainActivity.this, CreateDraw.class));
+                finish();
             }
         });
 
@@ -102,10 +101,9 @@ public class MainActivity extends AppCompatActivity {
      * Find all views bu their ID's
      */
     private void findViews() {
-        cl_mainActivityContainer = findViewById(R.id.mainActivityContainer);
         lv_draws = findViewById(R.id.drawsListView);
         et_remainingNumbers = findViewById(R.id.remainingNumbers);
         iv_remainingNumbersClose = findViewById(R.id.remainingNumbersCloseButton);
-        fab = findViewById(R.id.fab);
+        fab_createDraw = findViewById(R.id.fab);
     }
 }
