@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/randomiserLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/darkGrey"
+    android:visibility="gone"
+    android:padding="16dp"
+    tools:showIn="@layout/activity_draw_detail">
+
+    <!--Entrant name-->
+    <EditText
+        android:id="@+id/randomiserName"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/shape_round_top"
+        android:hint="Who's this for...?"
+        android:inputType="textPersonName|textCapWords"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@id/randomiserAmountOfNumbers"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!--Amount of number to return-->
+    <EditText
+        android:id="@+id/randomiserAmountOfNumbers"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/shape_horizontal_edges"
+        android:hint="How many numbers...?"
+        android:inputType="number"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@id/randomiserGenerateButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/randomiserName" />
+
+    <!--Generate Button-->
+    <Button
+        android:id="@+id/randomiserGenerateButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/shape_horizontal_edges"
+        android:text="Generate"
+        android:textAlignment="center"
+        android:textColor="@color/orange"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@id/randomiserRandomNumbers"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/randomiserAmountOfNumbers" />
+
+    <!--Returned random numbers-->
+    <EditText
+        android:id="@+id/randomiserRandomNumbers"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/shape_horizontal_edges"
+        android:hint=". . . . . . . . ."
+        android:textAlignment="center"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@id/randomiserCancelButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/randomiserGenerateButton" />
+
+    <!--Cancel Button-->
+    <Button
+        android:id="@+id/randomiserCancelButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/shape_round_bottom_left"
+        android:backgroundTint="@color/red"
+        android:text="Cancel"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/randomiserAcceptButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/randomiserRandomNumbers" />
+
+    <!--Accept Button-->
+    <Button
+        android:id="@+id/randomiserAcceptButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/shape_round_bottom_right"
+        android:backgroundTint="@color/green"
+        android:text="Accept"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/randomiserCancelButton"
+        app:layout_constraintTop_toBottomOf="@id/randomiserRandomNumbers" />
+
+</android.support.constraint.ConstraintLayout>
