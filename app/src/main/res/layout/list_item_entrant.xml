@@ -23,8 +23,24 @@
         android:padding="16dp"
         android:text="First and Last Name"
         android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@id/list_view_number"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/list_view_number" />
+
+    <!--Close Entrant-->
+    <ImageView
+        android:id="@+id/list_view_close_entrant_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_round_all"
+        android:padding="8dp"
+        android:src="@drawable/close"
+        android:tint="@color/red"
+        android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="@id/list_view_name_edit"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/list_view_number"
+        app:layout_constraintBottom_toBottomOf="@id/list_view_number" />
 
     <!--Entrant name EDIT-->
     <EditText
@@ -33,12 +49,12 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:hint="Who's this number for...?"
-        android:textSize="18sp"
         android:inputType="textPersonName|textCapWords"
         android:padding="16dp"
+        android:textSize="18sp"
         android:visibility="gone"
-        app:layout_constraintStart_toEndOf="@id/list_view_number"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/list_view_number" />
 
     <!--Save button-->
     <ImageView
@@ -96,7 +112,7 @@
         android:id="@+id/entrantListItemGuideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintGuide_end="56dp"
-        android:orientation="vertical" />
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="56dp" />
 
 </android.support.constraint.ConstraintLayout>

@@ -47,6 +47,7 @@ class EntrantArrayAdapter extends ArrayAdapter<Entrant> {
         tv_name.setText(entrant.getEntrantName());
 
         final EditText et_name = convertView.findViewById(R.id.list_view_name_edit);
+        final ImageView iv_close = convertView.findViewById(R.id.list_view_close_entrant_icon);
         final ImageView iv_save = convertView.findViewById(R.id.list_view_save);
         final ImageView iv_delete = convertView.findViewById(R.id.list_view_delete);
         final ImageView iv_paid = convertView.findViewById(R.id.list_view_paid);
@@ -57,6 +58,7 @@ class EntrantArrayAdapter extends ArrayAdapter<Entrant> {
             public boolean onLongClick(View view) {
                 final int chosenNumber = position + 1;
 
+                iv_close.setVisibility(View.VISIBLE);
                 tv_name.setVisibility(View.GONE);
                 et_name.setVisibility(View.VISIBLE);
                 et_name.setText(entrant.getEntrantName());
@@ -65,6 +67,12 @@ class EntrantArrayAdapter extends ArrayAdapter<Entrant> {
                 showCorrectSaveDeleteIcon(et_name, iv_save, iv_delete);
                 showCorrectPaymentIcon(entrant, et_name, iv_paid, iv_unPaid);
 
+                iv_close.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        closeEntrant();
+                    }
+                });
                 iv_save.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -103,6 +111,10 @@ class EntrantArrayAdapter extends ArrayAdapter<Entrant> {
         setNumberColourOnPaymentChange(entrant, tv_slotNumber);
 
         return convertView;
+    }
+
+    private void closeEntrant() {
+        refreshThisActivity();
     }
 
     /**
@@ -182,6 +194,7 @@ class EntrantArrayAdapter extends ArrayAdapter<Entrant> {
         db.changePaymentStatus(chosenNumber, drawId, status);
 
         refreshThisActivity();
+        ((Activity) getContext()).overridePendingTransition(0, 0);
     }
 
     /**
@@ -207,5 +220,6 @@ class EntrantArrayAdapter extends ArrayAdapter<Entrant> {
         intent.putExtra("DrawId", drawId);
         getContext().startActivity(intent);
         ((Activity) getContext()).finish();
+        ((Activity) getContext()).overridePendingTransition(0, 0);
     }
 }
