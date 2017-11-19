@@ -1,6 +1,9 @@
 package com.example.kemik.bonusball;
 
 import android.app.DialogFragment;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
@@ -56,6 +59,13 @@ public class DrawDetail extends AppCompatActivity
     private Button btn_randomiserAccept;
     private boolean isReady = false;
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
+        finish();
+        overridePendingTransition(0, 0);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -248,8 +258,8 @@ public class DrawDetail extends AppCompatActivity
     }
 
     /**
-     * Populate and make visible a hidden EditText field with the remaining numbers,
-     * so that they can be copied and pasted elsewhere
+     * Populate and make visible a hidden EditText field with the remaining numbers.
+     * Copies remaining numbers to clipboard for ease of pasting elsewhere.
      */
     private void showRemainingNumbers() {
         ArrayList<Integer> remainingNumbers = db.getRemainingNumbers(drawId);
@@ -258,11 +268,24 @@ public class DrawDetail extends AppCompatActivity
         closeFabs();
         openCopyableWindow();
 
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("Available...\n\n* ");
         et_copyableTextWindow.setText("Available...\n\n* ");
         for (int i = 0; i < size; i++) {
+            // Print to screen
             et_copyableTextWindow.append(String.valueOf(remainingNumbers.get(i)));
             et_copyableTextWindow.append(" * ");
+
+            // Add to string builder for clipboard
+            stringBuilder.append(String.valueOf(remainingNumbers.get(i)));
+            stringBuilder.append(" * ");
         }
+
+        // Copy to clipboard for ease of pasting
+        ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData data = ClipData.newPlainText("remainingNumbers", stringBuilder.toString());
+        clipboardManager.setPrimaryClip(data);
+        Toast.makeText(this, "Remaining numbers copied to clipboard!", Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -307,6 +330,7 @@ public class DrawDetail extends AppCompatActivity
      * Gets the name and amount of requested numbers.
      * Gets the [user requested] amount of random numbers from the remainingNumbers.
      * Displays them to the EditText returned randoms field.
+     * Copies random numbers to the clipboard.
      */
     private ArrayList<Entrant> randomiserGenerateButton() {
         final ArrayList<Entrant> entrants = new ArrayList<>();
@@ -365,16 +389,31 @@ public class DrawDetail extends AppCompatActivity
                     // Iterate through the array, displaying the numbers to the EditText field ready for copying.
                     // Create and Entrant from the name and number and add it to the list of entrants,
                     // to be passed for saving.
+                    // Create a stringBuilder for copying to the clipboard.
                     et_returnedRandoms.setText("* ");
+                    StringBuilder stringBuilder = new StringBuilder();
+                    stringBuilder.append("* ");
                     for (int i = 0; i < randomNumbersArray.size(); i++) {
+                        // Display to screen
                         et_returnedRandoms.append(String.valueOf(randomNumbersArray.get(i)));
                         et_returnedRandoms.append(" * ");
+
+                        // Add to stringBuilder
+                        stringBuilder.append(String.valueOf(randomNumbersArray.get(i)));
+                        stringBuilder.append(" * ");
 
                         Entrant entrant = new Entrant();
                         entrant.setEntrantName(randomiserName);
                         entrant.setLineNumber(randomNumbersArray.get(i));
                         entrants.add(entrant);
                     }
+
+                    // Copy to clipboard
+                    ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                    ClipData data = ClipData.newPlainText("generatedNumbers", stringBuilder.toString());
+                    clipboardManager.setPrimaryClip(data);
+                    Toast.makeText(DrawDetail.this, "Random numbers copied to clipboard", Toast.LENGTH_LONG).show();
+
                     // Set isReady to true, so that the Accept Button saves name and numbers to db
                     isReady = true;
                 }
@@ -415,8 +454,8 @@ public class DrawDetail extends AppCompatActivity
     }
 
     /**
-     * Populate and make visible a hidden EditText field with the list of names and numbers,
-     * so that they can be copied and pasted elsewhere
+     * Populate and make visible a hidden EditText field with the list of names and numbers.
+     * Copies remaining numbers to clipboard for ease of pasting elsewhere.
      */
     private void showNamesAndNumbers() {
         ArrayList<Entrant> finalNamesAndNumbers = db.getEntrantsByDrawId(drawId);
@@ -427,22 +466,31 @@ public class DrawDetail extends AppCompatActivity
         closeFabs();
         openCopyableWindow();
 
+        StringBuilder stringBuilder = new StringBuilder();
         et_copyableTextWindow.setText("");
         for (int i = 0; i < size; i++) {
-            // If the lineNumber is a single digit, add a little spacing before for uniformity
-            if (String.valueOf(finalNamesAndNumbers.get(i).getLineNumber()).length() == 1) {
-                et_copyableTextWindow.append("  ");
-            }
             et_copyableTextWindow.append(String.valueOf(finalNamesAndNumbers.get(i).getLineNumber()));
             et_copyableTextWindow.append(" - ");
+
+            // Add to string builder for clipboard
+            stringBuilder.append(String.valueOf(finalNamesAndNumbers.get(i).getLineNumber()));
+            stringBuilder.append(" - ");
 
             // Append name if one exists
             if (finalNamesAndNumbers.get(i).getEntrantName() != null) {
                 et_copyableTextWindow.append(finalNamesAndNumbers.get(i).getEntrantName());
+                stringBuilder.append(finalNamesAndNumbers.get(i).getEntrantName());
             }
 
             et_copyableTextWindow.append("\n");
+            stringBuilder.append("\n");
         }
+
+        // Copy to clipboard for ease of pasting
+        ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData data = ClipData.newPlainText("namesAndNumbers", stringBuilder.toString());
+        clipboardManager.setPrimaryClip(data);
+        Toast.makeText(this, "Name and Numbers copied to clipboard!", Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -454,6 +502,7 @@ public class DrawDetail extends AppCompatActivity
         Intent editIntent = new Intent(DrawDetail.this, EditDraw.class);
         editIntent.putExtra("DrawId", drawId);
         startActivity(editIntent);
+        finish();
     }
 
     /**

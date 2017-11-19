@@ -32,6 +32,8 @@ public class CreateDraw extends AppCompatActivity
     public void onBackPressed() {
         super.onBackPressed();
         startActivity(new Intent(this, MainActivity.class));
+        finish();
+        overridePendingTransition(0, 0);
     }
 
     @Override

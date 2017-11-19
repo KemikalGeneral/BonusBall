@@ -34,7 +34,9 @@ public class EditDraw extends AppCompatActivity
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        startActivity(new Intent(this, MainActivity.class));
+        startActivity(new Intent(this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
+        finish();
+        overridePendingTransition(0, 0);
     }
 
     @Override

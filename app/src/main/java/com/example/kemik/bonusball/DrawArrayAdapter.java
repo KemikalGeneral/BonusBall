@@ -1,5 +1,6 @@
 package com.example.kemik.bonusball;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -51,6 +52,7 @@ public class DrawArrayAdapter extends ArrayAdapter<Draw> {
                 Intent intent = new Intent(getContext(), DrawDetail.class);
                 intent.putExtra("DrawId", draw.getDrawId());
                 getContext().startActivity(intent);
+                ((Activity) getContext()).finish();
             }
         });
 
@@ -67,6 +69,7 @@ public class DrawArrayAdapter extends ArrayAdapter<Draw> {
                 Intent intent = new Intent(getContext(), MainActivity.class);
                 intent.putExtra("remainingNumbers", remainingNumbers);
                 getContext().startActivity(intent);
+                ((Activity) getContext()).finish();
 
                 return false;
             }
