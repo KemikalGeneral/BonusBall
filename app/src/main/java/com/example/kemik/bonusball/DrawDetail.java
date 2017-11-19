@@ -42,7 +42,7 @@ public class DrawDetail extends AppCompatActivity
     private FloatingActionButton fab_names;
     private FloatingActionButton fab_edit;
     private FloatingActionButton fab_delete;
-    private EditText et_drawDetailSearch;
+    private EditText et_searchBar;
     private boolean isOpen = false;
     private long drawId;
 
@@ -127,7 +127,7 @@ public class DrawDetail extends AppCompatActivity
         fab_names = findViewById(R.id.drawDetailNamesFab);
         fab_edit = findViewById(R.id.drawDetailEditFab);
         fab_delete = findViewById(R.id.drawDetailDeleteFab);
-        et_drawDetailSearch = findViewById(R.id.drawDetailSearch);
+        et_searchBar = findViewById(R.id.drawDetailSearch);
 
         et_copyableTextWindow = findViewById(R.id.copyableTextWindow);
         iv_copyableTextWindowCloseIcon = findViewById(R.id.copyableTextWindowCloseButton);
@@ -223,7 +223,7 @@ public class DrawDetail extends AppCompatActivity
             }
         });
 
-        et_drawDetailSearch.setVisibility(View.VISIBLE);
+        et_searchBar.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -246,7 +246,7 @@ public class DrawDetail extends AppCompatActivity
         fab_names.setVisibility(View.GONE);
         fab_delete.setVisibility(View.GONE);
         fab_edit.setVisibility(View.GONE);
-        et_drawDetailSearch.setVisibility(View.GONE);
+        et_searchBar.setVisibility(View.GONE);
     }
 
     /**
