@@ -12,6 +12,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.kemik.bonusball.Database.DBHelper;
+
 import java.text.DateFormat;
 import java.util.Calendar;
 

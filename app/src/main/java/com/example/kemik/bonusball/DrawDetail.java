@@ -18,6 +18,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.kemik.bonusball.Database.DBHelper;
 import com.example.kemik.bonusball.Entities.Draw;
 import com.example.kemik.bonusball.Entities.Entrant;
 
@@ -226,7 +227,7 @@ public class DrawDetail extends AppCompatActivity
             }
         });
 
-        et_searchBar.setVisibility(View.VISIBLE);
+//        et_searchBar.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -234,8 +235,6 @@ public class DrawDetail extends AppCompatActivity
      */
     private void openCopyableWindow() {
         cl_copyableWindowContainer.setVisibility(View.VISIBLE);
-//        tv_copyableTextWindow.setVisibility(View.VISIBLE);
-//        iv_copyableTextWindowCloseIcon.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -250,7 +249,8 @@ public class DrawDetail extends AppCompatActivity
         fab_names.setVisibility(View.GONE);
         fab_delete.setVisibility(View.GONE);
         fab_edit.setVisibility(View.GONE);
-        et_searchBar.setVisibility(View.GONE);
+
+//        et_searchBar.setVisibility(View.GONE);
     }
 
     /**
@@ -258,8 +258,6 @@ public class DrawDetail extends AppCompatActivity
      */
     private void closeCopyableWindow() {
         cl_copyableWindowContainer.setVisibility(View.GONE);
-//        tv_copyableTextWindow.setVisibility(View.GONE);
-//        iv_copyableTextWindowCloseIcon.setVisibility(View.GONE);
     }
 
     /**

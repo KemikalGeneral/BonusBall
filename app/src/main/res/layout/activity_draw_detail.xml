@@ -156,6 +156,7 @@
         android:layout_margin="16dp"
         android:alpha=".85"
         android:background="@drawable/shape_round_all"
+        android:paddingBottom="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -172,43 +173,17 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
-    <!--Delete FAB-->
+    <!--Numbers FAB-->
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/drawDetailDeleteFab"
+        android:id="@+id/drawDetailNumbersFab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:src="@drawable/delete"
+        android:src="@drawable/find_numbers"
         android:tint="#fff"
         android:visibility="gone"
-        app:backgroundTint="@color/red"
-        app:layout_constraintBottom_toTopOf="@id/drawDetailFab"
-        app:layout_constraintRight_toRightOf="parent" />
-
-    <!--Edit FAB-->
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/drawDetailEditFab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:src="@drawable/edit"
-        android:tint="#fff"
-        android:visibility="gone"
-        app:backgroundTint="@color/yellow"
-        app:layout_constraintBottom_toTopOf="@id/drawDetailDeleteFab"
-        app:layout_constraintRight_toRightOf="parent" />
-
-    <!--Names FAB-->
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/drawDetailNamesFab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:src="@drawable/names_numbers"
-        android:tint="#fff"
-        android:visibility="gone"
-        app:backgroundTint="@color/pink"
-        app:layout_constraintBottom_toTopOf="@id/drawDetailEditFab"
+        app:backgroundTint="@color/orange"
+        app:layout_constraintBottom_toTopOf="@id/drawDetailRandomsFab"
         app:layout_constraintRight_toRightOf="parent" />
 
     <!--Randoms FAB-->
@@ -224,17 +199,43 @@
         app:layout_constraintBottom_toTopOf="@id/drawDetailNamesFab"
         app:layout_constraintRight_toRightOf="parent" />
 
-    <!--Numbers FAB-->
+    <!--Names FAB-->
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/drawDetailNumbersFab"
+        android:id="@+id/drawDetailNamesFab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:src="@drawable/find_numbers"
+        android:src="@drawable/names_numbers"
         android:tint="#fff"
         android:visibility="gone"
-        app:backgroundTint="@color/orange"
-        app:layout_constraintBottom_toTopOf="@id/drawDetailRandomsFab"
+        app:backgroundTint="@color/pink"
+        app:layout_constraintBottom_toTopOf="@id/drawDetailEditFab"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <!--Edit FAB-->
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/drawDetailEditFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:src="@drawable/edit"
+        android:tint="#fff"
+        android:visibility="gone"
+        app:backgroundTint="@color/yellow"
+        app:layout_constraintBottom_toTopOf="@id/drawDetailDeleteFab"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <!--Delete FAB-->
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/drawDetailDeleteFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:src="@drawable/delete"
+        android:tint="#fff"
+        android:visibility="gone"
+        app:backgroundTint="@color/red"
+        app:layout_constraintBottom_toTopOf="@id/drawDetailFab"
         app:layout_constraintRight_toRightOf="parent" />
 
     <!--Search Bar-->
@@ -255,7 +256,6 @@
 
     <!--Copyable text window-->
     <include layout="@layout/copyable_window" />
-
 
     <!--Random number generator section (Randomiser) -->
     <include layout="@layout/randomiser" />

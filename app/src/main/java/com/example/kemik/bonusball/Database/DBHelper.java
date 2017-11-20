@@ -1,4 +1,4 @@
-package com.example.kemik.bonusball;
+package com.example.kemik.bonusball.Database;
 
 import android.content.ContentValues;
 import android.content.Context;
