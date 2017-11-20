@@ -1,4 +1,4 @@
-package com.example.kemik.bonusball;
+package com.example.kemik.bonusball.Database;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -312,6 +312,38 @@ public class DBHelper extends SQLiteOpenHelper {
         db.close();
 
         return remainingNumbers;
+    }
+
+    /**
+     * Return all details of remaining Entrants for the given drawId
+     *
+     * @param drawId
+     * @return
+     */
+    public ArrayList<Entrant> getRemainingEntrants(long drawId) {
+        SQLiteDatabase db = getReadableDatabase();
+        ArrayList<Entrant> entrants = new ArrayList<>();
+
+        Cursor cursor = db.rawQuery(
+                "SELECT * FROM " + ENTRANT_TABLE + " WHERE " + COLUMN_DRAW + " = " + drawId, null
+        );
+
+        if (cursor.moveToFirst()) {
+            do {
+                Entrant entrant = new Entrant();
+                entrant.setEntrantId(cursor.getLong(cursor.getColumnIndex(COLUMN_ENTRANT_ID)));
+                entrant.setEntrantName(cursor.getString(cursor.getColumnIndex(COLUMN_ENTRANT_NAME)));
+                entrant.setLineNumber(cursor.getInt(cursor.getColumnIndex(COLUMN_LINE_NUMBER)));
+                entrant.setPaymentStatus(cursor.getString(cursor.getColumnIndex(COLUMN_PAYMENT_STATUS)));
+                entrant.setDrawId(cursor.getLong(cursor.getColumnIndex(COLUMN_DRAW)));
+                entrants.add(entrant);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+
+        return entrants;
     }
 
     /**

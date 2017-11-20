@@ -18,6 +18,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.kemik.bonusball.Database.DBHelper;
 import com.example.kemik.bonusball.Entities.Draw;
 import com.example.kemik.bonusball.Entities.Entrant;
 
@@ -42,10 +43,12 @@ public class DrawDetail extends AppCompatActivity
     private FloatingActionButton fab_names;
     private FloatingActionButton fab_edit;
     private FloatingActionButton fab_delete;
+    private EditText et_searchBar;
     private boolean isOpen = false;
     private long drawId;
 
-    private EditText et_copyableTextWindow;
+    private ConstraintLayout cl_copyableWindowContainer;
+    private TextView tv_copyableTextWindow;
     private ImageView iv_copyableTextWindowCloseIcon;
 
     // Randomiser
@@ -126,8 +129,11 @@ public class DrawDetail extends AppCompatActivity
         fab_names = findViewById(R.id.drawDetailNamesFab);
         fab_edit = findViewById(R.id.drawDetailEditFab);
         fab_delete = findViewById(R.id.drawDetailDeleteFab);
+        et_searchBar = findViewById(R.id.drawDetailSearch);
 
-        et_copyableTextWindow = findViewById(R.id.copyableTextWindow);
+        // Copyable text window
+        cl_copyableWindowContainer = findViewById(R.id.copyableTextWindowContainer);
+        tv_copyableTextWindow = findViewById(R.id.copyableTextWindow);
         iv_copyableTextWindowCloseIcon = findViewById(R.id.copyableTextWindowCloseButton);
 
         // Randomiser
@@ -220,14 +226,15 @@ public class DrawDetail extends AppCompatActivity
                 deleteDraw(drawId);
             }
         });
+
+//        et_searchBar.setVisibility(View.VISIBLE);
     }
 
     /**
      * When required, an EditText fields shows containing copyable data
      */
     private void openCopyableWindow() {
-        et_copyableTextWindow.setVisibility(View.VISIBLE);
-        iv_copyableTextWindowCloseIcon.setVisibility(View.VISIBLE);
+        cl_copyableWindowContainer.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -242,14 +249,15 @@ public class DrawDetail extends AppCompatActivity
         fab_names.setVisibility(View.GONE);
         fab_delete.setVisibility(View.GONE);
         fab_edit.setVisibility(View.GONE);
+
+//        et_searchBar.setVisibility(View.GONE);
     }
 
     /**
      * When not longer required, close the EditText (and subsequent close icon)
      */
     private void closeCopyableWindow() {
-        et_copyableTextWindow.setVisibility(View.GONE);
-        iv_copyableTextWindowCloseIcon.setVisibility(View.GONE);
+        cl_copyableWindowContainer.setVisibility(View.GONE);
     }
 
     /**
@@ -265,11 +273,11 @@ public class DrawDetail extends AppCompatActivity
 
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("Available...\n\n* ");
-        et_copyableTextWindow.setText("Available...\n\n* ");
+        tv_copyableTextWindow.setText("Available...\n\n* ");
         for (int i = 0; i < size; i++) {
             // Print to screen
-            et_copyableTextWindow.append(String.valueOf(remainingNumbers.get(i)));
-            et_copyableTextWindow.append(" * ");
+            tv_copyableTextWindow.append(String.valueOf(remainingNumbers.get(i)));
+            tv_copyableTextWindow.append(" * ");
 
             // Add to string builder for clipboard
             stringBuilder.append(String.valueOf(remainingNumbers.get(i)));
@@ -335,17 +343,29 @@ public class DrawDetail extends AppCompatActivity
             public void onClick(View v) {
                 System.out.println("=============================================================");
                 System.out.println("DrawDetail - randomiserGenerateButton()...");
+                String randomiserName = null;
+                int randomiserAmountOfNumbers = 0;
 
                 // Clear the Entrants array to avoid duplicate entries on multiple generations
                 entrants.clear();
 
-                // Get name
-                String randomiserName = et_randomiserName.getText().toString().trim();
-                System.out.println("DrawDetail - randomiserGenerateButton - randomiserName: " + randomiserName);
+                // Validate and get name
+                if (et_randomiserName.getText().toString().trim().equals("")) {
+                    Toast.makeText(DrawDetail.this, "Who are these for...?", Toast.LENGTH_SHORT).show();
+                    return;
+                } else {
+                    randomiserName = et_randomiserName.getText().toString().trim();
+                    System.out.println("DrawDetail - randomiserGenerateButton - randomiserName: " + randomiserName);
+                }
 
-                // Get amount of numbers required
-                int randomiserAmountOfNumbers = Integer.parseInt(et_amountOfNumbers.getText().toString().trim());
-                System.out.println("DrawDetail - randomiserGenerateButton - randomiserAmountOfNumbers: " + randomiserAmountOfNumbers);
+                // Validate and get amount of numbers required
+                if (et_amountOfNumbers.getText().toString().trim().equals("")) {
+                    Toast.makeText(DrawDetail.this, "How many numbers...?", Toast.LENGTH_SHORT).show();
+                    return;
+                } else {
+                    randomiserAmountOfNumbers = Integer.parseInt(et_amountOfNumbers.getText().toString().trim());
+                    System.out.println("DrawDetail - randomiserGenerateButton - randomiserAmountOfNumbers: " + randomiserAmountOfNumbers);
+                }
 
                 // Get a list of the remaining numbers for this draw
                 ArrayList<Integer> remainingNumbers = db.getRemainingNumbers(drawId);
@@ -450,10 +470,10 @@ public class DrawDetail extends AppCompatActivity
         openCopyableWindow();
 
         StringBuilder stringBuilder = new StringBuilder();
-        et_copyableTextWindow.setText("");
+        tv_copyableTextWindow.setText("");
         for (int i = 0; i < size; i++) {
-            et_copyableTextWindow.append(String.valueOf(finalNamesAndNumbers.get(i).getLineNumber()));
-            et_copyableTextWindow.append(" - ");
+            tv_copyableTextWindow.append(String.valueOf(finalNamesAndNumbers.get(i).getLineNumber()));
+            tv_copyableTextWindow.append(" - ");
 
             // Add to string builder for clipboard
             stringBuilder.append(String.valueOf(finalNamesAndNumbers.get(i).getLineNumber()));
@@ -461,11 +481,11 @@ public class DrawDetail extends AppCompatActivity
 
             // Append name if one exists
             if (finalNamesAndNumbers.get(i).getEntrantName() != null) {
-                et_copyableTextWindow.append(finalNamesAndNumbers.get(i).getEntrantName());
+                tv_copyableTextWindow.append(finalNamesAndNumbers.get(i).getEntrantName());
                 stringBuilder.append(finalNamesAndNumbers.get(i).getEntrantName());
             }
 
-            et_copyableTextWindow.append("\n");
+            tv_copyableTextWindow.append("\n");
             stringBuilder.append("\n");
         }
 

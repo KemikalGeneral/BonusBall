@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.example.kemik.bonusball.Database.DBHelper;
 import com.example.kemik.bonusball.Entities.Draw;
 
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ public class DrawArrayAdapter extends ArrayAdapter<Draw> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.draw_list_item, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item_draw, parent, false);
         }
 
         final Draw draw = getItem(position);

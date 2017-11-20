@@ -7,16 +7,27 @@
     android:layout_height="match_parent"
     tools:context="com.example.kemik.bonusball.DrawDetail">
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha=".25"
+            android:scaleType="matrix"
+            android:src="@drawable/background" />
+    </FrameLayout>
+
     <!--Main title-->
     <TextView
         android:id="@+id/drawName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:paddingBottom="16dp"
-        android:paddingTop="32dp"
+        android:padding="16dp"
         android:text="Draw Name"
         android:textAlignment="center"
-        android:textSize="48sp"
+        android:textSize="36sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
@@ -38,7 +49,7 @@
         android:layout_height="wrap_content"
         android:text="Draw amount"
         android:textAlignment="center"
-        android:textColor="#c8c8c8"
+        android:textColor="@color/grey"
         android:textSize="12sp"
         app:layout_constraintLeft_toLeftOf="@id/drawValue"
         app:layout_constraintRight_toRightOf="@id/drawValue"
@@ -52,7 +63,7 @@
         android:padding="16dp"
         android:text="Draw Value"
         android:textAlignment="center"
-        android:textSize="24sp"
+        android:textSize="20sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@id/valueJoiner"
         app:layout_constraintTop_toBottomOf="@id/startDate" />
@@ -78,7 +89,7 @@
         android:layout_height="wrap_content"
         android:text="Ticket value"
         android:textAlignment="center"
-        android:textColor="#c8c8c8"
+        android:textColor="@color/grey"
         android:textSize="12sp"
         app:layout_constraintLeft_toLeftOf="@id/ticketValue"
         app:layout_constraintRight_toRightOf="@id/ticketValue"
@@ -92,7 +103,7 @@
         android:padding="16dp"
         android:text="Ticket Value"
         android:textAlignment="center"
-        android:textSize="24sp"
+        android:textSize="20sp"
         app:layout_constraintLeft_toRightOf="@id/valueJoiner"
         app:layout_constraintRight_toLeftOf="@id/equalsJoiner"
         app:layout_constraintTop_toBottomOf="@id/startDate" />
@@ -118,7 +129,7 @@
         android:layout_height="wrap_content"
         android:text="Profit"
         android:textAlignment="center"
-        android:textColor="#c8c8c8"
+        android:textColor="@color/grey"
         android:textSize="12sp"
         app:layout_constraintLeft_toLeftOf="@id/profit"
         app:layout_constraintRight_toRightOf="@id/profit"
@@ -132,7 +143,7 @@
         android:padding="16dp"
         android:text="Profit"
         android:textAlignment="center"
-        android:textSize="24sp"
+        android:textSize="20sp"
         app:layout_constraintLeft_toRightOf="@id/equalsJoiner"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/startDate" />
@@ -140,9 +151,15 @@
     <!--Numbers ListView-->
     <ListView
         android:id="@+id/numberSlotListView"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_margin="16dp"
+        android:alpha=".85"
+        android:background="@drawable/shape_round_all"
+        android:paddingBottom="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/drawValue" />
 
     <!--Options FAB-->
@@ -150,62 +167,10 @@
         android:id="@+id/drawDetailFab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_margin="8dp"
         android:src="@drawable/more_menu"
         android:tint="#fff"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
-
-    <!--Delete FAB-->
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/drawDetailDeleteFab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:src="@drawable/delete"
-        android:tint="#fff"
-        android:visibility="gone"
-        app:backgroundTint="@color/red"
-        app:layout_constraintBottom_toTopOf="@id/drawDetailFab"
-        app:layout_constraintRight_toRightOf="parent" />
-
-    <!--Edit FAB-->
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/drawDetailEditFab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:src="@drawable/edit"
-        android:tint="#fff"
-        android:visibility="gone"
-        app:backgroundTint="@color/yellow"
-        app:layout_constraintBottom_toTopOf="@id/drawDetailDeleteFab"
-        app:layout_constraintRight_toRightOf="parent" />
-
-    <!--Names FAB-->
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/drawDetailNamesFab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:src="@drawable/names_numbers"
-        android:tint="#fff"
-        android:visibility="gone"
-        app:backgroundTint="@color/pink"
-        app:layout_constraintBottom_toTopOf="@id/drawDetailEditFab"
-        app:layout_constraintRight_toRightOf="parent" />
-
-    <!--Randoms FAB-->
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/drawDetailRandomsFab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:src="@drawable/randoms"
-        android:tint="#fff"
-        android:visibility="gone"
-        app:backgroundTint="@color/green"
-        app:layout_constraintBottom_toTopOf="@id/drawDetailNamesFab"
         app:layout_constraintRight_toRightOf="parent" />
 
     <!--Numbers FAB-->
@@ -213,7 +178,7 @@
         android:id="@+id/drawDetailNumbersFab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_margin="8dp"
         android:src="@drawable/find_numbers"
         android:tint="#fff"
         android:visibility="gone"
@@ -221,123 +186,78 @@
         app:layout_constraintBottom_toTopOf="@id/drawDetailRandomsFab"
         app:layout_constraintRight_toRightOf="parent" />
 
-    <!--Copyable text window-->
-    <EditText
-        android:id="@+id/copyableTextWindow"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="32dp"
-        android:background="#fff"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:visibility="gone" />
-
-    <!--Copyable text window - close icon-->
-    <ImageView
-        android:id="@+id/copyableTextWindowCloseButton"
+    <!--Randoms FAB-->
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/drawDetailRandomsFab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/close"
-        android:padding="8dp"
-        app:layout_constraintTop_toTopOf="@id/copyableTextWindow"
-        app:layout_constraintRight_toRightOf="@id/copyableTextWindow"
+        android:layout_margin="8dp"
+        android:src="@drawable/randoms"
+        android:tint="#fff"
         android:visibility="gone"
-        android:contentDescription="close icon" />
+        app:backgroundTint="@color/green"
+        app:layout_constraintBottom_toTopOf="@id/drawDetailNamesFab"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <!--Names FAB-->
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/drawDetailNamesFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:src="@drawable/names_numbers"
+        android:tint="#fff"
+        android:visibility="gone"
+        app:backgroundTint="@color/pink"
+        app:layout_constraintBottom_toTopOf="@id/drawDetailEditFab"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <!--Edit FAB-->
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/drawDetailEditFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:src="@drawable/edit"
+        android:tint="#fff"
+        android:visibility="gone"
+        app:backgroundTint="@color/yellow"
+        app:layout_constraintBottom_toTopOf="@id/drawDetailDeleteFab"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <!--Delete FAB-->
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/drawDetailDeleteFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:src="@drawable/delete"
+        android:tint="#fff"
+        android:visibility="gone"
+        app:backgroundTint="@color/red"
+        app:layout_constraintBottom_toTopOf="@id/drawDetailFab"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <!--Search Bar-->
+    <EditText
+        android:id="@+id/drawDetailSearch"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:background="@drawable/shape_round_all"
+        android:hint="Search for which name...?"
+        android:padding="16dp"
+        android:textSize="18sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/drawDetailFab"
+        app:layout_constraintEnd_toStartOf="@id/drawDetailFab"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/drawDetailFab" />
+
+    <!--Copyable text window-->
+    <include layout="@layout/copyable_window" />
 
     <!--Random number generator section (Randomiser) -->
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/randomiserLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#fff"
-        android:visibility="gone">
+    <include layout="@layout/randomiser" />
 
-        <!--Entrant name-->
-        <EditText
-            android:id="@+id/randomiserName"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:hint="Who's this for...?"
-            android:textSize="18sp"
-            android:textAlignment="center"
-            android:inputType="textPersonName|textCapWords"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/randomiserAmountOfNumbers"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <!--Amount of number to return-->
-        <EditText
-            android:id="@+id/randomiserAmountOfNumbers"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:hint="How many numbers...?"
-            android:textSize="18sp"
-            android:textAlignment="center"
-            android:inputType="number"
-            app:layout_constraintTop_toBottomOf="@id/randomiserName"
-            app:layout_constraintBottom_toTopOf="@id/randomiserGenerateButton"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <!--Generate Button-->
-        <Button
-            android:id="@+id/randomiserGenerateButton"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:text="Generate !"
-            android:textAllCaps="false"
-            android:textSize="18sp"
-            android:textAlignment="center"
-            app:layout_constraintTop_toBottomOf="@id/randomiserAmountOfNumbers"
-            app:layout_constraintBottom_toTopOf="@id/randomiserRandomNumbers"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <!--Returned random numbers-->
-        <EditText
-            android:id="@+id/randomiserRandomNumbers"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:textSize="18sp"
-            android:textAlignment="center"
-            app:layout_constraintTop_toBottomOf="@id/randomiserGenerateButton"
-            app:layout_constraintBottom_toTopOf="@id/randomiserCancelButton"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:hint=". . . . . . . . ." />
-
-        <!--Cancel Button-->
-        <Button
-            android:id="@+id/randomiserCancelButton"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@color/red"
-            android:text="Cancel"
-            android:textAllCaps="false"
-            android:textSize="18sp"
-            android:textAlignment="center"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/randomiserAcceptButton"
-            app:layout_constraintTop_toBottomOf="@id/randomiserRandomNumbers"
-            app:layout_constraintBottom_toBottomOf="parent" />
-
-        <!--Accept Button-->
-        <Button
-            android:id="@+id/randomiserAcceptButton"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@color/green"
-            android:text="Accept"
-            android:textAllCaps="false"
-            android:textSize="18sp"
-            android:textAlignment="center"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/randomiserCancelButton"
-            app:layout_constraintTop_toBottomOf="@id/randomiserRandomNumbers"
-            app:layout_constraintBottom_toBottomOf="parent" />
-
-    </android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>
