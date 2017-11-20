@@ -60,8 +60,8 @@
     <ImageView
         android:id="@+id/list_view_save"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
+        android:layout_height="0dp"
+        android:paddingVertical="16dp"
         android:contentDescription="Save icon"
         android:src="@drawable/tick"
         android:visibility="gone"
@@ -73,8 +73,8 @@
     <ImageView
         android:id="@+id/list_view_delete"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
+        android:layout_height="0dp"
+        android:paddingVertical="16dp"
         android:contentDescription="Delete icon"
         android:src="@drawable/delete"
         android:visibility="gone"
@@ -86,11 +86,12 @@
     <ImageView
         android:id="@+id/list_view_paid"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:contentDescription="Paid icon"
         android:src="@drawable/pound"
         android:tint="@color/green"
         android:visibility="gone"
+        android:paddingVertical="16dp"
         app:layout_constraintBottom_toBottomOf="@id/list_view_number"
         app:layout_constraintEnd_toStartOf="@id/entrantListItemGuideline"
         app:layout_constraintTop_toTopOf="@id/list_view_number" />
@@ -99,11 +100,12 @@
     <ImageView
         android:id="@+id/list_view_unpaid"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:contentDescription="Unpaid icon"
         android:src="@drawable/pound"
         android:tint="@color/red"
         android:visibility="gone"
+        android:paddingVertical="16dp"
         app:layout_constraintBottom_toBottomOf="@id/list_view_number"
         app:layout_constraintEnd_toStartOf="@id/entrantListItemGuideline"
         app:layout_constraintTop_toTopOf="@id/list_view_number" />
@@ -113,6 +115,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_end="56dp" />
+        app:layout_constraintGuide_end="32dp" />
 
 </android.support.constraint.ConstraintLayout>
