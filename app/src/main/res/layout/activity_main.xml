@@ -27,7 +27,8 @@
         android:text="Big Prize Bonus Ball"
         android:textAlignment="center"
         android:textSize="36sp"
-        android:paddingTop="16dp" />
+        android:paddingTop="32dp"
+        android:paddingBottom="16dp" />
 
     <!--Draws ListView-->
     <ListView
