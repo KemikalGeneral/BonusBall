@@ -57,7 +57,8 @@ class EntrantArrayAdapter extends ArrayAdapter<Entrant> {
         convertView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                final int chosenNumber = position + 1;
+//                final int chosenNumber = position + 1;
+                final int chosenNumber = entrant.getLineNumber();
 
                 iv_close.setVisibility(View.VISIBLE);
                 tv_name.setVisibility(View.GONE);

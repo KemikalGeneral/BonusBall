@@ -70,15 +70,12 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        System.out.println("z! ===== ===== ===== ===== =====");
-        System.out.println("z! DBHelper - onCreate()...");
         db.execSQL(CREATE_DRAW_TABLE);
         db.execSQL(CREATE_ENTRANT_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        System.out.println("z! DBHelper - onUpgrade()...");
         db.execSQL("DROP TABLE IF EXISTS " + ENTRANT_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + DRAW_TABLE);
         onCreate(db);
@@ -89,9 +86,6 @@ public class DBHelper extends SQLiteOpenHelper {
      * Also creates 59 numbered lines in an Entrant Table with the drawId
      */
     public void createNewDraw(String drawName, double drawValue, double ticketValue, long startDate) {
-        System.out.println("z! ===== ===== ===== ===== =====");
-        System.out.println("z! DBHelper - createNewDraw()...");
-
         SQLiteDatabase db = getWritableDatabase();
 
         ContentValues drawValues = new ContentValues();
@@ -116,8 +110,6 @@ public class DBHelper extends SQLiteOpenHelper {
      * Select all details of all draws, ordered by newest first
      */
     public ArrayList<Draw> getDraws() {
-        System.out.println("z! ===== ===== ===== ===== =====");
-        System.out.println("z! DBHelper - getDraws()...");
         SQLiteDatabase db = getReadableDatabase();
         ArrayList<Draw> draws = new ArrayList<>();
 
@@ -127,7 +119,6 @@ public class DBHelper extends SQLiteOpenHelper {
         );
 
         if (cursor.moveToFirst()) {
-            System.out.println("z! DBHelper - getDraws - moveToFirst");
             do {
                 Draw draw = new Draw();
                 draw.setDrawId(cursor.getLong(cursor.getColumnIndex(COLUMN_DRAW_ID)));
@@ -136,7 +127,6 @@ public class DBHelper extends SQLiteOpenHelper {
                 draw.setTicketValue(cursor.getDouble(cursor.getColumnIndex(COLUMN_TICKET_VALUE)));
                 draw.setStartDate(cursor.getLong(cursor.getColumnIndex(COLUMN_START_DATE)));
                 draws.add(draw);
-                System.out.println("z! DBHelper - getDraws - drawsNames:" + draw.getDrawName());
             } while (cursor.moveToNext());
         }
 
@@ -152,9 +142,6 @@ public class DBHelper extends SQLiteOpenHelper {
      * @return
      */
     public Draw getDrawById(long drawId) {
-        System.out.println("z! ===== ===== ===== ===== =====");
-        System.out.println("z! DBHelper - getDrawById()...");
-
         SQLiteDatabase db = getReadableDatabase();
         Draw draw = new Draw();
 
@@ -207,9 +194,6 @@ public class DBHelper extends SQLiteOpenHelper {
      * @return
      */
     public ArrayList<Entrant> getEntrantsByDrawId(long drawId) {
-        System.out.println("z! ===== ===== ===== ===== =====");
-        System.out.println("z! DBHelper - getEntrantsByDrawId()...");
-
         SQLiteDatabase db = getReadableDatabase();
         ArrayList<Entrant> entrants = new ArrayList<>();
         Cursor cursor = db.rawQuery(
@@ -244,12 +228,6 @@ public class DBHelper extends SQLiteOpenHelper {
      * @param lineNumber
      */
     public void updateNameToChosenNumber(String name, int lineNumber, long drawId) {
-        System.out.println("z! ===== ===== ===== ===== =====");
-        System.out.println("z! DBHelper - updateNameToChosenNumber()...");
-        System.out.println("z! DBHelper - updateNameToChosenNumber() - name: " + name);
-        System.out.println("z! DBHelper - updateNameToChosenNumber() - lineNumber: " + lineNumber);
-        System.out.println("z! DBHelper - updateNameToChosenNumber() - drawId: " + drawId);
-
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
 
@@ -351,8 +329,6 @@ public class DBHelper extends SQLiteOpenHelper {
      * @param drawId
      */
     public void deleteDraw(long drawId) {
-        System.out.println("z! ===== ===== ===== ===== =====");
-        System.out.println("z! DBHelper - deleteDraw()...");
         SQLiteDatabase db = getWritableDatabase();
         db.delete(ENTRANT_TABLE, COLUMN_DRAW + " = " + drawId, null);
         db.delete(DRAW_TABLE, COLUMN_DRAW_ID + " = " + drawId, null);
@@ -365,12 +341,17 @@ public class DBHelper extends SQLiteOpenHelper {
      * @param db
      */
     public void dropTables(SQLiteDatabase db) {
-        System.out.println("z! ===== ===== ===== ===== =====");
-        System.out.println("z! DBHelper - dropTables()...");
         db.execSQL("DROP TABLE IF EXISTS " + DRAW_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + ENTRANT_TABLE);
     }
 
+    /**
+     * Update row paymentStatus to the 'status' using the lineNumber and drawId
+     *
+     * @param lineNumber
+     * @param drawId
+     * @param status
+     */
     public void changePaymentStatus(int lineNumber, long drawId, String status) {
 
         SQLiteDatabase db = getWritableDatabase();
@@ -380,5 +361,42 @@ public class DBHelper extends SQLiteOpenHelper {
         db.update(ENTRANT_TABLE, values, COLUMN_LINE_NUMBER + " = " + lineNumber + " AND " + COLUMN_DRAW + " = " + drawId, null);
 
         db.close();
+    }
+
+    /**
+     * Return all details of all Entrants matching the drawId and name LIKE name
+     *
+     * @param name
+     * @param drawId
+     * @return
+     */
+    public ArrayList<Entrant> getFilteredEntrantsByDrawId(String name, long drawId) {
+        SQLiteDatabase db = getReadableDatabase();
+        ArrayList<Entrant> entrants = new ArrayList<>();
+
+        Cursor cursor = db.rawQuery(
+                "SELECT * FROM " + ENTRANT_TABLE +
+                        " WHERE " + COLUMN_DRAW + " = " + drawId +
+                        " AND " + COLUMN_ENTRANT_NAME + " LIKE '" + name + "%'",
+                null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Entrant entrant = new Entrant();
+
+                entrant.setDrawId(cursor.getLong(cursor.getColumnIndex(COLUMN_ENTRANT_ID)));
+                entrant.setEntrantName(cursor.getString(cursor.getColumnIndex(COLUMN_ENTRANT_NAME)));
+                entrant.setLineNumber(cursor.getInt(cursor.getColumnIndex(COLUMN_LINE_NUMBER)));
+                entrant.setPaymentStatus(cursor.getString(cursor.getColumnIndex(COLUMN_PAYMENT_STATUS)));
+                entrant.setDrawId(cursor.getLong(cursor.getColumnIndex(COLUMN_DRAW)));
+
+                entrants.add(entrant);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+
+        return entrants;
     }
 }

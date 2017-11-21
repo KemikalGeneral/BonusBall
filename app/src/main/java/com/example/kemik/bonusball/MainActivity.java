@@ -78,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent.hasExtra("remainingNumbers")) {
             ArrayList<Integer> remainingNumbers = intent.getIntegerArrayListExtra("remainingNumbers");
-            System.out.println("remainingNumbers: " + remainingNumbers.size());
 
             et_remainingNumbers.setVisibility(View.VISIBLE);
             iv_remainingNumbersClose.setVisibility(View.VISIBLE);
