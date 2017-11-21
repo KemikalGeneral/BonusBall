@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,6 +33,7 @@ public class DrawDetail extends AppCompatActivity
         implements ConfirmationDialog.ConfirmationDialogListener {
 
     private DBHelper db;
+    private EntrantArrayAdapter entrantArrayAdapter;
     private TextView tv_drawName;
     private TextView tv_startDate;
     private TextView tv_drawValue;
@@ -129,6 +132,8 @@ public class DrawDetail extends AppCompatActivity
         fab_names = findViewById(R.id.drawDetailNamesFab);
         fab_edit = findViewById(R.id.drawDetailEditFab);
         fab_delete = findViewById(R.id.drawDetailDeleteFab);
+
+        // Search bar
         et_searchBar = findViewById(R.id.drawDetailSearch);
 
         // Copyable text window
@@ -174,7 +179,7 @@ public class DrawDetail extends AppCompatActivity
      * ...Set adapter
      */
     private void setupAndDisplayListView(Draw draw) {
-        EntrantArrayAdapter entrantArrayAdapter = new EntrantArrayAdapter(this, draw.getDrawId());
+        entrantArrayAdapter = new EntrantArrayAdapter(this, draw.getDrawId());
         entrantArrayAdapter.addAll(db.getEntrantsByDrawId(draw.getDrawId()));
         lv_numberSlotListView.setAdapter(entrantArrayAdapter);
     }
@@ -227,8 +232,48 @@ public class DrawDetail extends AppCompatActivity
             }
         });
 
-//        et_searchBar.setVisibility(View.VISIBLE);
+        et_searchBar.setVisibility(View.VISIBLE);
+        et_searchBar.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // Do nothing
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String name = et_searchBar.getText().toString().trim();
+
+                ArrayList<Entrant> filteredEntrants = db.getFilteredEntrantsByDrawId(name, drawId);
+                System.out.println("DrawDetail - searchEntrantForName - filteredEntrants.size: " + filteredEntrants.size());
+
+                entrantArrayAdapter.clear();
+                entrantArrayAdapter.addAll(filteredEntrants);
+                lv_numberSlotListView.setAdapter(entrantArrayAdapter);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Do nothing
+            }
+        });
     }
+
+//    private void searchEntrantsForName() {
+//        // Validate empty editText
+//        if (et_searchBar.getText().toString().trim().equals("")) {
+//            Toast.makeText(this, "Enter something to search for!", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+//
+//        String name = et_searchBar.getText().toString().trim();
+//
+//        ArrayList<Entrant> filteredEntrants = db.getFilteredEntrantsByDrawId(name, drawId);
+//        System.out.println("DrawDetail - searchEntrantForName - filteredEntrants.size: " + filteredEntrants.size());
+//
+//        entrantArrayAdapter.clear();
+//        entrantArrayAdapter.addAll(filteredEntrants);
+//        lv_numberSlotListView.setAdapter(entrantArrayAdapter);
+//    }
 
     /**
      * When required, an EditText fields shows containing copyable data
@@ -249,8 +294,7 @@ public class DrawDetail extends AppCompatActivity
         fab_names.setVisibility(View.GONE);
         fab_delete.setVisibility(View.GONE);
         fab_edit.setVisibility(View.GONE);
-
-//        et_searchBar.setVisibility(View.GONE);
+        et_searchBar.setVisibility(View.GONE);
     }
 
     /**
