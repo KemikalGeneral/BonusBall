@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/copyableTextWindowContainer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:alpha=".85"
+    android:background="#000"
+    android:padding="16dp"
+    android:visibility="gone"
+    tools:showIn="@layout/activity_draw_detail">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/copyableTextWindow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:alpha="1"
+                android:background="@drawable/shape_round_all"
+                android:padding="32dp"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!--Copyable text window - close icon-->
+            <ImageView
+                android:id="@+id/copyableTextWindowCloseButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="close icon"
+                android:padding="8dp"
+                android:src="@drawable/close"
+                app:layout_constraintRight_toRightOf="@id/copyableTextWindow"
+                app:layout_constraintTop_toTopOf="@id/copyableTextWindow" />
+
+        </android.support.constraint.ConstraintLayout>
+    </ScrollView>
+</android.support.constraint.ConstraintLayout>

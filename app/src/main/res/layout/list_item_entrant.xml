@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!--Line number-->
+    <TextView
+        android:id="@+id/list_view_number"
+        android:layout_width="55dp"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="11"
+        android:textAlignment="viewEnd"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!--Close Entrant-->
+    <ImageView
+        android:id="@+id/list_view_close_entrant_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_round_all"
+        android:backgroundTint="@color/red"
+        android:padding="4dp"
+        android:src="@drawable/close"
+        android:tint="#fff"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@id/list_view_number"
+        app:layout_constraintStart_toStartOf="@id/list_view_number"
+        app:layout_constraintTop_toTopOf="@id/list_view_number"
+        app:layout_constraintBottom_toBottomOf="@id/list_view_number" />
+
+    <!--Entrant name TEXT-->
+    <TextView
+        android:id="@+id/list_view_name_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="First and Last Name"
+        android:textSize="18sp"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/list_view_number" />
+
+    <!--Entrant name EDIT-->
+    <EditText
+        android:id="@+id/list_view_name_edit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:hint="Who's this number for...?"
+        android:inputType="textPersonName|textCapWords"
+        android:padding="16dp"
+        android:textSize="18sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/list_view_number" />
+
+    <!--Save button-->
+    <ImageView
+        android:id="@+id/list_view_save"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:paddingVertical="16dp"
+        android:contentDescription="Save icon"
+        android:src="@drawable/tick"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/list_view_number"
+        app:layout_constraintEnd_toEndOf="@id/list_view_name_edit"
+        app:layout_constraintStart_toStartOf="@id/entrantListItemGuideline2"
+        app:layout_constraintTop_toTopOf="@id/list_view_number" />
+
+    <!--Delete button-->
+    <ImageView
+        android:id="@+id/list_view_delete"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:paddingVertical="16dp"
+        android:contentDescription="Delete icon"
+        android:src="@drawable/delete"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/list_view_number"
+        app:layout_constraintEnd_toEndOf="@id/list_view_name_edit"
+        app:layout_constraintStart_toStartOf="@id/entrantListItemGuideline2"
+        app:layout_constraintTop_toTopOf="@id/list_view_number" />
+
+    <!--Payment status PAID-->
+    <ImageView
+        android:id="@+id/list_view_paid"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:contentDescription="Paid icon"
+        android:src="@drawable/pound"
+        android:tint="@color/green"
+        android:visibility="gone"
+        android:paddingVertical="16dp"
+        app:layout_constraintBottom_toBottomOf="@id/list_view_number"
+        app:layout_constraintStart_toStartOf="@id/entrantListItemGuideline1"
+        app:layout_constraintEnd_toStartOf="@id/entrantListItemGuideline2"
+        app:layout_constraintTop_toTopOf="@id/list_view_number" />
+
+    <!--Payment status UNPAID-->
+    <ImageView
+        android:id="@+id/list_view_unpaid"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:contentDescription="Unpaid icon"
+        android:src="@drawable/pound"
+        android:tint="@color/red"
+        android:visibility="gone"
+        android:paddingVertical="16dp"
+        app:layout_constraintBottom_toBottomOf="@id/list_view_number"
+        app:layout_constraintStart_toStartOf="@id/entrantListItemGuideline1"
+        app:layout_constraintEnd_toStartOf="@id/entrantListItemGuideline2"
+        app:layout_constraintTop_toTopOf="@id/list_view_number" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/entrantListItemGuideline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="72dp" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/entrantListItemGuideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="40dp" />
+
+</android.support.constraint.ConstraintLayout>

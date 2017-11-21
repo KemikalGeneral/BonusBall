@@ -1,27 +1,39 @@
 package com.example.kemik.bonusball;
 
 import android.app.DialogFragment;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.kemik.bonusball.Database.DBHelper;
 import com.example.kemik.bonusball.Entities.Draw;
 import com.example.kemik.bonusball.Entities.Entrant;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 
-public class DrawDetail extends AppCompatActivity implements ConfirmationDialog.ConfirmationDialogListener {
+public class DrawDetail extends AppCompatActivity
+        implements ConfirmationDialog.ConfirmationDialogListener {
 
     private DBHelper db;
+    private EntrantArrayAdapter entrantArrayAdapter;
     private TextView tv_drawName;
     private TextView tv_startDate;
     private TextView tv_drawValue;
@@ -34,11 +46,31 @@ public class DrawDetail extends AppCompatActivity implements ConfirmationDialog.
     private FloatingActionButton fab_names;
     private FloatingActionButton fab_edit;
     private FloatingActionButton fab_delete;
+    private EditText et_searchBar;
     private boolean isOpen = false;
     private long drawId;
 
-    private EditText et_copyableTextWindow;
+    private ConstraintLayout cl_copyableWindowContainer;
+    private TextView tv_copyableTextWindow;
     private ImageView iv_copyableTextWindowCloseIcon;
+
+    // Randomiser
+    private ConstraintLayout cl_randomiserLayout;
+    private EditText et_randomiserName;
+    private EditText et_amountOfNumbers;
+    private Button btn_generateRandoms;
+    private EditText et_returnedRandoms;
+    private Button btn_randomiserCancel;
+    private Button btn_randomiserAccept;
+    private boolean isReady = false;
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
+        finish();
+        overridePendingTransition(0, 0);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,8 +133,22 @@ public class DrawDetail extends AppCompatActivity implements ConfirmationDialog.
         fab_edit = findViewById(R.id.drawDetailEditFab);
         fab_delete = findViewById(R.id.drawDetailDeleteFab);
 
-        et_copyableTextWindow = findViewById(R.id.copyableTextWindow);
+        // Search bar
+        et_searchBar = findViewById(R.id.drawDetailSearch);
+
+        // Copyable text window
+        cl_copyableWindowContainer = findViewById(R.id.copyableTextWindowContainer);
+        tv_copyableTextWindow = findViewById(R.id.copyableTextWindow);
         iv_copyableTextWindowCloseIcon = findViewById(R.id.copyableTextWindowCloseButton);
+
+        // Randomiser
+        cl_randomiserLayout = findViewById(R.id.randomiserLayout);
+        et_randomiserName = findViewById(R.id.randomiserName);
+        et_amountOfNumbers = findViewById(R.id.randomiserAmountOfNumbers);
+        btn_generateRandoms = findViewById(R.id.randomiserGenerateButton);
+        et_returnedRandoms = findViewById(R.id.randomiserRandomNumbers);
+        btn_randomiserCancel = findViewById(R.id.randomiserCancelButton);
+        btn_randomiserAccept = findViewById(R.id.randomiserAcceptButton);
     }
 
     /**
@@ -127,14 +173,45 @@ public class DrawDetail extends AppCompatActivity implements ConfirmationDialog.
     }
 
     /**
-     * SetUp and display the ListView
+     * SetUp and display the ListView according to the state of the searchBar (populated or not)
      * ...Create a new ArrayAdapter
      * ...AddAll Draws from DB
      * ...Set adapter
      */
-    private void setupAndDisplayListView(Draw draw) {
-        EntrantArrayAdapter entrantArrayAdapter = new EntrantArrayAdapter(this, draw.getDrawId());
+    private void setupAndDisplayListView(final Draw draw) {
+        // Create a new adapter and add all of the Entrants for this Draw
+        entrantArrayAdapter = new EntrantArrayAdapter(this, draw.getDrawId());
         entrantArrayAdapter.addAll(db.getEntrantsByDrawId(draw.getDrawId()));
+
+        // On entry of text in to the search bar, lookup names LIKE 'name'
+        // and populate the adapter with the results.
+        // If the name filed is empty, show all details of this Draw
+        et_searchBar.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // Do nothing
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String name = et_searchBar.getText().toString().trim();
+                entrantArrayAdapter.clear();
+
+                if (name.equals("")) {
+                    entrantArrayAdapter.addAll(db.getEntrantsByDrawId(draw.getDrawId()));
+                } else {
+                    entrantArrayAdapter.addAll(db.getFilteredEntrantsByDrawId(name, drawId));
+                }
+
+                lv_numberSlotListView.setAdapter(entrantArrayAdapter);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Do nothing
+            }
+        });
+
         lv_numberSlotListView.setAdapter(entrantArrayAdapter);
     }
 
@@ -150,7 +227,7 @@ public class DrawDetail extends AppCompatActivity implements ConfirmationDialog.
         fab_randoms.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                            generateRandomNumber();
+                generateRandomNumber();
             }
         });
 
@@ -185,14 +262,15 @@ public class DrawDetail extends AppCompatActivity implements ConfirmationDialog.
                 deleteDraw(drawId);
             }
         });
+
+        et_searchBar.setVisibility(View.VISIBLE);
     }
 
     /**
      * When required, an EditText fields shows containing copyable data
      */
     private void openCopyableWindow() {
-        et_copyableTextWindow.setVisibility(View.VISIBLE);
-        iv_copyableTextWindowCloseIcon.setVisibility(View.VISIBLE);
+        cl_copyableWindowContainer.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -207,19 +285,19 @@ public class DrawDetail extends AppCompatActivity implements ConfirmationDialog.
         fab_names.setVisibility(View.GONE);
         fab_delete.setVisibility(View.GONE);
         fab_edit.setVisibility(View.GONE);
+        et_searchBar.setVisibility(View.GONE);
     }
 
     /**
      * When not longer required, close the EditText (and subsequent close icon)
      */
     private void closeCopyableWindow() {
-        et_copyableTextWindow.setVisibility(View.GONE);
-        iv_copyableTextWindowCloseIcon.setVisibility(View.GONE);
+        cl_copyableWindowContainer.setVisibility(View.GONE);
     }
 
     /**
-     * Populate and make visible a hidden EditText field with the remaining numbers,
-     * so that they can be copied and pasted elsewhere
+     * Populate and make visible a hidden EditText field with the remaining numbers.
+     * Copies remaining numbers to clipboard for ease of pasting elsewhere.
      */
     private void showRemainingNumbers() {
         ArrayList<Integer> remainingNumbers = db.getRemainingNumbers(drawId);
@@ -228,42 +306,219 @@ public class DrawDetail extends AppCompatActivity implements ConfirmationDialog.
         closeFabs();
         openCopyableWindow();
 
-        et_copyableTextWindow.setText("Available...\n\n* ");
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("Available...\n\n* ");
+        tv_copyableTextWindow.setText("Available...\n\n* ");
         for (int i = 0; i < size; i++) {
-            et_copyableTextWindow.append(String.valueOf(remainingNumbers.get(i)));
-            et_copyableTextWindow.append(" * ");
+            // Print to screen
+            tv_copyableTextWindow.append(String.valueOf(remainingNumbers.get(i)));
+            tv_copyableTextWindow.append(" * ");
+
+            // Add to string builder for clipboard
+            stringBuilder.append(String.valueOf(remainingNumbers.get(i)));
+            stringBuilder.append(" * ");
         }
+
+        // Copy to clipboard for ease of pasting
+        ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData data = ClipData.newPlainText("remainingNumbers", stringBuilder.toString());
+        clipboardManager.setPrimaryClip(data);
+        Toast.makeText(this, "Remaining numbers copied to clipboard!", Toast.LENGTH_SHORT).show();
     }
 
     /**
-     * Populate and make visible a hidden EditText field with the list of names and numbers,
-     * so that they can be copied and pasted elsewhere
+     * On FAB randomiser click, close FABs and clear the randomiser fields.
+     * Set up Cancel Button.
+     * Generate random numbers to an array.
+     * Setup Accept Button to save to db.
+     */
+    public void generateRandomNumber() {
+        fab_options.setVisibility(View.GONE);
+        closeFabs();
+        cl_randomiserLayout.setVisibility(View.VISIBLE);
+        et_randomiserName.setText(null);
+        et_amountOfNumbers.setText(null);
+        et_returnedRandoms.setText(null);
+        isReady = false;
+
+        // Close window on Cancel Button click
+        randomiserCancelButton();
+
+        // Generate required amount of random numbers
+        ArrayList<Entrant> entrants = randomiserGenerateButton();
+
+        // Save name and numbers to db
+        randomiserAcceptButton(entrants);
+    }
+
+    /**
+     * Close the randomiser window on Cancel Button click
+     */
+    private void randomiserCancelButton() {
+        btn_randomiserCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cl_randomiserLayout.setVisibility(View.GONE);
+                fab_options.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
+    /**
+     * Gets the name and amount of requested numbers.
+     * Gets the [user requested] amount of random numbers from the remainingNumbers.
+     * Displays them to the EditText returned randoms field.
+     * Copies random numbers to the clipboard.
+     */
+    private ArrayList<Entrant> randomiserGenerateButton() {
+        final ArrayList<Entrant> entrants = new ArrayList<>();
+
+        btn_generateRandoms.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String randomiserName = null;
+                int randomiserAmountOfNumbers = 0;
+
+                // Clear the Entrants array to avoid duplicate entries on multiple generations
+                entrants.clear();
+
+                // Validate and get name
+                if (et_randomiserName.getText().toString().trim().equals("")) {
+                    Toast.makeText(DrawDetail.this, "Who are these for...?", Toast.LENGTH_SHORT).show();
+                    return;
+                } else {
+                    randomiserName = et_randomiserName.getText().toString().trim();
+                }
+
+                // Validate and get amount of numbers required
+                if (et_amountOfNumbers.getText().toString().trim().equals("")) {
+                    Toast.makeText(DrawDetail.this, "How many numbers...?", Toast.LENGTH_SHORT).show();
+                    return;
+                } else {
+                    randomiserAmountOfNumbers = Integer.parseInt(et_amountOfNumbers.getText().toString().trim());
+                }
+
+                // Get a list of the remaining numbers for this draw
+                ArrayList<Integer> remainingNumbers = db.getRemainingNumbers(drawId);
+
+                // Check that there are enough numbers
+                if (randomiserAmountOfNumbers > remainingNumbers.size()) {
+                    Toast.makeText(DrawDetail.this, "There are only " + remainingNumbers.size() + " numbers left!", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Randomise the remaining numbers
+                    Collections.shuffle(remainingNumbers);
+
+                    // Create a new array and add the amount if random numbers requested
+                    ArrayList<Integer> randomNumbersArray = new ArrayList<>();
+                    for (int i = 0; i < randomiserAmountOfNumbers; i++) {
+                        randomNumbersArray.add(remainingNumbers.get(i));
+                    }
+
+                    // Sort the array (low-hi)
+                    Collections.sort(randomNumbersArray);
+                    // Iterate through the array, displaying the numbers to the EditText field ready for copying.
+                    // Create and Entrant from the name and number and add it to the list of entrants,
+                    // to be passed for saving.
+                    // Create a stringBuilder for copying to the clipboard.
+                    et_returnedRandoms.setText("* ");
+                    StringBuilder stringBuilder = new StringBuilder();
+                    stringBuilder.append("* ");
+                    for (int i = 0; i < randomNumbersArray.size(); i++) {
+                        // Display to screen
+                        et_returnedRandoms.append(String.valueOf(randomNumbersArray.get(i)));
+                        et_returnedRandoms.append(" * ");
+
+                        // Add to stringBuilder
+                        stringBuilder.append(String.valueOf(randomNumbersArray.get(i)));
+                        stringBuilder.append(" * ");
+
+                        Entrant entrant = new Entrant();
+                        entrant.setEntrantName(randomiserName);
+                        entrant.setLineNumber(randomNumbersArray.get(i));
+                        entrants.add(entrant);
+                    }
+
+                    // Copy to clipboard
+                    ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                    ClipData data = ClipData.newPlainText("generatedNumbers", stringBuilder.toString());
+                    clipboardManager.setPrimaryClip(data);
+                    Toast.makeText(DrawDetail.this, "Random numbers copied to clipboard", Toast.LENGTH_LONG).show();
+
+                    // Set isReady to true, so that the Accept Button saves name and numbers to db
+                    isReady = true;
+                }
+            }
+        });
+        return entrants;
+    }
+
+    /**
+     * Take a list of Entrants (names are all the same name but with the generated random numbers),
+     * loop through it and save them to the db using the drawId.
+     *
+     * @param entrants
+     */
+    private void randomiserAcceptButton(final ArrayList<Entrant> entrants) {
+        btn_randomiserAccept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isReady) {
+                    String name;
+                    int number;
+
+                    // Save names and numbers against drawId
+                    for (int i = 0; i < entrants.size(); i++) {
+                        name = entrants.get(i).getEntrantName();
+                        number = entrants.get(i).getLineNumber();
+                        db.updateNameToChosenNumber(name, number, drawId);
+                    }
+
+                    // Close randomiser and recreate activity
+                    cl_randomiserLayout.setVisibility(View.GONE);
+                    recreate();
+                } else {
+                    Toast.makeText(DrawDetail.this, "You haven't generated any numbers!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    /**
+     * Populate and make visible a hidden EditText field with the list of names and numbers.
+     * Copies remaining numbers to clipboard for ease of pasting elsewhere.
      */
     private void showNamesAndNumbers() {
         ArrayList<Entrant> finalNamesAndNumbers = db.getEntrantsByDrawId(drawId);
-        System.out.println("finalNamesAndNumbers : " + finalNamesAndNumbers.toString());
         int size = finalNamesAndNumbers.size();
-        System.out.println("size: " + size);
 
         closeFabs();
         openCopyableWindow();
 
-        et_copyableTextWindow.setText("");
+        StringBuilder stringBuilder = new StringBuilder();
+        tv_copyableTextWindow.setText("");
         for (int i = 0; i < size; i++) {
-            // If the lineNumber is a single digit, add a little spacing before for uniformity
-            if (String.valueOf(finalNamesAndNumbers.get(i).getLineNumber()).length() == 1) {
-                et_copyableTextWindow.append("  ");
-            }
-            et_copyableTextWindow.append(String.valueOf(finalNamesAndNumbers.get(i).getLineNumber()));
-            et_copyableTextWindow.append(" - ");
+            tv_copyableTextWindow.append(String.valueOf(finalNamesAndNumbers.get(i).getLineNumber()));
+            tv_copyableTextWindow.append(" - ");
+
+            // Add to string builder for clipboard
+            stringBuilder.append(String.valueOf(finalNamesAndNumbers.get(i).getLineNumber()));
+            stringBuilder.append(" - ");
 
             // Append name if one exists
             if (finalNamesAndNumbers.get(i).getEntrantName() != null) {
-                et_copyableTextWindow.append(finalNamesAndNumbers.get(i).getEntrantName());
+                tv_copyableTextWindow.append(finalNamesAndNumbers.get(i).getEntrantName());
+                stringBuilder.append(finalNamesAndNumbers.get(i).getEntrantName());
             }
 
-            et_copyableTextWindow.append("\n");
+            tv_copyableTextWindow.append("\n");
+            stringBuilder.append("\n");
         }
+
+        // Copy to clipboard for ease of pasting
+        ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData data = ClipData.newPlainText("namesAndNumbers", stringBuilder.toString());
+        clipboardManager.setPrimaryClip(data);
+        Toast.makeText(this, "Name and Numbers copied to clipboard!", Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -275,6 +530,7 @@ public class DrawDetail extends AppCompatActivity implements ConfirmationDialog.
         Intent editIntent = new Intent(DrawDetail.this, EditDraw.class);
         editIntent.putExtra("DrawId", drawId);
         startActivity(editIntent);
+        finish();
     }
 
     /**

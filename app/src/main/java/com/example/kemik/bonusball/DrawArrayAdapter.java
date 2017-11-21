@@ -1,5 +1,6 @@
 package com.example.kemik.bonusball;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -10,11 +11,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.example.kemik.bonusball.Database.DBHelper;
 import com.example.kemik.bonusball.Entities.Draw;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * Created by kemik on 12/11/2017.
@@ -32,7 +32,7 @@ public class DrawArrayAdapter extends ArrayAdapter<Draw> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.draw_row_list_item, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item_draw, parent, false);
         }
 
         final Draw draw = getItem(position);
@@ -44,11 +44,7 @@ public class DrawArrayAdapter extends ArrayAdapter<Draw> {
         // Amount of remaining numbers
         TextView tv_amountOfRemainingNumbers = convertView.findViewById(R.id.drawListItemRemaining);
         tv_amountOfRemainingNumbers.setText(String.valueOf(db.getAvailableAmountOfNumbers(draw.getDrawId())));
-
-        // Date draw started
-        TextView tv_startDate = convertView.findViewById(R.id.drawListItemDateStarted);
-        String dateString = new SimpleDateFormat("EEE, dd MMM").format(new Date(draw.getStartDate()));
-        tv_startDate.setText(dateString);
+        tv_amountOfRemainingNumbers.append(" (left)");
 
         // Go to DrawDetail on ListItem click
         convertView.setOnClickListener(new View.OnClickListener() {
@@ -57,6 +53,7 @@ public class DrawArrayAdapter extends ArrayAdapter<Draw> {
                 Intent intent = new Intent(getContext(), DrawDetail.class);
                 intent.putExtra("DrawId", draw.getDrawId());
                 getContext().startActivity(intent);
+                ((Activity) getContext()).finish();
             }
         });
 
@@ -67,12 +64,12 @@ public class DrawArrayAdapter extends ArrayAdapter<Draw> {
 
                 remainingNumbers.addAll(db.getRemainingNumbers(draw.getDrawId()));
                 for (int i = 0; i < remainingNumbers.size(); i++) {
-                    System.out.print(remainingNumbers.get(i) + " * ");
                 }
 
                 Intent intent = new Intent(getContext(), MainActivity.class);
                 intent.putExtra("remainingNumbers", remainingNumbers);
                 getContext().startActivity(intent);
+                ((Activity) getContext()).finish();
 
                 return false;
             }
