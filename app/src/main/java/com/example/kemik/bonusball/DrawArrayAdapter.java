@@ -64,7 +64,6 @@ public class DrawArrayAdapter extends ArrayAdapter<Draw> {
 
                 remainingNumbers.addAll(db.getRemainingNumbers(draw.getDrawId()));
                 for (int i = 0; i < remainingNumbers.size(); i++) {
-                    System.out.print(remainingNumbers.get(i) + " * ");
                 }
 
                 Intent intent = new Intent(getContext(), MainActivity.class);

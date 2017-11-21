@@ -173,14 +173,45 @@ public class DrawDetail extends AppCompatActivity
     }
 
     /**
-     * SetUp and display the ListView
+     * SetUp and display the ListView according to the state of the searchBar (populated or not)
      * ...Create a new ArrayAdapter
      * ...AddAll Draws from DB
      * ...Set adapter
      */
-    private void setupAndDisplayListView(Draw draw) {
+    private void setupAndDisplayListView(final Draw draw) {
+        // Create a new adapter and add all of the Entrants for this Draw
         entrantArrayAdapter = new EntrantArrayAdapter(this, draw.getDrawId());
         entrantArrayAdapter.addAll(db.getEntrantsByDrawId(draw.getDrawId()));
+
+        // On entry of text in to the search bar, lookup names LIKE 'name'
+        // and populate the adapter with the results.
+        // If the name filed is empty, show all details of this Draw
+        et_searchBar.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // Do nothing
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String name = et_searchBar.getText().toString().trim();
+                entrantArrayAdapter.clear();
+
+                if (name.equals("")) {
+                    entrantArrayAdapter.addAll(db.getEntrantsByDrawId(draw.getDrawId()));
+                } else {
+                    entrantArrayAdapter.addAll(db.getFilteredEntrantsByDrawId(name, drawId));
+                }
+
+                lv_numberSlotListView.setAdapter(entrantArrayAdapter);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Do nothing
+            }
+        });
+
         lv_numberSlotListView.setAdapter(entrantArrayAdapter);
     }
 
@@ -233,47 +264,7 @@ public class DrawDetail extends AppCompatActivity
         });
 
         et_searchBar.setVisibility(View.VISIBLE);
-        et_searchBar.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                // Do nothing
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String name = et_searchBar.getText().toString().trim();
-
-                ArrayList<Entrant> filteredEntrants = db.getFilteredEntrantsByDrawId(name, drawId);
-                System.out.println("DrawDetail - searchEntrantForName - filteredEntrants.size: " + filteredEntrants.size());
-
-                entrantArrayAdapter.clear();
-                entrantArrayAdapter.addAll(filteredEntrants);
-                lv_numberSlotListView.setAdapter(entrantArrayAdapter);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                // Do nothing
-            }
-        });
     }
-
-//    private void searchEntrantsForName() {
-//        // Validate empty editText
-//        if (et_searchBar.getText().toString().trim().equals("")) {
-//            Toast.makeText(this, "Enter something to search for!", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
-//
-//        String name = et_searchBar.getText().toString().trim();
-//
-//        ArrayList<Entrant> filteredEntrants = db.getFilteredEntrantsByDrawId(name, drawId);
-//        System.out.println("DrawDetail - searchEntrantForName - filteredEntrants.size: " + filteredEntrants.size());
-//
-//        entrantArrayAdapter.clear();
-//        entrantArrayAdapter.addAll(filteredEntrants);
-//        lv_numberSlotListView.setAdapter(entrantArrayAdapter);
-//    }
 
     /**
      * When required, an EditText fields shows containing copyable data
@@ -385,8 +376,6 @@ public class DrawDetail extends AppCompatActivity
         btn_generateRandoms.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("=============================================================");
-                System.out.println("DrawDetail - randomiserGenerateButton()...");
                 String randomiserName = null;
                 int randomiserAmountOfNumbers = 0;
 
@@ -399,7 +388,6 @@ public class DrawDetail extends AppCompatActivity
                     return;
                 } else {
                     randomiserName = et_randomiserName.getText().toString().trim();
-                    System.out.println("DrawDetail - randomiserGenerateButton - randomiserName: " + randomiserName);
                 }
 
                 // Validate and get amount of numbers required
@@ -408,12 +396,10 @@ public class DrawDetail extends AppCompatActivity
                     return;
                 } else {
                     randomiserAmountOfNumbers = Integer.parseInt(et_amountOfNumbers.getText().toString().trim());
-                    System.out.println("DrawDetail - randomiserGenerateButton - randomiserAmountOfNumbers: " + randomiserAmountOfNumbers);
                 }
 
                 // Get a list of the remaining numbers for this draw
                 ArrayList<Integer> remainingNumbers = db.getRemainingNumbers(drawId);
-                System.out.println("DrawDetail - randomiserGenerateButton - remainingNumbers.size: " + remainingNumbers.size());
 
                 // Check that there are enough numbers
                 if (randomiserAmountOfNumbers > remainingNumbers.size()) {
@@ -424,11 +410,8 @@ public class DrawDetail extends AppCompatActivity
 
                     // Create a new array and add the amount if random numbers requested
                     ArrayList<Integer> randomNumbersArray = new ArrayList<>();
-                    System.out.println("DrawDetail - randomiserGenerateButton - randomNumbersArray.size: " + randomNumbersArray.size());
                     for (int i = 0; i < randomiserAmountOfNumbers; i++) {
-                        System.out.println("DrawDetail - randomiserGenerateButton - remaining numbers.get(i): " + i + ": " + remainingNumbers.get(i) + "\n");
                         randomNumbersArray.add(remainingNumbers.get(i));
-                        System.out.println("DrawDetail - randomiserGenerateButton - randomNumbersArray.size: " + remainingNumbers.size());
                     }
 
                     // Sort the array (low-hi)
@@ -506,9 +489,7 @@ public class DrawDetail extends AppCompatActivity
      */
     private void showNamesAndNumbers() {
         ArrayList<Entrant> finalNamesAndNumbers = db.getEntrantsByDrawId(drawId);
-        System.out.println("finalNamesAndNumbers : " + finalNamesAndNumbers.toString());
         int size = finalNamesAndNumbers.size();
-        System.out.println("size: " + size);
 
         closeFabs();
         openCopyableWindow();
