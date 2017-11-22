@@ -13,6 +13,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -264,6 +266,8 @@ public class DrawDetail extends AppCompatActivity
         });
 
         et_searchBar.setVisibility(View.VISIBLE);
+
+        fabOpenAnimation();
     }
 
     /**
@@ -286,6 +290,8 @@ public class DrawDetail extends AppCompatActivity
         fab_delete.setVisibility(View.GONE);
         fab_edit.setVisibility(View.GONE);
         et_searchBar.setVisibility(View.GONE);
+
+        fabCloseAnimation();
     }
 
     /**
@@ -564,5 +570,67 @@ public class DrawDetail extends AppCompatActivity
     @Override
     public void onDialogNegativeClick(DialogFragment dialogFragment) {
         // Do nothing
+    }
+
+    /**
+     * Animations to be used when opening the FABs
+     */
+    private void fabOpenAnimation() {
+        Animation animationDel = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_slide_in);
+        Animation animationEdit = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_slide_in);
+        Animation animationNames = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_slide_in);
+        Animation animationRandoms = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_slide_in);
+        Animation animationNumbers = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_slide_in);
+        Animation animationSearch = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_stretch_open);
+
+        et_searchBar.startAnimation(animationSearch);
+        animationSearch.setStartOffset(delay(1));
+        fab_delete.startAnimation(animationDel);
+        animationDel.setStartOffset(delay(2));
+        fab_edit.startAnimation(animationEdit);
+        animationEdit.setStartOffset(delay(3));
+        fab_names.startAnimation(animationNames);
+        animationNames.setStartOffset(delay(4));
+        fab_randoms.startAnimation(animationRandoms);
+        animationRandoms.setStartOffset(delay(5));
+        fab_numbers.startAnimation(animationNumbers);
+        animationNumbers.setStartOffset(delay(6));
+    }
+
+    /**
+     * Animations to be shown whe closing the FABs
+     */
+    private void fabCloseAnimation() {
+        Animation animationDel = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_slide_out);
+        Animation animationEdit = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_slide_out);
+        Animation animationNames = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_slide_out);
+        Animation animationRandoms = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_slide_out);
+        Animation animationNumbers = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_slide_out);
+        Animation animationSearch = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_stretch_close);
+
+        et_searchBar.startAnimation(animationSearch);
+        animationSearch.setStartOffset(delay(6));
+        fab_delete.startAnimation(animationDel);
+        animationDel.setStartOffset(delay(5));
+        fab_edit.startAnimation(animationEdit);
+        animationEdit.setStartOffset(delay(4));
+        fab_names.startAnimation(animationNames);
+        animationNames.setStartOffset(delay(3));
+        fab_randoms.startAnimation(animationRandoms);
+        animationRandoms.setStartOffset(delay(2));
+        fab_numbers.startAnimation(animationNumbers);
+        animationNumbers.setStartOffset(delay(1));
+    }
+
+    /**
+     * Used by fab...Animation methods for calculating the staggered delay by order
+     *
+     * @param order
+     * @return
+     */
+    private long delay(int order) {
+
+        return (long) (50 * order);
+
     }
 }

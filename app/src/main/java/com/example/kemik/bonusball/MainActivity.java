@@ -7,9 +7,12 @@ import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.kemik.bonusball.Database.DBHelper;
@@ -23,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText et_remainingNumbers;
     private ImageView iv_remainingNumbersClose;
     private FloatingActionButton fab_createDraw;
+    private TextView tv_emptyListMessage;
 
     private Boolean exit = false;
 
@@ -73,6 +77,11 @@ public class MainActivity extends AppCompatActivity {
         drawArrayAdapter.addAll(db.getDraws());
         lv_draws.setAdapter(drawArrayAdapter);
 
+        // Show 'empty' message if the list is empty
+        if (drawArrayAdapter.isEmpty()) {
+            tv_emptyListMessage.setVisibility(View.VISIBLE);
+        }
+
         // On longClick of draw list item,
         // show window with copyable remaining numbers for the respective draw
         Intent intent = getIntent();
@@ -96,6 +105,10 @@ public class MainActivity extends AppCompatActivity {
                 iv_remainingNumbersClose.setVisibility(View.GONE);
             }
         });
+
+
+        Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_slide_in);
+        fab_createDraw.startAnimation(animation);
     }
 
     /**
@@ -106,5 +119,6 @@ public class MainActivity extends AppCompatActivity {
         et_remainingNumbers = findViewById(R.id.remainingNumbers);
         iv_remainingNumbersClose = findViewById(R.id.remainingNumbersCloseButton);
         fab_createDraw = findViewById(R.id.fab);
+        tv_emptyListMessage = findViewById(R.id.drawEmptyListMessage);
     }
 }
