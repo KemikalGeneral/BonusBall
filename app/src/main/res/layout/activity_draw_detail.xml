@@ -176,19 +176,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
-    <!--Numbers FAB-->
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/drawDetailNumbersFab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:src="@drawable/find_numbers"
-        android:tint="#fff"
-        android:visibility="gone"
-        app:backgroundTint="@color/orange"
-        app:layout_constraintBottom_toTopOf="@id/drawDetailRandomsFab"
-        app:layout_constraintRight_toRightOf="parent" />
-
     <!--Randoms FAB-->
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/drawDetailRandomsFab"
@@ -196,6 +183,19 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:src="@drawable/randoms"
+        android:tint="#fff"
+        android:visibility="gone"
+        app:backgroundTint="@color/orange"
+        app:layout_constraintBottom_toTopOf="@id/drawDetailNumbersFab"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <!--Numbers FAB-->
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/drawDetailNumbersFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:src="@drawable/find_numbers"
         android:tint="#fff"
         android:visibility="gone"
         app:backgroundTint="@color/green"
