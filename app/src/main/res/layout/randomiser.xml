@@ -79,9 +79,10 @@
         android:text="Cancel"
         android:textAlignment="center"
         android:textAllCaps="false"
+        android:textColor="#FFFFFF"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/randomiserAcceptButton"
+        app:layout_constraintEnd_toStartOf="@id/randomiserAcceptButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/randomiserRandomNumbers" />
 
@@ -95,10 +96,11 @@
         android:text="Accept"
         android:textAlignment="center"
         android:textAllCaps="false"
+        android:textColor="#FFFFFF"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/randomiserCancelButton"
+        app:layout_constraintStart_toEndOf="@id/randomiserCancelButton"
         app:layout_constraintTop_toBottomOf="@id/randomiserRandomNumbers" />
 
 </android.support.constraint.ConstraintLayout>

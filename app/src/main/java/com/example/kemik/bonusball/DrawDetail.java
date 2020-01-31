@@ -98,13 +98,6 @@ public class DrawDetail extends AppCompatActivity
         // Set up and display the ListView
         setupAndDisplayListView(draw);
 
-//        fab_randoms.setVisibility(View.INVISIBLE);
-//        fab_numbers.setVisibility(View.INVISIBLE);
-//        fab_names.setVisibility(View.INVISIBLE);
-//        fab_edit.setVisibility(View.INVISIBLE);
-//        fab_delete.setVisibility(View.INVISIBLE);
-//        et_searchBar.setVisibility(View.INVISIBLE);
-
         // Toggle visibility on FAB click for Edit and Delete
         fab_options.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -320,16 +313,16 @@ public class DrawDetail extends AppCompatActivity
         openCopyableWindow();
 
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("Available...\n\n* ");
-        tv_copyableTextWindow.setText("Available...\n\n* ");
+        stringBuilder.append("Available...\n\n");
+        tv_copyableTextWindow.setText("Available...\n\n");
         for (int i = 0; i < size; i++) {
             // Print to screen
             tv_copyableTextWindow.append(String.valueOf(remainingNumbers.get(i)));
-            tv_copyableTextWindow.append(" * ");
+            tv_copyableTextWindow.append("\n");
 
             // Add to string builder for clipboard
             stringBuilder.append(String.valueOf(remainingNumbers.get(i)));
-            stringBuilder.append(" * ");
+            stringBuilder.append("\n");
         }
 
         // Copy to clipboard for ease of pasting
