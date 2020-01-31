@@ -576,12 +576,12 @@ public class DrawDetail extends AppCompatActivity
      * Animations to be used when opening the FABs
      */
     private void fabOpenAnimation() {
+        Animation animationSearch = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_stretch_open);
         Animation animationDel = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_slide_in);
         Animation animationEdit = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_slide_in);
         Animation animationNames = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_slide_in);
-        Animation animationRandoms = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_slide_in);
         Animation animationNumbers = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_slide_in);
-        Animation animationSearch = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_stretch_open);
+        Animation animationRandoms = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_slide_in);
 
         et_searchBar.startAnimation(animationSearch);
         animationSearch.setStartOffset(delay(1));
@@ -591,35 +591,35 @@ public class DrawDetail extends AppCompatActivity
         animationEdit.setStartOffset(delay(3));
         fab_names.startAnimation(animationNames);
         animationNames.setStartOffset(delay(4));
-        fab_randoms.startAnimation(animationRandoms);
-        animationRandoms.setStartOffset(delay(5));
         fab_numbers.startAnimation(animationNumbers);
-        animationNumbers.setStartOffset(delay(6));
+        animationNumbers.setStartOffset(delay(5));
+        fab_randoms.startAnimation(animationRandoms);
+        animationRandoms.setStartOffset(delay(6));
     }
 
     /**
      * Animations to be shown whe closing the FABs
      */
     private void fabCloseAnimation() {
-        Animation animationDel = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_slide_out);
-        Animation animationEdit = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_slide_out);
-        Animation animationNames = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_slide_out);
         Animation animationRandoms = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_slide_out);
         Animation animationNumbers = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_slide_out);
+        Animation animationNames = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_slide_out);
+        Animation animationEdit = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_slide_out);
+        Animation animationDel = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_slide_out);
         Animation animationSearch = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_stretch_close);
 
-        et_searchBar.startAnimation(animationSearch);
-        animationSearch.setStartOffset(delay(6));
-        fab_delete.startAnimation(animationDel);
-        animationDel.setStartOffset(delay(5));
-        fab_edit.startAnimation(animationEdit);
-        animationEdit.setStartOffset(delay(4));
+        fab_randoms.startAnimation(animationRandoms);
+        animationRandoms.setStartOffset(delay(1));
+        fab_numbers.startAnimation(animationNumbers);
+        animationNumbers.setStartOffset(delay(2));
         fab_names.startAnimation(animationNames);
         animationNames.setStartOffset(delay(3));
-        fab_randoms.startAnimation(animationRandoms);
-        animationRandoms.setStartOffset(delay(2));
-        fab_numbers.startAnimation(animationNumbers);
-        animationNumbers.setStartOffset(delay(1));
+        fab_edit.startAnimation(animationEdit);
+        animationEdit.setStartOffset(delay(4));
+        fab_delete.startAnimation(animationDel);
+        animationDel.setStartOffset(delay(5));
+        et_searchBar.startAnimation(animationSearch);
+        animationSearch.setStartOffset(delay(6));
     }
 
     /**
