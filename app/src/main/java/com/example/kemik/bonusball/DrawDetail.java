@@ -98,13 +98,20 @@ public class DrawDetail extends AppCompatActivity
         // Set up and display the ListView
         setupAndDisplayListView(draw);
 
+//        fab_randoms.setVisibility(View.INVISIBLE);
+//        fab_numbers.setVisibility(View.INVISIBLE);
+//        fab_names.setVisibility(View.INVISIBLE);
+//        fab_edit.setVisibility(View.INVISIBLE);
+//        fab_delete.setVisibility(View.INVISIBLE);
+//        et_searchBar.setVisibility(View.INVISIBLE);
+
         // Toggle visibility on FAB click for Edit and Delete
         fab_options.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!isOpen) {
                     openFabs();
-                } else if (isOpen) {
+                } else {
                     closeFabs();
                 }
             }
@@ -281,17 +288,17 @@ public class DrawDetail extends AppCompatActivity
      * Make the required views gone, when the FAB is closed
      */
     private void closeFabs() {
+        fabCloseAnimation();
+
         isOpen = false;
         fab_options.setImageResource(R.drawable.more_menu);
         fab_options.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
         fab_randoms.setVisibility(View.GONE);
         fab_numbers.setVisibility(View.GONE);
         fab_names.setVisibility(View.GONE);
-        fab_delete.setVisibility(View.GONE);
         fab_edit.setVisibility(View.GONE);
+        fab_delete.setVisibility(View.GONE);
         et_searchBar.setVisibility(View.GONE);
-
-        fabCloseAnimation();
     }
 
     /**
@@ -620,6 +627,32 @@ public class DrawDetail extends AppCompatActivity
         animationDel.setStartOffset(delay(5));
         et_searchBar.startAnimation(animationSearch);
         animationSearch.setStartOffset(delay(6));
+
+        // Clear the animations so that it releases the onClick listener to each FAB
+        // ! This is required to fix a bug where the views are still clickable even when not
+        // ! visible, and has an animation listener set to the search bar view as it is the
+        // ! last view in the sequence of the FAB closing animation.
+        animationSearch.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                // Do nothing
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                fab_randoms.clearAnimation();
+                fab_numbers.clearAnimation();
+                fab_names.clearAnimation();
+                fab_edit.clearAnimation();
+                fab_delete.clearAnimation();
+                et_searchBar.clearAnimation();
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+                // Do nothing
+            }
+        });
     }
 
     /**
