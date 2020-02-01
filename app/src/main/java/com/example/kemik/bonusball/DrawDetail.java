@@ -358,6 +358,7 @@ public class DrawDetail extends AppCompatActivity
         et_randomiserName.setText(null);
         et_amountOfNumbers.setText(null);
         et_returnedRandoms.setText(null);
+        cb_hasAlreadyPaid.setChecked(false);
 
         isReady = false;
 
