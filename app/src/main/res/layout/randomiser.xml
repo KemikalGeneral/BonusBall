@@ -5,9 +5,10 @@
     android:id="@+id/randomiserLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/darkGrey"
-    android:visibility="gone"
     android:padding="16dp"
+    android:scaleType="matrix"
+    android:src="@drawable/background"
+    android:visibility="gone"
     tools:showIn="@layout/activity_draw_detail">
 
     <!--Entrant name-->
@@ -41,11 +42,13 @@
         app:layout_constraintTop_toBottomOf="@id/randomiserName" />
 
     <!--Generate Button-->
-    <Button
+    <TextView
         android:id="@+id/randomiserGenerateButton"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@drawable/shape_horizontal_edges"
+        android:gravity="center"
+        android:letterSpacing="0.5"
         android:text="Generate"
         android:textAlignment="center"
         android:textColor="@color/orange"
@@ -64,43 +67,81 @@
         android:hint=". . . . . . . . ."
         android:textAlignment="center"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@id/randomiserCancelButton"
+        app:layout_constraintBottom_toTopOf="@id/randomiserHasPaidCheckBoxContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/randomiserGenerateButton" />
 
-    <!--Cancel Button-->
-    <Button
-        android:id="@+id/randomiserCancelButton"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@drawable/shape_round_bottom_left"
-        android:backgroundTint="@color/red"
-        android:text="Cancel"
-        android:textAlignment="center"
-        android:textAllCaps="false"
-        android:textColor="#FFFFFF"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/randomiserAcceptButton"
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/randomiserHasPaidCheckBoxContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_horizontal_edges"
+        android:padding="16dp"
+        app:layout_constraintBottom_toTopOf="@id/randomiserActionButtonsContainer"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/randomiserRandomNumbers" />
+        app:layout_constraintTop_toBottomOf="@id/randomiserRandomNumbers">
 
-    <!--Accept Button-->
-    <Button
-        android:id="@+id/randomiserAcceptButton"
+        <!--Has paid checkbox-->
+        <CheckBox
+            android:id="@+id/randomiserHasPaidCheckBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="16dp"
+            android:text="Has already paid...?"
+            android:textColor="@color/grey"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <!--Cancel / Accept action buttons-->
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/randomiserActionButtonsContainer"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/shape_round_bottom_right"
-        android:backgroundTint="@color/green"
-        android:text="Accept"
-        android:textAlignment="center"
-        android:textAllCaps="false"
-        android:textColor="#FFFFFF"
-        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/randomiserCancelButton"
-        app:layout_constraintTop_toBottomOf="@id/randomiserRandomNumbers" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/randomiserHasPaidCheckBoxContainer">
+
+        <!--Cancel Button-->
+        <Button
+            android:id="@+id/randomiserCancelButton"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/shape_round_bottom_left"
+            android:backgroundTint="@color/red"
+            android:text="Cancel"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/randomiserAcceptButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!--Accept Button-->
+        <Button
+            android:id="@+id/randomiserAcceptButton"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/shape_round_bottom_right"
+            android:backgroundTint="@color/green"
+            android:text="Accept"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/randomiserCancelButton"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
 
 </android.support.constraint.ConstraintLayout>

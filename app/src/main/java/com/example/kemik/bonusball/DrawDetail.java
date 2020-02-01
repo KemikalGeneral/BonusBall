@@ -16,6 +16,8 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -60,8 +62,10 @@ public class DrawDetail extends AppCompatActivity
     private ConstraintLayout cl_randomiserLayout;
     private EditText et_randomiserName;
     private EditText et_amountOfNumbers;
-    private Button btn_generateRandoms;
+    private TextView tv_generateRandoms;
     private EditText et_returnedRandoms;
+    private CheckBox cb_hasAlreadyPaid;
+    private boolean isPaidChecked;
     private Button btn_randomiserCancel;
     private Button btn_randomiserAccept;
     private boolean isReady = false;
@@ -116,6 +120,14 @@ public class DrawDetail extends AppCompatActivity
                 closeCopyableWindow();
             }
         });
+
+        // Set listener for isPaid checkBox in Randomiser
+        cb_hasAlreadyPaid.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                isPaidChecked = isChecked;
+            }
+        });
     }
 
     /**
@@ -147,8 +159,9 @@ public class DrawDetail extends AppCompatActivity
         cl_randomiserLayout = findViewById(R.id.randomiserLayout);
         et_randomiserName = findViewById(R.id.randomiserName);
         et_amountOfNumbers = findViewById(R.id.randomiserAmountOfNumbers);
-        btn_generateRandoms = findViewById(R.id.randomiserGenerateButton);
+        tv_generateRandoms = findViewById(R.id.randomiserGenerateButton);
         et_returnedRandoms = findViewById(R.id.randomiserRandomNumbers);
+        cb_hasAlreadyPaid = findViewById(R.id.randomiserHasPaidCheckBox);
         btn_randomiserCancel = findViewById(R.id.randomiserCancelButton);
         btn_randomiserAccept = findViewById(R.id.randomiserAcceptButton);
     }
@@ -345,6 +358,7 @@ public class DrawDetail extends AppCompatActivity
         et_randomiserName.setText(null);
         et_amountOfNumbers.setText(null);
         et_returnedRandoms.setText(null);
+
         isReady = false;
 
         // Close window on Cancel Button click
@@ -379,7 +393,7 @@ public class DrawDetail extends AppCompatActivity
     private ArrayList<Entrant> randomiserGenerateButton() {
         final ArrayList<Entrant> entrants = new ArrayList<>();
 
-        btn_generateRandoms.setOnClickListener(new View.OnClickListener() {
+        tv_generateRandoms.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String randomiserName = null;
@@ -461,6 +475,7 @@ public class DrawDetail extends AppCompatActivity
     /**
      * Take a list of Entrants (names are all the same name but with the generated random numbers),
      * loop through it and save them to the db using the drawId.
+     * If isPaid checkbox is checked, mark the entries as paid.
      *
      * @param entrants
      */
@@ -477,6 +492,11 @@ public class DrawDetail extends AppCompatActivity
                         name = entrants.get(i).getEntrantName();
                         number = entrants.get(i).getLineNumber();
                         db.updateNameToChosenNumber(name, number, drawId);
+
+                        // If the isPaid checkbox is checked, set the random number entries as paid
+                        if (isPaidChecked) {
+                            db.changePaymentStatus(number, drawId, "paid");
+                        }
                     }
 
                     // Close randomiser and recreate activity
