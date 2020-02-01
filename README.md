@@ -11,7 +11,7 @@ Android application to run a BonusBall game using the bonus ball drawn from the 
 
 #### Draw Features:
 - Random Numbers - *Add name and amount of numbers required, to be given a set of randomly generated numbers from the remaining numbers
-of the draw*
+of the draw. Also has the option to mark as paid when generated and saved*
 
 - Available Numbers - *Quickly view and automatically copy the available numbers remaining in the draw for easy pasting to inform entrants*
 
